@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Leaf,
+  LogOut,
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 
@@ -107,6 +108,33 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      {/* Auth Actions */}
+      <div className="px-3 py-2 space-y-1">
+        <button
+          onClick={() => {
+            localStorage.removeItem('agrisage_token')
+            dispatch({ type: 'LOGOUT' })
+          }}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
+                     text-rose-400 hover:bg-rose-500/10 hover:text-rose-500"
+          title={collapsed ? 'Logout' : ''}
+        >
+          <LogOut className="w-5 h-5 flex-shrink-0" />
+          <AnimatePresence>
+            {!collapsed && (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-sm font-medium"
+              >
+                Logout
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </button>
+      </div>
 
       {/* Collapse Toggle */}
       <div className="px-3 py-4 border-t border-earth-200/30 dark:border-earth-800/30">

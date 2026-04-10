@@ -7,7 +7,8 @@ const initialState: AppState = {
   apiStatus: { gemini: 'active', weather: 'active' },
   sidebarCollapsed: false,
   highContrast: false,
-  userName: 'Farmer',
+  userName: '',
+  isAuthenticated: false,
 }
 
 function loadState(): AppState {
@@ -34,7 +35,9 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case 'TOGGLE_HIGH_CONTRAST':
       return { ...state, highContrast: !state.highContrast }
     case 'SET_USERNAME':
-      return { ...state, userName: action.payload }
+      return { ...state, userName: action.payload, isAuthenticated: !!action.payload }
+    case 'LOGOUT':
+      return { ...initialState, theme: state.theme, language: state.language }
     default:
       return state
   }

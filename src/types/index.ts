@@ -186,6 +186,7 @@ export interface AppState {
   sidebarCollapsed: boolean
   highContrast: boolean
   userName: string
+  isAuthenticated: boolean
 }
 
 export type AppAction =
@@ -195,3 +196,4 @@ export type AppAction =
   | { type: 'TOGGLE_SIDEBAR' }
   | { type: 'TOGGLE_HIGH_CONTRAST' }
   | { type: 'SET_USERNAME'; payload: string }
+  | { type: 'LOGOUT' }
