@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Recycle, Leaf, TrendingUp, Award, Package,
-  MapPin, Phone, Calendar, CheckCircle2, Clock, Plus, X,
+  MapPin, Phone, Calendar, CheckCircle2, Clock, Plus, X, Map,
 } from 'lucide-react'
 import { getCarbonCredits, addCarbonCredit, getTotalCredits, getWasteExchanges, addWasteExchange } from '../services/db'
 import { useApp } from '../context/AppContext'
+import WasteCollectionMap from '../components/WasteCollectionMap'
 import type { CarbonCredit, WasteExchange } from '../types'
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
@@ -16,7 +17,7 @@ export default function SustainablePortal() {
   const [credits, setCredits] = useState<CarbonCredit[]>(getCarbonCredits)
   const [exchanges, setExchanges] = useState<WasteExchange[]>(getWasteExchanges)
   const [totalCreds] = useState(getTotalCredits)
-  const [tab, setTab] = useState<'credits' | 'exchange'>('credits')
+  const [tab, setTab] = useState<'credits' | 'exchange' | 'map'>('credits')
   const [showAddCredit, setShowAddCredit] = useState(false)
   const [showAddExchange, setShowAddExchange] = useState(false)
   const [newCreditActivity, setNewCreditActivity] = useState('')
@@ -146,10 +147,27 @@ export default function SustainablePortal() {
             {state.language === 'hi' ? 'अपशिष्ट विनिमय' : 'Waste Exchange'}
           </span>
         </button>
+        <button
+          onClick={() => setTab('map')}
+          className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+            tab === 'map'
+              ? 'gradient-primary text-white shadow-lg shadow-sage-500/25'
+              : 'glass text-earth-500 dark:text-earth-400 hover:text-earth-700 dark:hover:text-earth-200'
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <Map className="w-4 h-4" />
+            {state.language === 'hi' ? 'संग्रह मानचित्र' : 'Collection Map'}
+          </span>
+        </button>
       </motion.div>
 
       {/* Tab Content */}
-      {tab === 'credits' ? (
+      {tab === 'map' ? (
+        <motion.div variants={item}>
+          <WasteCollectionMap />
+        </motion.div>
+      ) : tab === 'credits' ? (
         <motion.div variants={item} className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="font-bold font-display text-earth-800 dark:text-earth-200">

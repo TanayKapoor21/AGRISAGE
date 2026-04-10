@@ -122,6 +122,17 @@ export interface WasteExchange {
   postedDate: string
 }
 
+export interface WasteFacility {
+  id: string
+  name: string
+  address: string
+  phone: string
+  lat: number
+  lng: number
+  wasteTypes: string[]
+  operational: boolean
+}
+
 // ─── Agricultural Library ──────────────────────────────────────
 
 export interface CropGuide {
