@@ -20,6 +20,11 @@ function ProtectedRoute() {
 }
 
 export default function App() {
+  console.log('API Status Check:', {
+    gemini: !!import.meta.env.VITE_GEMINI_API_KEY,
+    weather: !!import.meta.env.VITE_WEATHER_API_KEY,
+    maps: !!import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+  })
   return (
     <AppProvider>
       <BrowserRouter>

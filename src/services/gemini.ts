@@ -7,13 +7,16 @@ import { CacheService } from './cache'
 import type { ScanResult, CropRecommendation, MandiPrice, SoilType, PredictionInput, PredictionResult } from '../types'
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ''
-const MODEL_NAME = 'gemini-2.0-flash'
+const MODEL_NAME = 'gemini-1.5-flash'
 
 let genAI: GoogleGenerativeAI | null = null
 let apiAvailable = true
 
 function getClient(): GoogleGenerativeAI | null {
-  if (!API_KEY || API_KEY === 'your_gemini_api_key_here') return null
+  if (!API_KEY || API_KEY === 'your_gemini_api_key_here') {
+    console.warn('[Gemini] No valid API key found. Using mock fallback.')
+    return null
+  }
   if (!genAI) {
     genAI = new GoogleGenerativeAI(API_KEY)
   }
@@ -36,7 +39,10 @@ async function generateJSON<T>(prompt: string, cacheKey?: string): Promise<T | n
     
     // Extract JSON from response
     const jsonMatch = text.match(/```json\n?([\s\S]*?)\n?```/) || text.match(/\[[\s\S]*\]/) || text.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) return null
+    if (!jsonMatch) {
+      console.warn('[Gemini] Response did not contain valid JSON:', text)
+      return null
+    }
 
     const jsonStr = jsonMatch[1] || jsonMatch[0]
     const parsed = JSON.parse(jsonStr) as T
@@ -47,11 +53,11 @@ async function generateJSON<T>(prompt: string, cacheKey?: string): Promise<T | n
 
     return parsed
   } catch (error: any) {
+    console.error('[Gemini] Critical API error:', error.message || error)
     if (error?.status === 429 || error?.message?.includes('quota')) {
       apiAvailable = false
-      setTimeout(() => { apiAvailable = true }, 60000) // retry after 1 min
+      setTimeout(() => { apiAvailable = true }, 60000)
     }
-    console.warn('[Gemini] API error:', error)
     return null
   }
 }

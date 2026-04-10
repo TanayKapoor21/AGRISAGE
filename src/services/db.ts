@@ -96,9 +96,17 @@ export function addWasteExchange(exchange: WasteExchange): void {
 // ─── Waste Collection Facilities ─────────────────────────────────
 
 const wasteFacilities: WasteFacility[] = [
-  { id: 'wf_1', name: 'Punjab Biomass Power', address: 'Punjab', phone: 'N/A', lat: 30.2, lng: 74.5, wasteTypes: ['Paddy'], operational: true },
-  { id: 'wf_2', name: 'Sampurn Agri Ventures', address: 'Fazilka, Punjab', phone: 'N/A', lat: 30.4, lng: 74.03, wasteTypes: ['Stubble'], operational: true },
-  { id: 'wf_3', name: 'Eco-Wise Waste Management', address: 'Gurugram, Haryana', phone: 'N/A', lat: 28.44, lng: 77.03, wasteTypes: ['Organic'], operational: true },
+  { id: 'wf_1', name: 'Punjab Biomass Power', address: 'Patiala, Punjab', phone: '+91 98765 00001', lat: 30.3398, lng: 76.3869, wasteTypes: ['Paddy Straw', 'Stubble'], operational: true },
+  { id: 'wf_2', name: 'Sampurn Agri Ventures', address: 'Fazilka, Punjab', phone: '+91 98765 00002', lat: 30.4033, lng: 74.0305, wasteTypes: ['Stubble', 'Corn Husk'], operational: true },
+  { id: 'wf_3', name: 'Eco-Wise Waste Management', address: 'Gurugram, Haryana', phone: '+91 98765 00003', lat: 28.4470, lng: 77.0374, wasteTypes: ['Organic', 'Mixed Agri'], operational: true },
+  { id: 'wf_4', name: 'Maharashtra Biomass Hub', address: 'Nagpur, Maharashtra', phone: '+91 98765 00004', lat: 21.1458, lng: 79.0882, wasteTypes: ['Cotton Stalks', 'Soybean Residue'], operational: true },
+  { id: 'wf_5', name: 'UP Bio-Energy Plant', address: 'Bareilly, Uttar Pradesh', phone: '+91 98765 00005', lat: 28.3670, lng: 79.4304, wasteTypes: ['Sugarcane Bagasse', 'Paddy'], operational: true },
+  { id: 'wf_6', name: 'Haryana Stubble Collection', address: 'Karnal, Haryana', phone: '+91 98765 00006', lat: 29.6857, lng: 76.9907, wasteTypes: ['Paddy Straw'], operational: true },
+  { id: 'wf_7', name: 'Western Agri Recycle', address: 'Ahmedabad, Gujarat', phone: '+91 98765 00007', lat: 23.0225, lng: 72.5714, wasteTypes: ['Cotton', 'Groundnut Shells'], operational: true },
+  { id: 'wf_8', name: 'Central India Green Fuel', address: 'Indore, MP', phone: '+91 98765 00008', lat: 22.7196, lng: 75.8577, wasteTypes: ['Soybean', 'Wheat Straw'], operational: true },
+  { id: 'wf_9', name: 'South India Biomass', address: 'Tumakuru, Karnataka', phone: '+91 98765 00009', lat: 13.3392, lng: 77.1140, wasteTypes: ['Coconut Shells', 'Rice Husk'], operational: true },
+  { id: 'wf_10', name: 'Kisan Bio-Solutions', address: 'Ludhiana, Punjab', phone: '+91 98765 00010', lat: 30.9010, lng: 75.8573, wasteTypes: ['Stubble', 'Wheat Residue'], operational: true },
+  { id: 'wf_11', name: 'Pune Composting Unit', address: 'Pune, Maharashtra', phone: '+91 98765 00011', lat: 18.5204, lng: 73.8567, wasteTypes: ['Fruits/Vegetable Waste', 'Organic'], operational: true },
 ]
 
 export function getWasteFacilities(): WasteFacility[] {
