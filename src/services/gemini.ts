@@ -206,6 +206,22 @@ const knowledgeBase: Record<string, { en: string, hi: string }> = {
   'weather_impact': {
     en: 'Always watch the 5-day forecast. High wind speed means avoid spraying, and high humidity increases fungal disease risk.',
     hi: '항상 5일 예보를 확인하세요. 풍속이 높으면 छिड़काव से बचें, और उच्च आर्द्रता कवक रोगों के जोखिम को बढ़ाती है।'
+  },
+  'greetings': {
+    en: 'Namaste! I am your AgriSage AI Advisor. How can I help you with your farming today?',
+    hi: 'नमस्ते! मैं आपका एग्रीसेज एआई सलाहकार हूं। आज मैं आपकी खेती में कैसे मदद कर सकता हूं?'
+  },
+  'thanks': {
+    en: 'You are very welcome! I am happy to help. Do you have any other questions about your crops?',
+    hi: 'आपका बहुत-बहुत स्वागत है! मुझे मदद करके खुशी हुई। क्या आपके पास अपनी फसलों के बारे में कोई और सवाल है?'
+  },
+  'identity': {
+    en: 'I am AgriSage, a smart AI assistant designed specifically for Indian farmers to help with crop disease, market prices, and modern farming techniques.',
+    hi: 'मैं एग्रीसेज हूँ, एक स्मार्ट एआई सहायक जिसे विशेष रूप से भारतीय किसानों के लिए फसल रोगों, बाजार भाव और आधुनिक खेती की तकनीकों में मदद करने के लिए डिज़ाइन किया गया है।'
+  },
+  'well_being': {
+    en: 'I am doing great, thank you for asking! I am always ready to help you grow better crops. How are you doing today?',
+    hi: 'मैं बहुत अच्छा हूँ, पूछने के लिए धन्यवाद! मैं आपकी फसलों को बेहतर बनाने में मदद करने के लिए हमेशा तैयार हूँ। आप आज कैसे हैं?'
   }
 }
 
@@ -224,6 +240,10 @@ const keywords: Record<string, string[]> = {
   'compost_making': ['compost', 'khad', 'manure'],
   'neem_astra': ['neem', 'astra', 'biopesticide'],
   'crop_rotation': ['rotation', 'rotate', 'cycle'],
+  'greetings': ['hi', 'hello', 'hey', 'namaste', 'morning', 'hallo'],
+  'thanks': ['thank', 'shukriya', 'dhanyawad', 'thx'],
+  'identity': ['who are you', 'your name', 'kon ho', 'what is agrisage'],
+  'well_being': ['how are you', 'kaise ho', 'how do you do'],
 }
 
 export async function getAdvisorResponse(message: string, language: string = 'en'): Promise<string> {
