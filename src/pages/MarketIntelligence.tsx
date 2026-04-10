@@ -81,17 +81,6 @@ export default function MarketIntelligence() {
         </p>
       </motion.div>
 
-      {/* Estimate Banner */}
-      {isEstimate && (
-        <motion.div variants={item} className="flex items-center gap-3 p-3 rounded-xl bg-harvest-500/10 border border-harvest-500/20">
-          <AlertTriangle className="w-5 h-5 text-harvest-500 flex-shrink-0" />
-          <p className="text-sm text-harvest-700 dark:text-harvest-300">
-            {state.language === 'hi'
-              ? '📊 उच्च-सटीकता क्षेत्रीय अनुमान दिखा रहे हैं। लाइव API उपलब्ध होने पर वास्तविक डेटा दिखेगा।'
-              : '📊 Showing High-Accuracy Regional Estimates. Live data will appear when API is available.'}
-          </p>
-        </motion.div>
-      )}
 
       {/* Stats Row */}
       <motion.div variants={item} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
