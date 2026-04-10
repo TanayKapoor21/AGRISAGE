@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Layer ─────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-earth-200 dark:border-earth-800;
+  }
+
+  body {
+    @apply bg-earth-50 text-earth-900 dark:bg-earth-950 dark:text-earth-100 transition-colors duration-300;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', system-ui, sans-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-earth-300 dark:bg-earth-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-earth-400 dark:bg-earth-600;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-sage-500/30 text-sage-900 dark:text-sage-100;
+  }
+}
+
+/* ─── Component Layer ────────────────────────────────────────── */
+@layer components {
+  /* Glass morphism */
+  .glass {
+    @apply bg-white/60 dark:bg-earth-900/60 backdrop-blur-xl border border-white/20 dark:border-earth-700/30 shadow-lg;
+  }
+
+  .glass-strong {
+    @apply bg-white/80 dark:bg-earth-900/80 backdrop-blur-2xl border border-white/30 dark:border-earth-700/40 shadow-xl;
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-sage-500/5 hover:-translate-y-0.5;
+  }
+
+  /* Gradients */
+  .gradient-primary {
+    @apply bg-gradient-to-br from-sage-500 via-sage-600 to-sage-700;
+  }
+
+  .gradient-accent {
+    @apply bg-gradient-to-br from-harvest-400 via-harvest-500 to-harvest-600;
+  }
+
+  .gradient-dark {
+    @apply bg-gradient-to-br from-earth-900 via-earth-950 to-black;
+  }
+
+  .gradient-hero {
+    background: linear-gradient(135deg, #032d19 0%, #0c0a09 40%, #115032 100%);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-sage-400 to-harvest-400;
+  }
+
+  .text-gradient-hero {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-sage-300 via-sage-400 to-harvest-400;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-semibold text-white gradient-primary 
+           shadow-lg shadow-sage-500/25 hover:shadow-sage-500/40 
+           transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0
+           focus:outline-none focus:ring-2 focus:ring-sage-500/50 focus:ring-offset-2
+           dark:focus:ring-offset-earth-900;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl font-semibold glass 
+           hover:bg-white/80 dark:hover:bg-earth-800/80 
+           transition-all duration-300
+           focus:outline-none focus:ring-2 focus:ring-sage-500/50;
+  }
+
+  .btn-icon {
+    @apply p-3 rounded-xl glass transition-all duration-300 
+           hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0
+           focus:outline-none focus:ring-2 focus:ring-sage-500/50;
+  }
+
+  /* Inputs */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl 
+           bg-white/50 dark:bg-earth-800/50 
+           border border-earth-200 dark:border-earth-700 
+           focus:border-sage-500 dark:focus:border-sage-400 
+           focus:ring-2 focus:ring-sage-500/20 outline-none 
+           transition-all duration-300 placeholder:text-earth-400 dark:placeholder:text-earth-500;
+  }
+
+  /* Status badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply badge bg-sage-100 dark:bg-sage-900/50 text-sage-700 dark:text-sage-300;
+  }
+
+  .badge-warning {
+    @apply badge bg-harvest-100 dark:bg-harvest-900/50 text-harvest-700 dark:text-harvest-300;
+  }
+
+  .badge-danger {
+    @apply badge bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300;
+  }
+
+  .badge-info {
+    @apply badge bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300;
+  }
+
+  /* Cards */
+  .stat-card {
+    @apply glass-card group cursor-default;
+  }
+
+  .stat-card-value {
+    @apply text-3xl font-bold font-display text-gradient;
+  }
+
+  .stat-card-label {
+    @apply text-sm text-earth-500 dark:text-earth-400 mt-1;
+  }
+
+  /* Page container */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+  }
+
+  .page-title {
+    @apply text-3xl md:text-4xl font-bold font-display text-gradient mb-2;
+  }
+
+  .page-subtitle {
+    @apply text-earth-500 dark:text-earth-400 text-lg;
+  }
+
+  /* Shimmer loading */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(29, 191, 106, 0.05) 25%,
+      rgba(29, 191, 106, 0.15) 50%,
+      rgba(29, 191, 106, 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+}
+
+/* ─── Utility Layer ──────────────────────────────────────────── */
+@layer utilities {
+  .animate-in {
+    animation: animateIn 0.6s ease-out forwards;
+  }
+
+  @keyframes animateIn {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mesh gradient background for hero sections */
+  .mesh-gradient {
+    background-color: #032d19;
+    background-image:
+      radial-gradient(at 21% 33%, #115032 0px, transparent 50%),
+      radial-gradient(at 79% 32%, #1c1917 0px, transparent 50%),
+      radial-gradient(at 26% 83%, #0c0a09 0px, transparent 50%),
+      radial-gradient(at 75% 80%, #032d19 0px, transparent 50%);
+  }
+
+  /* Dot pattern overlay */
+  .dot-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(29,191,106,0.08)'/%3E%3C/svg%3E");
+  }
+
+  /* High contrast mode */
+  .high-contrast {
+    --contrast-boost: 1.3;
+    filter: contrast(var(--contrast-boost));
+  }
+
+  /* Noise texture */
+  .noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E");
+  }
+}
