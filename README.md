@@ -45,18 +45,30 @@ graph TD
 
 ---
 
-## ✨ Features
+## 🌟 Core Features
 
-| Feature | Description |
-|---------|-------------|
-| 📸 **Smart Crop Scanner** | AI-powered crop identification and health diagnosis using Gemini Vision |
-| 🎤 **Voice AI Advisor** | Multilingual chatbot (English/Hindi) with hands-free voice input |
-| 📊 **Market Intelligence** | Real-time Mandi prices, trend analysis, and weather forecasting |
-| 🌱 **Crop Advisory Engine** | Soil-specific and location-based planting recommendations |
-| ♻️ **Sustainable Portal** | Carbon credit tracking, waste exchange, and **Waste Collection Map** |
-| 🗺️ **Waste Collection Map**| Interactive map with locator for nearest waste processing facilities |
-| 📚 **Agricultural Library** | Step-by-step planting guides for major Indian crops |
-| 🧠 **GenAffNet Hub** | Deep learning analytics for predictive farming and yield prediction |
+### 🗺️ Geographical Yield Pulse
+An interactive SVG-based regional dashboard providing a "Regional Pulse" of India's agricultural performance. Features integrated satellite telemetry and mandi reports for North, West, Central, East, and South India.
+
+### 📍 Waste Management Network
+Real-time Google Maps integration to locate verified stubble recycling, composting, and biomass energy facilities. Helps farmers monetize agricultural waste and reduce environmental impact.
+
+### 🔍 Computer Vision Crop Scanner
+Identify pests and diseases instantly using your device's camera. Leveraging 3D-CNN streams for spatial-spectral fusion.
+
+### 📊 Market Intelligence Pulse
+Live Mandi prices for major commodities (Wheat, Paddy, Cotton, etc.) scraped and structured in real-time from trusted national sources.
+
+### 🌤️ Precision Climate Alerts
+5-day hyper-local forecasts with specific guidance on irrigation and harvesting windows based on humidity and wind trends.
+
+### 🤖 Voice AI Advisor
+A multilingual, voice-enabled assistant that provides science-backed agricultural advice in regional dialects.
+
+### ♻️ Sustainable Portal
+- **Waste Exchange**: Connect with biomass energy plants to monetize farm stubble.
+- **Carbon Credits**: A conceptual ledger for earning credits through sustainable practices.
+
 
 ## 🛠️ Tech Stack
 
@@ -138,6 +150,37 @@ When API quotas are reached, AgriSage doesn't break:
 - Displays an **API Status Banner** to inform the user
 - Map shows a **decorative fallback** with static markers and instructions
 - All data is cached in localStorage with **1-hour TTL**
+
+---
+
+## 🗺️ Roadmap: Beyond the MVP
+*   **Phase 2**: IoT Soil Sensor integration for automated real-time alerts.
+*   **Phase 3**: Blockchain-linked Carbon Credit verification system.
+*   **Phase 4**: Expansion to 12+ regional languages with localized dialect support.
+
+---
+
+## 🔬 Research & Publications
+
+### 🧪 Sugarbeet GenAI Research
+AgriSage serves as the primary implementation platform for our ongoing research on **Precision Sugarbeet Cultivation**. Using an advanced iteration of the **GenAffNet (Agricultural Affinity Network)** deep learning model, we are investigating spatial-spectral fusion techniques to optimize nitrogen application and predict sucrose content with 97%+ accuracy.
+
+---
+
+## 👥 The AgriSage Team
+
+| Name | Primary Focus |
+| :--- | :--- |
+| **Tanay Kapoor** | Core AI Architecture & Integration |
+| **Akash Yadav** | System Logic & Data Pipeline |
+| **Kanika Yadav** | UX Strategy & Frontend Design |
+| **Srasthti Chauhan** | Agricultural Intelligence & Data Analysis |
+
+### 📚 Guidance & Mentorship
+Special thanks to **Dr. Anuradha Dhull** and **Dr. Asha Sohal** for their scientific guidance and agricultural insights.
+
+---
+
 
 ## 📄 License
 

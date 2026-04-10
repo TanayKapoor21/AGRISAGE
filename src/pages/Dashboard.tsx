@@ -9,6 +9,7 @@ import {
 import { useApp } from '../context/AppContext'
 import { getWeather } from '../services/weather'
 import { getRecentActivity, getUserProfile } from '../services/db'
+import RegionalPulseMap from '../components/RegionalPulseMap'
 import type { WeatherData } from '../types'
 import type { ActivityEntry } from '../services/db'
 
@@ -124,6 +125,11 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
+      </motion.div>
+
+      {/* ─── Regional Pulse Map ──────────────────────────── */}
+      <motion.div variants={item}>
+        <RegionalPulseMap />
       </motion.div>
 
       {/* ─── Quick Actions Grid ───────────────────────────── */}
