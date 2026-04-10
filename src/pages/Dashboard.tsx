@@ -26,14 +26,22 @@ const item = {
 
 const quickActions = [
   { to: '/scanner', icon: ScanLine, label: 'SCAN CROP', color: 'border-neo-green', iconColor: 'text-green-400' },
-  { to: '/advisor', icon: Mic, label: 'AI ADVISOR', color: 'border-white/10', iconColor: 'text-white' },
+  { to: '/advisor', icon: Mic, label: 'AI ADVISOR', color: 'border-neo-indigo', iconColor: 'text-indigo-400' },
   { to: '/market', icon: BarChart3, label: 'MARKET INTEL', color: 'border-neo-amber', iconColor: 'text-amber-400' },
   { to: '/advisory', icon: Sprout, label: 'CROP ADVISORY', color: 'border-neo-green', iconColor: 'text-green-400' },
   { to: '/sustainable', icon: Recycle, label: 'SUSTAINABILITY', color: 'border-neo-cyan', iconColor: 'text-cyan-400' },
   { to: '/library', icon: BookOpen, label: 'AGRILIBRARY', color: 'border-neo-green', iconColor: 'text-green-400' },
-  { to: '/library', icon: BookOpen, label: 'AGRILIBRARY', color: 'border-neo-green', iconColor: 'text-green-400' },
-  { to: '/genaffnet', icon: Brain, label: 'GENAFFNET', color: 'border-neo-green', iconColor: 'text-white' },
+  { to: '/genaffnet', icon: Brain, label: 'GENAFFNET', color: 'border-neo-violet', iconColor: 'text-violet-400' },
 ]
+
+const activityIcons: Record<string, typeof ScanLine> = {
+  scan: ScanLine,
+  chat: Mic,
+  market: BarChart3,
+  advisory: Sprout,
+  carbon: Recycle,
+  library: BookOpen,
+}
 
 export default function Dashboard() {
   const { state } = useApp()
@@ -108,7 +116,7 @@ export default function Dashboard() {
           <div className="h-px flex-1 bg-white/10" />
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {quickActions.map((action, i) => (
             <Link key={i} to={action.to}>
               <motion.div className={`pill-btn ${action.color}`}>
@@ -120,14 +128,39 @@ export default function Dashboard() {
         </div>
       </motion.div>
 
-      {/* ─── Secondary Data Row ───────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <motion.div variants={item} className="lg:col-span-2">
-          <MarketForecastChart />
+      {/* ─── Market Insights ─────────────────────────── */}
+      <motion.div variants={item}>
+        <MarketForecastChart />
+      </motion.div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Activity Section */}
+        <motion.div variants={item} className="agri-card !bg-black/20">
+          <div className="flex items-center gap-2 mb-8 text-white uppercase font-bold text-sm tracking-widest">
+            <Activity className="w-4 h-4 text-purple-400" />
+            Recent Pulse
+          </div>
+          <div className="space-y-4">
+            {activity.map((act) => {
+              const Icon = activityIcons[act.type] || Activity
+              return (
+                <div key={act.id} className="flex items-center gap-5 p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors border border-transparent hover:border-white/5">
+                  <div className="w-12 h-12 rounded-2xl bg-earth-900 flex items-center justify-center border border-white/10">
+                    <Icon className="w-5 h-5 text-[var(--neo-green)]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-white">{act.title}</p>
+                    <p className="text-[10px] text-earth-500 uppercase font-black tracking-normal mt-1">{act.description}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </motion.div>
-        
-        <motion.div variants={item} className="glass-card !border-white/5 !bg-black/20">
-          <div className="flex items-center gap-2 mb-6 text-white uppercase font-bold text-sm tracking-widest">
+
+        {/* Weather Section */}
+        <motion.div variants={item} className="agri-card !bg-black/20">
+          <div className="flex items-center gap-2 mb-8 text-white uppercase font-bold text-sm tracking-widest">
             <Cloud className="w-4 h-4 text-sky-400" />
             Local Weather
           </div>
@@ -138,17 +171,33 @@ export default function Dashboard() {
                   <p className="text-6xl font-bold text-white">{weather.tempC}°</p>
                   <p className="text-xs text-[var(--neo-green)] font-black uppercase mt-2 tracking-widest">{weather.condition}</p>
                 </div>
-                <div className="text-7xl">☀️</div>
+                <div className="text-7xl drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">☀️</div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-1 p-4 rounded-2xl bg-white/5 border border-white/5">
+                <div className="flex-1 p-5 rounded-2xl bg-white/5 border border-white/5">
                   <p className="text-[10px] text-earth-500 uppercase font-black mb-1">Humidity</p>
-                  <p className="text-xl font-bold text-white">{weather.humidity}%</p>
+                  <p className="text-2xl font-bold text-white">{weather.humidity}%</p>
                 </div>
-                <div className="flex-1 p-4 rounded-2xl bg-white/5 border border-white/5">
+                <div className="flex-1 p-5 rounded-2xl bg-white/5 border border-white/5">
                   <p className="text-[10px] text-earth-500 uppercase font-black mb-1">Wind</p>
-                  <p className="text-xl font-bold text-white">{weather.windKph}km</p>
+                  <p className="text-2xl font-bold text-white">{weather.windKph}km</p>
                 </div>
+              </div>
+
+              {/* Weekly Mini-Forecast */}
+              <div className="flex items-center justify-between gap-2 pt-6 border-t border-white/5">
+                {weather.forecast.slice(1, 6).map((day) => (
+                  <div key={day.date} className="flex-1 text-center p-2 rounded-xl bg-white/5 border border-transparent hover:border-[var(--neo-green)]/20 transition-all">
+                    <p className="text-[9px] text-earth-500 font-black uppercase mb-2">
+                      {new Date(day.date).toLocaleDateString('en', { weekday: 'short' })}
+                    </p>
+                    <div className="text-lg mb-1">
+                      {day.condition.toLowerCase().includes('sun') ? '☀️' : 
+                       day.condition.toLowerCase().includes('cloud') ? '⛅' : '🌦️'}
+                    </div>
+                    <p className="text-xs font-bold text-white">{day.maxTempC}°</p>
+                  </div>
+                ))}
               </div>
             </div>
           ) : <div className="h-40 shimmer rounded-3xl" />}
