@@ -65,6 +65,39 @@ app.get('/api/auth/me', (req, res) => {
   }
 });
 
+// ─── Activity Routes ────────────────────────────────────────────
+
+// Log Activity
+app.post('/api/activity', (req, res) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ error: 'No token' });
+
+  const { type, title, description } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const stmt = db.prepare('INSERT INTO activities (user_id, type, title, description) VALUES (?, ?, ?, ?)');
+    stmt.run(decoded.id, type, title, description);
+    res.status(201).json({ success: true });
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
+// Get Activities
+app.get('/api/activity', (req, res) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ error: 'No token' });
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const activities = db.prepare('SELECT * FROM activities WHERE user_id = ? ORDER BY timestamp DESC LIMIT 20').all(decoded.id);
+    res.json(activities);
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`AgriSage Backend running on port ${PORT}`);
 });

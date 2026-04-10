@@ -14,12 +14,12 @@ db.exec(`
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 
-  CREATE TABLE IF NOT EXISTS scan_history (
+  CREATE TABLE IF NOT EXISTS activities (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
-    crop_name TEXT,
-    health_status TEXT,
-    details TEXT,
+    type TEXT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
   );

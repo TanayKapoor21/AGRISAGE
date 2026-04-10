@@ -50,7 +50,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     getWeather(profile.location).then(setWeather)
-    setActivity(getRecentActivity().slice(0, 5))
+    getRecentActivity().then(data => setActivity(data.slice(0, 5)))
   }, [])
 
   const greeting = (() => {
