@@ -183,7 +183,7 @@ export async function getAdvisorResponse(message: string, language: string = 'en
 
 // ─── Market Intelligence ────────────────────────────────────────
 
-export async function getMandiPrices(state: string = 'Maharashtra'): Promise<MandiPrice[]> {
+export async function getMandiPrices(state: string = 'Haryana'): Promise<MandiPrice[]> {
   const cacheKey = `mandi_prices_${state}`
   const cached = CacheService.get<MandiPrice[]>(cacheKey)
   if (cached) return cached
@@ -200,33 +200,63 @@ export async function getMandiPrices(state: string = 'Maharashtra'): Promise<Man
 }
 
 function getMockMandiPrices(state: string): MandiPrice[] {
-  const crops = [
-    { crop: 'Rice (Basmati)', variety: '1121 Steam', minPrice: 3200, maxPrice: 3800, modalPrice: 3500, trend: 'up' as const, trendPercent: 2.5 },
-    { crop: 'Wheat', variety: 'Lokwan', minPrice: 2400, maxPrice: 2800, modalPrice: 2600, trend: 'stable' as const, trendPercent: 0.3 },
-    { crop: 'Cotton', variety: 'Medium Staple', minPrice: 6200, maxPrice: 7100, modalPrice: 6650, trend: 'up' as const, trendPercent: 4.1 },
-    { crop: 'Soybean', variety: 'Yellow', minPrice: 4800, maxPrice: 5400, modalPrice: 5100, trend: 'down' as const, trendPercent: -1.8 },
-    { crop: 'Sugarcane', variety: 'Co-0238', minPrice: 3100, maxPrice: 3500, modalPrice: 3300, trend: 'stable' as const, trendPercent: 0.5 },
-    { crop: 'Onion', variety: 'Nashik Red', minPrice: 1800, maxPrice: 2600, modalPrice: 2200, trend: 'up' as const, trendPercent: 8.2 },
-    { crop: 'Tomato', variety: 'Hybrid', minPrice: 1200, maxPrice: 2800, modalPrice: 2000, trend: 'down' as const, trendPercent: -5.4 },
-    { crop: 'Potato', variety: 'Jyoti', minPrice: 1000, maxPrice: 1600, modalPrice: 1300, trend: 'stable' as const, trendPercent: 1.2 },
-    { crop: 'Chilli', variety: 'Guntur Sannam', minPrice: 12000, maxPrice: 16000, modalPrice: 14000, trend: 'up' as const, trendPercent: 3.6 },
-    { crop: 'Turmeric', variety: 'Erode Finger', minPrice: 8500, maxPrice: 11000, modalPrice: 9750, trend: 'up' as const, trendPercent: 6.3 },
-    { crop: 'Maize', variety: 'Hybrid Yellow', minPrice: 1800, maxPrice: 2200, modalPrice: 2000, trend: 'down' as const, trendPercent: -2.1 },
-    { crop: 'Groundnut', variety: 'Bold', minPrice: 5200, maxPrice: 6000, modalPrice: 5600, trend: 'stable' as const, trendPercent: 0.8 },
+  const regionalData: Record<string, { crop: string, variety: string, markets: string[] }[]> = {
+    'Haryana': [
+      { crop: 'Basmati Rice', variety: 'CSR-30', markets: ['Karnal', 'Panipat', 'Kaithal'] },
+      { crop: 'Wheat', variety: 'C-306', markets: ['Sirsa', 'Hisar', 'Rohtak'] },
+      { crop: 'Mustard', variety: 'RH-749', markets: ['Bhiwani', 'Rewari', 'Mahendragarh'] },
+      { crop: 'Cotton', variety: 'BT Cotton', markets: ['Sirsa', 'Fatehabad'] },
+      { crop: 'Sugarcane', variety: 'Co-0238', markets: ['Yamunanagar', 'Ambala'] },
+    ],
+    'Punjab': [
+      { crop: 'Paddy', variety: 'PR-126', markets: ['Ludhiana', 'Amritsar', 'Moga'] },
+      { crop: 'Wheat', variety: 'HD-2967', markets: ['Bathinda', 'Patiala', 'Sangrur'] },
+      { crop: 'Maize', variety: 'Hybrid-92', markets: ['Jalandhar', 'Hoshiarpur'] },
+      { crop: 'Kinnow', variety: 'Fresh', markets: ['Abohar', 'Fazilka'] },
+    ],
+    'Maharashtra': [
+      { crop: 'Onion', variety: 'Nashik Red', markets: ['Lasalgaon', 'Pimpalgaon', 'Lonere'] },
+      { crop: 'Turmeric', variety: 'Salem', markets: ['Sangli', 'Washim'] },
+      { crop: 'Grapes', variety: 'Thompson Seedless', markets: ['Nashik', 'Tasgaon'] },
+      { crop: 'Soybean', variety: 'JS-335', markets: ['Latur', 'Amravati', 'Nagpur'] },
+      { crop: 'Cotton', variety: 'Medium Staple', markets: ['Jalgaon', 'Akola'] },
+    ],
+    'Uttar Pradesh': [
+      { crop: 'Sugarcane', variety: 'Co-0238', markets: ['Muzaffarnagar', 'Meerut', 'Sahranpur'] },
+      { crop: 'Potato', variety: 'Kufri Bahar', markets: ['Agra', 'Farrukhabad'] },
+      { crop: 'Mango', variety: 'Dasheri', markets: ['Lucknow', 'Malihabad'] },
+      { crop: 'Rice', variety: 'Samba Masuri', markets: ['Varanasi', 'Gorakhpur'] },
+    ]
+  }
+
+  const defaultCrops = [
+    { crop: 'Rice', variety: 'Common', markets: ['Local Mandi'] },
+    { crop: 'Wheat', variety: 'General', markets: ['Local Mandi'] },
+    { crop: 'Tomato', variety: 'Hybrid', markets: ['Local Mandi'] },
+    { crop: 'Onion', variety: 'General', markets: ['Local Mandi'] },
   ]
 
-  const markets = ['Vashi', 'Solapur', 'Pune Market Yard', 'Nagpur', 'Kolhapur']
+  const data = regionalData[state] || defaultCrops
   const today = new Date().toISOString().split('T')[0]
 
-  return crops.map((c, i) => ({
-    id: `mandi_${i}`,
-    ...c,
-    market: markets[i % markets.length],
-    state,
-    unit: '₹/quintal',
-    date: today,
-    isEstimate: true,
-  }))
+  return data.map((item, i) => {
+    const minPrice = 1500 + Math.floor(Math.random() * 5000)
+    return {
+      id: `mandi_${state}_${i}`,
+      crop: item.crop,
+      variety: item.variety,
+      market: item.markets[Math.floor(Math.random() * item.markets.length)],
+      state,
+      minPrice,
+      maxPrice: minPrice + 500,
+      modalPrice: minPrice + 250,
+      unit: '₹/quintal',
+      date: today,
+      trend: Math.random() > 0.5 ? 'up' : 'down' as any,
+      trendPercent: +(Math.random() * 8).toFixed(1),
+      isEstimate: true
+    }
+  })
 }
 
 // ─── Crop Advisory ──────────────────────────────────────────────

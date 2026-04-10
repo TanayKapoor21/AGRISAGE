@@ -32,7 +32,7 @@ export interface UserProfile {
 
 const defaultProfile: UserProfile = {
   name: 'Farmer',
-  location: 'Maharashtra',
+  location: 'Haryana',
   farmSize: '5 acres',
   preferredLanguage: 'en',
   joinDate: new Date().toISOString(),

@@ -25,7 +25,7 @@ export default function MarketIntelligence() {
   const { state } = useApp()
   const [prices, setPrices] = useState<MandiPrice[]>([])
   const [weather, setWeather] = useState<WeatherData | null>(null)
-  const [selectedState, setSelectedState] = useState('Maharashtra')
+  const [selectedState, setSelectedState] = useState('Haryana')
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [isEstimate, setIsEstimate] = useState(false)
