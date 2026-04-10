@@ -59,8 +59,14 @@ export function incrementStat(stat: 'totalScans' | 'totalChats'): void {
 
 // ─── Carbon Credits ─────────────────────────────────────────────
 
+const carbonCredits: CarbonCredit[] = [
+  { id: 'cc_1', date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), activity: 'Tree Plantation (Agroforestry)', creditsEarned: 12.5, verified: true },
+  { id: 'cc_2', date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), activity: 'Organic Mulching', creditsEarned: 4.2, verified: true },
+  { id: 'cc_3', date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), activity: 'Reduced Tillage', creditsEarned: 8.0, verified: false },
+]
+
 export function getCarbonCredits(): CarbonCredit[] {
-  return load('carbon_credits', [])
+  return load('carbon_credits', carbonCredits)
 }
 
 export function addCarbonCredit(credit: CarbonCredit): void {
