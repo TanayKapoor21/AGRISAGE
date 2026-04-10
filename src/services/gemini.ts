@@ -145,9 +145,100 @@ function getMockScanResult(): ScanResult {
 
 // ─── Voice Advisor / Chat ───────────────────────────────────────
 
-export async function getAdvisorResponse(message: string, language: string = 'en'): Promise<string> {
-  const client = getClient()
+// ─── Offline Knowledge Base ──────────────────────────────────────
+const knowledgeBase: Record<string, { en: string, hi: string }> = {
+  'pest_control': {
+    en: 'For general pest control, integrated pest management (IPM) is best. Use neem oil spray (5ml per liter) for soft-bodied insects like aphids. Preserve natural predators like ladybugs.',
+    hi: 'सामान्य कीट नियंत्रण के लिए, एकीकृत कीट प्रबंधन (IPM) सबसे अच्छा है। एफिड्स जैसे नरम शरीर वाले कीटों के लिए नीम के तेल का स्प्रे (5ml प्रति लीटर) उपयोग करें। लेडीबग्स जैसे प्राकृतिक शिकारियों को बचाएं।'
+  },
+  'organic_farming': {
+    en: 'Organic farming relies on green manure, compost, and biological pest control. Avoid synthetic fertilizers. Use Jeevamrut to improve soil microbial activity.',
+    hi: 'जैविक खेती हरी खाद, कंपोस्ट और जैविक कीट नियंत्रण पर निर्भर करती है। सिंथेटिक उर्वरकों से बचें। मिट्टी की सूक्ष्मजीवी गतिविधि सुधारने के लिए जीवामृत का उपयोग करें।'
+  },
+  'rice_tips': {
+    en: 'Paddy requires standing water. Use SRI (System of Rice Intensification) to save water. Watch for Brown Plant Hopper and Stem Borer.',
+    hi: 'धान को खड़े पानी की आवश्यकता होती है। पानी बचाने के लिए SRI (System of Rice Intensification) विधि अपनाएं। ब्राउन प्लांट हॉपर और तना छेदक पर नज़र रखें।'
+  },
+  'wheat_rust': {
+    en: 'Wheat rust can be managed by resistant varieties. If symptoms appear, apply fungicides like Propiconazole early. Avoid over-irrigation during high humidity.',
+    hi: 'गेहूं के रस्ट को प्रतिरोधी किस्मों द्वारा प्रबंधित किया जा सकता है। यदि लक्षण दिखाई दें, तो प्रोपिकोनाज़ोल जैसे कवकनाशी का जल्दी उपयोग करें।'
+  },
+  'irrigation': {
+    en: 'Drip irrigation is the most efficient method, saving up to 60% water. Best for row crops and orchards to deliver water directly to roots.',
+    hi: 'ड्रिप सिंचाई सबसे कुशल विधि है, जिससे 60% तक पानी की बचत होती है। पानी सीधे जड़ों तक पहुँचाने के लिए यह कतार वाली फसलों और बागों के लिए सबसे अच्छी है।'
+  },
+  'soil_testing': {
+    en: 'Test your soil every 2 years. Collect samples in a zig-zag pattern from 6 inches deep. This helps in precise fertilizer application and cost saving.',
+    hi: 'हर 2 साल में अपनी मिट्टी का परीक्षण कराएं। 6 इंच गहराई से ज़िग-ज़ैग पैटर्न में नमूने एकत्र करें। यह सटीक उर्वरक उपयोग और लागत बचाने में मदद करता है।'
+  },
+  'fertilizer_urea': {
+    en: 'Overusing Urea can damage soil health and make crops more prone to pests. Use balanced NPK (Nitrogen, Phosphorus, Potassium) as per soil test reports.',
+    hi: 'यूरिया का अधिक उपयोग मिट्टी के स्वास्थ्य को नुकसान पहुँचा सकता है और फसलों को कीटों के प्रति अधिक संवेदनशील बना सकता है। मिट्टी परीक्षण रिपोर्ट के अनुसार संतुलित NPK का उपयोग करें।'
+  },
+  'mustard_aphids': {
+    en: 'Mustard aphids are active during cloudy weather. Use yellow sticky traps or spray Dimethoate 30 EC if population exceeds 10 per plant.',
+    hi: 'सरसों के एफिड्स बादल वाले मौसम में सक्रिय होते हैं। पीले स्टिकी ट्रैप का उपयोग करें या यदि संख्या प्रति पौधा 10 से अधिक हो तो डाइमेथोएट 30 EC का छिड़काव करें।'
+  },
+  'cotton_bollworm': {
+    en: 'Pink bollworm is a major cotton threat. Use pheromone traps to monitor and rotate crops with non-hosts like maize to break the cycle.',
+    hi: 'गुलाबी सुंडी कपास के लिए एक बड़ा खतरा है। निगरानी के लिए फेरोमोन ट्रैप का उपयोग करें और चक्र को तोड़ने के लिए मक्का जैसी फसलों के साथ फसल चक्र अपनाएं।'
+  },
+  'tomato_blight': {
+    en: 'Early and late blight in tomatoes can be prevented by proper spacing and avoiding overhead watering. Use Mancozeb if disease persists.',
+    hi: 'टमाटर में अर्ली और लेट ब्लाइट को उचित दूरी और ऊपर से पानी देने से बचकर रोका जा सकता है। यदि बीमारी बनी रहती है तो मैनकोज़ेब का उपयोग करें।'
+  },
+  'mushroom_farming': {
+    en: 'Mushroom farming needs controlled temperature and humidity. Oyster mushrooms are easiest for beginners and can be grown on wheat straw.',
+    hi: 'मशरूम की खेती के लिए नियंत्रित तापमान और आर्द्रता की आवश्यकता होती है। शुरुआती लोगों के लिए ऑयस्टर मशरूम सबसे आसान है और इसे गेहूं के भूसे पर उगाया जा सकता है।'
+  },
+  'compost_making': {
+    en: 'Layer green waste (nitrogen) and brown waste (carbon). Turn the pile weekly for aeration. Vermicompost using earthworms is much faster.',
+    hi: 'गीला कचरा (नाइट्रोजन) और सूखा कचरा (कार्बन) की परतें बनाएं। हवा के संचार के लिए ढेर को साप्ताहिक रूप से पलटें। केंचुओं का उपयोग कर वर्मीकंपोस्ट बनाना बहुत तेज़ है।'
+  },
+  'neem_astra': {
+    en: 'Neem-astra is a powerful organic pesticide. Mix 10kg neem leaves, 20L cow urine, and 2kg cow dung. Ferment for 48 hours and spray.',
+    hi: 'नीम-अस्त्र एक शक्तिशाली जैविक कीटनाशक है। 10 किलो नीम की पत्तियां, 20 लीटर गोमूत्र और 2 किलो गाय का गोबर मिलाएं। 48 घंटे तक किण्वित करें और छिड़काव करें।'
+  },
+  'crop_rotation': {
+    en: 'Never plant the same crop type twice. Rotate legumes like Moong or Gram with cereals to naturally restore soil nitrogen.',
+    hi: 'एक ही प्रकार की फसल दोबारा न लगाएं। मिट्टी के नाइट्रोजन को प्राकृतिक रूप से बहाल करने के लिए मूंग या चने जैसी दलहनी फसलों को अनाज के साथ बदलें।'
+  },
+  'weather_impact': {
+    en: 'Always watch the 5-day forecast. High wind speed means avoid spraying, and high humidity increases fungal disease risk.',
+    hi: '항상 5일 예보를 확인하세요. 풍속이 높으면 छिड़काव से बचें, और उच्च आर्द्रता कवक रोगों के जोखिम को बढ़ाती है।'
+  }
+}
 
+const keywords: Record<string, string[]> = {
+  'pest_control': ['pest', 'insect', 'spray', 'kill', 'keeda', 'pesticide'],
+  'organic_farming': ['organic', 'jaivik', 'natural', 'jeevamrut'],
+  'rice_tips': ['rice', 'paddy', 'dhan', 'chawal'],
+  'wheat_rust': ['wheat', 'gehu', 'rust', 'yellow'],
+  'irrigation': ['water', 'irrigation', 'drip', 'sprinkler', 'pani'],
+  'soil_testing': ['soil', 'test', 'मिट्टी', 'sample'],
+  'fertilizer_urea': ['urea', 'fertilizer', 'khad', 'npk'],
+  'mustard_aphids': ['mustard', 'sarso', 'aphid', 'teli'],
+  'cotton_bollworm': ['cotton', 'kapas', 'bollworm', 'sundi'],
+  'tomato_blight': ['tomato', 'tamatar', 'blight', 'spot'],
+  'mushroom_farming': ['mushroom', 'mashroom'],
+  'compost_making': ['compost', 'khad', 'manure'],
+  'neem_astra': ['neem', 'astra', 'biopesticide'],
+  'crop_rotation': ['rotation', 'rotate', 'cycle'],
+}
+
+export async function getAdvisorResponse(message: string, language: string = 'en'): Promise<string> {
+  const query = message.toLowerCase()
+  
+  // 1. Check Offline Knowledge Base
+  for (const [key, searchTerms] of Object.entries(keywords)) {
+    if (searchTerms.some(term => query.includes(term))) {
+      console.log(`[Advisor] Internal Match Found: ${key}`)
+      return knowledgeBase[key][language as 'en' | 'hi'] || knowledgeBase[key]['en']
+    }
+  }
+
+  // 2. Fallback to Gemini API
+  const client = getClient()
   if (client && apiAvailable) {
     try {
       const model = client.getGenerativeModel({ model: MODEL_NAME })
@@ -156,11 +247,7 @@ export async function getAdvisorResponse(message: string, language: string = 'en
         : 'Respond in English. You are a friendly, knowledgeable agricultural advisor for Indian farmers.'
 
       const result = await model.generateContent(
-        `${langInstruction}
-        
-        The farmer asks: "${message}"
-        
-        Provide a helpful, practical response covering relevant aspects like timing, techniques, costs, or traditional wisdom. Keep it conversational and under 200 words.`
+        `${langInstruction}\n\nThe farmer asks: "${message}"\n\nProvide a helpful, practical response covering relevant aspects like timing, techniques, costs, or traditional wisdom. Keep it conversational and under 200 words.`
       )
       return result.response.text()
     } catch (error) {
@@ -168,15 +255,15 @@ export async function getAdvisorResponse(message: string, language: string = 'en
     }
   }
 
-  // Fallback responses
+  // 3. Last Resort Fallback
   const fallbacks = language === 'hi'
     ? [
-        'आपका प्रश्न बहुत अच्छा है! वर्तमान में AI सेवा व्यस्त है। कृपया कुछ मिनट बाद पुनः प्रयास करें। इस बीच, आप हमारी कृषि पुस्तकालय में उपयोगी जानकारी पा सकते हैं।',
-        'नमस्ते किसान भाई! AI सेवा अभी उपलब्ध नहीं है, लेकिन मैं जल्द ही वापस आऊंगा। कृपया बाजार बुद्धिमत्ता अनुभाग देखें।',
+        'क्षमा करें, मैं अभी इस विशिष्ट विषय को नहीं समझ पा रहा हूँ। कृपया मिट्टी, कीट या सिंचाई के बारे में कुछ पूछें।',
+        'नमस्ते किसान भाई! अभी मेरा ऑनलाइन संपर्क धीमा है, लेकिन आप हमारे लाइब्रेरी सेक्शन को देख सकते हैं।',
       ]
     : [
-        'That\'s a great question! The AI service is currently busy. Please try again in a few minutes. Meanwhile, check our Agricultural Library for helpful guides.',
-        'Hello farmer! The AI service is temporarily unavailable, but I\'ll be back soon. Please explore the Market Intelligence section for current prices.',
+        'I am sorry, I am currently unable to provide a specific answer for this topic. Try asking about soil, pests, or irrigation.',
+        'Hello farmer! My online connection is currently slow, but you can explore our library section for more guides.',
       ]
   return fallbacks[Math.floor(Math.random() * fallbacks.length)]
 }
