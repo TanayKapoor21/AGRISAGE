@@ -63,6 +63,12 @@ export function getCarbonCredits(): CarbonCredit[] {
   return load('carbon_credits', [])
 }
 
+export function addCarbonCredit(credit: CarbonCredit): void {
+  const credits = getCarbonCredits()
+  credits.unshift(credit)
+  save('carbon_credits', credits)
+}
+
 export function getTotalCredits(): number {
   return getCarbonCredits()
     .filter((c) => c.verified)
@@ -74,15 +80,25 @@ export function getTotalCredits(): number {
 const defaultExchanges: WasteExchange[] = [
   { id: 'we_1', type: 'Paddy Straw', quantity: '50 quintals', location: 'Karnal, Haryana', contact: 'Ramesh K.', pricePerUnit: 200, available: true, postedDate: '2025-03-20' },
   { id: 'we_2', type: 'Sugarcane Bagasse', quantity: '100 quintals', location: 'Kolhapur, Maharashtra', contact: 'Suresh P.', pricePerUnit: 150, available: true, postedDate: '2025-03-18' },
+  { id: 'we_3', type: 'Coconut Shells', quantity: '20 quintals', location: 'Kannur, Kerala', contact: 'Joseph M.', pricePerUnit: 500, available: true, postedDate: '2025-03-15' },
 ]
 
 export function getWasteExchanges(): WasteExchange[] {
   return load('waste_exchanges', defaultExchanges)
 }
 
-// ... Facilites are static in the original file ...
+export function addWasteExchange(exchange: WasteExchange): void {
+  const exchanges = getWasteExchanges()
+  exchanges.unshift(exchange)
+  save('waste_exchanges', exchanges)
+}
+
+// ─── Waste Collection Facilities ─────────────────────────────────
+
 const wasteFacilities: WasteFacility[] = [
-  { id: 'wf_1', name: 'Punjab Biomass Power', address: 'Punjab', phone: 'N/A', lat: 30.2, lng: 74.5, wasteTypes: ['Paddy'], operational: true }
+  { id: 'wf_1', name: 'Punjab Biomass Power', address: 'Punjab', phone: 'N/A', lat: 30.2, lng: 74.5, wasteTypes: ['Paddy'], operational: true },
+  { id: 'wf_2', name: 'Sampurn Agri Ventures', address: 'Fazilka, Punjab', phone: 'N/A', lat: 30.4, lng: 74.03, wasteTypes: ['Stubble'], operational: true },
+  { id: 'wf_3', name: 'Eco-Wise Waste Management', address: 'Gurugram, Haryana', phone: 'N/A', lat: 28.44, lng: 77.03, wasteTypes: ['Organic'], operational: true },
 ]
 
 export function getWasteFacilities(): WasteFacility[] {

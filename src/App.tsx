@@ -37,6 +37,7 @@ export default function App() {
               <Route path="/genaffnet" element={<GenAffNetHub />} />
             </Route>
           </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AppProvider>
