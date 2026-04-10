@@ -43,11 +43,11 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-6 border-b border-earth-200/30 dark:border-earth-800/30">
         <motion.div
-          whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.8 }}
-          className="flex-shrink-0 w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg shadow-sage-500/30"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.2 }}
+          className="flex-shrink-0 w-10 h-10 rounded-xl overflow-hidden bg-white flex items-center justify-center p-1 shadow-md"
         >
-          <Leaf className="w-5 h-5 text-white" />
+          <img src="/logo.png" alt="AgriSage Logo" className="w-full h-full object-contain" />
         </motion.div>
         <AnimatePresence>
           {!collapsed && (
