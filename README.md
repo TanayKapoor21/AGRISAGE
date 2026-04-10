@@ -47,8 +47,8 @@ graph TD
 
 ## 🌟 Core Features
 
-### 🗺️ Geographical Yield Pulse
-An interactive SVG-based regional dashboard providing a "Regional Pulse" of India's agricultural performance. Features integrated satellite telemetry and mandi reports for North, West, Central, East, and South India.
+### 📊 Regional Yield Performance
+A comprehensive bar-graph analytics dashboard providing a "Regional Pulse" of India's agricultural performance. Features integrated satellite telemetry and mandi reports for North, West, Central, East, and South India.
 
 ### 📍 Waste Management Network
 Real-time Google Maps integration to locate verified stubble recycling, composting, and biomass energy facilities. Helps farmers monetize agricultural waste and reduce environmental impact.

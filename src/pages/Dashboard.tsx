@@ -9,7 +9,7 @@ import {
 import { useApp } from '../context/AppContext'
 import { getWeather } from '../services/weather'
 import { getRecentActivity, getUserProfile } from '../services/db'
-import RegionalPulseMap from '../components/RegionalPulseMap'
+import YieldBarChart from '../components/YieldBarChart'
 import type { WeatherData } from '../types'
 import type { ActivityEntry } from '../services/db'
 
@@ -125,11 +125,6 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
-      </motion.div>
-
-      {/* ─── Regional Pulse Map ──────────────────────────── */}
-      <motion.div variants={item}>
-        <RegionalPulseMap />
       </motion.div>
 
       {/* ─── Quick Actions Grid ───────────────────────────── */}
@@ -286,6 +281,11 @@ export default function Dashboard() {
             </motion.div>
           ))}
         </div>
+      </motion.div>
+
+      {/* ─── Regional Yield Performance ───────────────────── */}
+      <motion.div variants={item}>
+        <YieldBarChart />
       </motion.div>
     </motion.div>
   )
