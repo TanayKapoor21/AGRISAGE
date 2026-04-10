@@ -10,13 +10,16 @@ AgriSage is a unified, intelligent farming platform that integrates computer vis
 
 ```mermaid
 graph TD
-    User([Farmer/User]) --> Dashboard{Dashboard}
+    User([Farmer/User]) --> Auth{Auth / Guest}
+    Auth --> Dashboard{Dashboard}
     
     Dashboard --> Scanner[Crop Scanner]
     Dashboard --> Advisor[Voice AI Advisor]
     Dashboard --> Market[Market Intel]
     Dashboard --> Sustainable[Sustainable Portal]
     Dashboard --> ML[GenAffNet Hub]
+    
+    Dashboard --> SQLite[(SQLite DB)]
     
     Scanner --> GeminiV[Gemini Vision AI]
     Advisor --> WebSpeech[Web Speech API]
@@ -35,12 +38,12 @@ graph TD
     CarbonTrack --> Credits[Carbon Credits]
     
     subgraph Services
+        ExpressBackend[Express Server]
         CacheService[(Local Cache)]
-        DBService[(Local DB)]
     end
     
+    ExpressBackend --> SQLite
     Results -.-> CacheService
-    Yield -.-> CacheService
 ```
 
 ---
@@ -75,11 +78,13 @@ A multilingual, voice-enabled assistant that provides science-backed agricultura
 - **Frontend:** React 18+ / TypeScript / Vite
 - **Styling:** Tailwind CSS (Dark Mode, Responsive, Glassmorphism)
 - **Animations:** Framer Motion
+- **Backend:** Node.js / Express / JWT Authentication
+- **Database:** SQLite (Persistent storage via `better-sqlite3`)
 - **AI/ML:** Google Gemini 2.0 Flash + GenAffNet Deep Learning Model
 - **Maps:** Google Maps JS API (@react-google-maps/api)
 - **APIs:** Google Generative AI SDK, WeatherAPI.com, Web Speech API
 - **Icons:** Lucide React
-- **Storage:** LocalStorage with 1-hour TTL Caching
+- **Storage:** Persisted SQLite for Users/Activities & LocalStorage with 1-hour TTL Caching
 
 ## 🚀 Getting Started
 
@@ -96,6 +101,7 @@ cd AGRISAGE
 
 # Install dependencies
 npm install
+cd server && npm install && cd ..
 
 # Copy environment variables
 cp .env.example .env
@@ -105,11 +111,14 @@ cp .env.example .env
 # VITE_WEATHER_API_KEY=your_weather_key
 # VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
 
-# Start development server
+# Start frontend (Tab 1)
 npm run dev
+
+# Start backend (Tab 2)
+npm run server
 ```
 
-The app will open at `http://localhost:5173`
+The frontend will open at `http://localhost:5173` and the backend will run at `http://localhost:5000`
 
 ### API Keys (Optional)
 
@@ -124,15 +133,20 @@ The app works fully without API keys using intelligent mock data. For live AI/Ma
 ## 🏗️ Architecture
 
 ```
-src/
-├── components/        # Layout, Sidebar, Header, WasteCollectionMap
-├── context/           # AppContext (Theme, Language, API Status)
-├── pages/             # Dashboard, Scanner, Advisor, Market, etc.
-├── services/          # Gemini AI, Weather API, Speech, Cache, DB
-├── types/             # TypeScript interfaces
-├── App.tsx            # Router & Routes
-├── main.tsx           # Entry point
-└── index.css          # Tailwind + Design System
+agrisage/
+├── src/               # Frontend source code
+│   ├── components/    # Layout, Sidebar, Header, WasteCollectionMap
+│   ├── context/       # AppContext (Auth state, Theme, Language)
+│   ├── pages/         # Dashboard, Auth (Login/Signup), Scanner, Advisor, etc.
+│   ├── services/      # Gemini AI, Weather API, Local/Backend Sync
+│   └── types/         # TypeScript interfaces
+├── server/            # Backend Node/Express server
+│   ├── index.js       # Express routes (Auth, Activities)
+│   ├── db.js          # SQLite Schema & Connection
+│   └── agrisage.db    # Persistent SQL Database
+├── public/            # Static assets (logo, etc.)
+├── package.json       # Dependencies & Scripts
+└── vite.config.ts     # Frontend build config
 ```
 
 ## 🎨 Design System
