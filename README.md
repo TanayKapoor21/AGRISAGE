@@ -1,4 +1,4 @@
-# 🌿 AgriSage
+# 🌿 AgriSage Platform
 
 > **AI-Powered Agricultural Operating System** for the Indian Farming Ecosystem
 
