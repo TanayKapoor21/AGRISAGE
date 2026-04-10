@@ -203,7 +203,7 @@ function getMockMandiPrices(state: string): MandiPrice[] {
   const regionalData: Record<string, { crop: string, variety: string, markets: string[] }[]> = {
     'Haryana': [
       { crop: 'Basmati Rice', variety: 'CSR-30', markets: ['Karnal', 'Panipat', 'Kaithal'] },
-      { crop: 'Wheat', variety: 'C-306', markets: ['Sirsa', 'Hisar', 'Rohtak'] },
+      { crop: 'Wheat', variety: 'C-306', markets: ['Sirsa', 'Hisar', 'Rohtak', 'Hansi'] },
       { crop: 'Mustard', variety: 'RH-749', markets: ['Bhiwani', 'Rewari', 'Mahendragarh'] },
       { crop: 'Cotton', variety: 'BT Cotton', markets: ['Sirsa', 'Fatehabad'] },
       { crop: 'Sugarcane', variety: 'Co-0238', markets: ['Yamunanagar', 'Ambala'] },
@@ -219,13 +219,47 @@ function getMockMandiPrices(state: string): MandiPrice[] {
       { crop: 'Turmeric', variety: 'Salem', markets: ['Sangli', 'Washim'] },
       { crop: 'Grapes', variety: 'Thompson Seedless', markets: ['Nashik', 'Tasgaon'] },
       { crop: 'Soybean', variety: 'JS-335', markets: ['Latur', 'Amravati', 'Nagpur'] },
-      { crop: 'Cotton', variety: 'Medium Staple', markets: ['Jalgaon', 'Akola'] },
     ],
     'Uttar Pradesh': [
       { crop: 'Sugarcane', variety: 'Co-0238', markets: ['Muzaffarnagar', 'Meerut', 'Sahranpur'] },
       { crop: 'Potato', variety: 'Kufri Bahar', markets: ['Agra', 'Farrukhabad'] },
       { crop: 'Mango', variety: 'Dasheri', markets: ['Lucknow', 'Malihabad'] },
       { crop: 'Rice', variety: 'Samba Masuri', markets: ['Varanasi', 'Gorakhpur'] },
+    ],
+    'Rajasthan': [
+      { crop: 'Bajra', variety: 'Hybrid', markets: ['Jodhpur', 'Nagaur', 'Barmer'] },
+      { crop: 'Guar Seed', variety: 'Local', markets: ['Bikaner', 'Sriganganagar'] },
+      { crop: 'Cumin (Jeera)', variety: 'Unjha Selection', markets: ['Jalore', 'Nagaur'] },
+      { crop: 'Mustard', variety: 'Pusa Bold', markets: ['Alwar', 'Bharatpur'] },
+    ],
+    'Madhya Pradesh': [
+      { crop: 'Soybean', variety: 'Yellow', markets: ['Indore', 'Ujjain', 'Dewas'] },
+      { crop: 'Gram (Chana)', variety: 'Desi', markets: ['Vidisha', 'Sagar'] },
+      { crop: 'Garlic', variety: 'G-282', markets: ['Mandsaur', 'Neemuch'] },
+      { crop: 'Wheat', variety: 'Sharbati', markets: ['Sehore', 'Hoshangabad'] },
+    ],
+    'Gujarat': [
+      { crop: 'Groundnut', variety: 'G-20', markets: ['Gondal', 'Rajkot', 'Junagadh'] },
+      { crop: 'Cotton', variety: 'Shankar-6', markets: ['Kadi', 'Amreli'] },
+      { crop: 'Castor Seed', variety: 'Hybrid', markets: ['Deesa', 'Palanpur'] },
+      { crop: 'Cumin', variety: 'Abu', markets: ['Unjha', 'Tharad'] },
+    ],
+    'Karnataka': [
+      { crop: 'Ragi', variety: 'Local', markets: ['Tumakuru', 'Mysuru', 'Hassan'] },
+      { crop: 'Coffee (Robusta)', variety: 'Cherry', markets: ['Chikkamagaluru', 'Kodagu'] },
+      { crop: 'Areca Nut', variety: 'Rashi', markets: ['Shimoga', 'Sirsi'] },
+      { crop: 'Tur', variety: 'Gulyal', markets: ['Kalaburagi', 'Yadgir'] },
+    ],
+    'Tamil Nadu': [
+      { crop: 'Banana', variety: 'Poovan', markets: ['Trichy', 'Theni', 'Erode'] },
+      { crop: 'Turmeric', variety: 'Erode Local', markets: ['Erode', 'Salem'] },
+      { crop: 'Coconut', variety: 'Tall', markets: ['Pollachi', 'Thanjavur'] },
+      { crop: 'Paddy', variety: 'Ponni', markets: ['Madurai', 'Kumbakonam'] },
+    ],
+    'West Bengal': [
+      { crop: 'Jute', variety: 'TD-5', markets: ['Nadia', 'Murshidabad', 'Barrackpore'] },
+      { crop: 'Rice (Paddy)', variety: 'Swarna', markets: ['Burdwan', 'Midnapore'] },
+      { crop: 'Potato', variety: 'Jyoti', markets: ['Hooghly', 'Burdwan'] },
     ]
   }
 
