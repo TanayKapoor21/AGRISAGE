@@ -187,6 +187,7 @@ export interface AppState {
   highContrast: boolean
   userName: string
   isAuthenticated: boolean
+  currentLocation: string
 }
 
 export type AppAction =
@@ -197,3 +198,4 @@ export type AppAction =
   | { type: 'TOGGLE_HIGH_CONTRAST' }
   | { type: 'SET_USERNAME'; payload: string }
   | { type: 'LOGOUT' }
+  | { type: 'SET_LOCATION'; payload: string }

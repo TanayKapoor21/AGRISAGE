@@ -9,6 +9,7 @@ const initialState: AppState = {
   highContrast: false,
   userName: '',
   isAuthenticated: false,
+  currentLocation: 'Karnal, Haryana',
 }
 
 function loadState(): AppState {
@@ -38,6 +39,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, userName: action.payload, isAuthenticated: !!action.payload }
     case 'LOGOUT':
       return { ...initialState, theme: state.theme, language: state.language }
+    case 'SET_LOCATION':
+      return { ...state, currentLocation: action.payload }
     default:
       return state
   }

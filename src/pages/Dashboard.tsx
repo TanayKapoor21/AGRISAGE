@@ -8,10 +8,14 @@ import {
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { getUserProfile } from '../services/db'
+import { getWeather } from '../services/weather'
+import { getRecentActivity } from '../services/db'
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line
 } from 'recharts'
+import type { WeatherData } from '../types'
+import type { ActivityEntry } from '../services/db'
 
 const container = {
   hidden: {},
@@ -33,16 +37,41 @@ const quickActions = [
   { to: '/genaffnet', icon: Brain, label: 'GENAFFNET', color: 'bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400', iconColor: 'text-violet-600 dark:text-violet-400' },
 ]
 
-// Dummy Data
-const cropHealthData = [
-  { date: '01 Apr', value: 65 },
-  { date: '08 Apr', value: 75 },
-  { date: '15 Apr', value: 70 },
-  { date: '22 Apr', value: 87 },
-  { date: '29 Apr', value: 85 },
+// Dummy Data mapped to Crops
+const cropDataMap: Record<string, { currentHealth: number, trend: { date: string, value: number }[] }> = {
+  'Wheat': {
+    currentHealth: 87,
+    trend: [ { date: '01 Apr', value: 65 }, { date: '08 Apr', value: 75 }, { date: '15 Apr', value: 70 }, { date: '22 Apr', value: 87 }, { date: '29 Apr', value: 85 } ]
+  },
+  'Rice': {
+    currentHealth: 92,
+    trend: [ { date: '01 Apr', value: 80 }, { date: '08 Apr', value: 82 }, { date: '15 Apr', value: 85 }, { date: '22 Apr', value: 90 }, { date: '29 Apr', value: 92 } ]
+  },
+  'Cotton': {
+    currentHealth: 78,
+    trend: [ { date: '01 Apr', value: 85 }, { date: '08 Apr', value: 80 }, { date: '15 Apr', value: 75 }, { date: '22 Apr', value: 70 }, { date: '29 Apr', value: 78 } ]
+  },
+  'Sugarcane': {
+    currentHealth: 85,
+    trend: [ { date: '01 Apr', value: 70 }, { date: '08 Apr', value: 72 }, { date: '15 Apr', value: 78 }, { date: '22 Apr', value: 82 }, { date: '29 Apr', value: 85 } ]
+  },
+  'Maize': {
+    currentHealth: 65,
+    trend: [ { date: '01 Apr', value: 50 }, { date: '08 Apr', value: 55 }, { date: '15 Apr', value: 58 }, { date: '22 Apr', value: 60 }, { date: '29 Apr', value: 65 } ]
+  }
+}
+const cropsList = Object.keys(cropDataMap)
+
+const availableLocations = [
+  'Karnal, Haryana',
+  'Ludhiana, Punjab',
+  'Pune, Maharashtra',
+  'Ahmedabad, Gujarat',
+  'Indore, MP'
 ]
 
 const weatherForecast = [
+  { day: 'Tue', temp: '27°', icon: '☀️' },
   { day: 'Wed', temp: '28°', icon: '🌤️' },
   { day: 'Thu', temp: '31°', icon: '⛅' },
   { day: 'Fri', temp: '32°', icon: '☀️' },
@@ -76,6 +105,16 @@ const timeSeriesData = [
 export default function Dashboard() {
   const { state } = useApp()
   const profile = getUserProfile()
+  
+  const [selectedCrop, setSelectedCrop] = useState('Wheat')
+  
+  const [weather, setWeather] = useState<WeatherData | null>(null)
+  const [activity, setActivity] = useState<ActivityEntry[]>([])
+
+  useEffect(() => {
+    getWeather(state.currentLocation).then(setWeather)
+    getRecentActivity().then(data => setActivity(data.slice(0, 5)))
+  }, [state.currentLocation])
 
   const greeting = (() => {
     const hour = new Date().getHours()
@@ -92,15 +131,17 @@ export default function Dashboard() {
   // Standard graphical representation card styling
   const cardClass = "bg-white dark:bg-[#1C1C1E] rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] dark:shadow-none border border-stone-100 dark:border-white/5 relative overflow-hidden transition-colors flex flex-col"
 
+  const currentCropData = cropDataMap[selectedCrop] || cropDataMap['Wheat']
+
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 pb-20">
 
-      {/* ─── Hero Section (Kept as before per instruction) ─────────────────────────────────── */}
+      {/* ─── Hero Section ─────────────────────────────────── */}
       <motion.div variants={item} className="bg-white dark:bg-[#1C1C1E] rounded-[2rem] p-8 md:p-10 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] dark:shadow-none border border-stone-100 dark:border-white/5 relative overflow-hidden transition-colors">
         <div className="absolute -top-10 -right-10 p-12 opacity-[0.03] dark:opacity-[0.02] pointer-events-none rotate-12">
           <Sprout className="w-96 h-96" />
         </div>
-
+        
         <div className="space-y-2 mb-10 relative z-10">
           <p className="text-stone-400 dark:text-stone-500 text-xs font-bold tracking-wider uppercase">
             {new Date().toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
@@ -145,7 +186,7 @@ export default function Dashboard() {
           </div>
           <h2 className="text-lg font-bold font-display text-stone-800 dark:text-stone-100 uppercase tracking-tight">Quick Actions</h2>
         </div>
-
+        
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
           {quickActions.map((action, i) => (
             <Link key={i} to={action.to}>
@@ -162,32 +203,32 @@ export default function Dashboard() {
 
       {/* ─── Graphical Representations (Matched to Image) ────────── */}
       <motion.div variants={item} className="flex flex-col gap-5 md:gap-6 pt-4">
-
+        
         {/* ROW 1: 3 cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-
+          
           {/* Card 1: Crop Health */}
           <div className={cardClass}>
             <div className="flex justify-between items-start mb-6 z-10 relative">
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold">Crop Health</h3>
-              <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                <Leaf className="w-3 h-3" /> Healthy
-              </div>
+               <h3 className="text-stone-800 dark:text-stone-100 font-bold whitespace-nowrap">Crop Health</h3>
+               <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                 <Leaf className="w-3 h-3" /> {currentCropData.currentHealth >= 80 ? 'Healthy' : 'Needs Care'}
+               </div>
             </div>
-            <div className="z-10 relative">
-              <p className="text-5xl lg:text-6xl font-bold text-stone-800 dark:text-stone-100 tracking-tighter">87<span className="text-3xl">%</span></p>
+            <div className="z-10 relative flex justify-between items-end">
+              <p className="text-5xl lg:text-6xl font-bold text-stone-800 dark:text-stone-100 tracking-tighter transition-all">{currentCropData.currentHealth}<span className="text-3xl">%</span></p>
             </div>
             {/* Chart in background */}
             <div className="absolute inset-x-0 bottom-0 h-24">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={cropHealthData.slice(-4)}>
+                <AreaChart data={currentCropData.trend.slice(-4)}>
                   <defs>
                     <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                      <stop offset="5%" stopColor={currentCropData.currentHealth >= 80 ? "#10b981" : "#f59e0b"} stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor={currentCropData.currentHealth >= 80 ? "#10b981" : "#f59e0b"} stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={3} fill="url(#colorValue)" />
+                  <Area type="monotone" dataKey="value" stroke={currentCropData.currentHealth >= 80 ? "#10b981" : "#f59e0b"} strokeWidth={3} fill="url(#colorValue)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -197,14 +238,26 @@ export default function Dashboard() {
           <div className={`${cardClass} bg-gradient-to-b from-transparent to-emerald-50/50 dark:to-emerald-900/10`}>
             <div className="flex justify-between items-start mb-2">
               <h3 className="text-stone-800 dark:text-stone-100 font-bold">Weather</h3>
-              <div className="flex -space-x-2">
-                <Cloud className="w-8 h-8 text-sky-400 fill-sky-200 dark:fill-sky-900/50" />
-                <Sun className="w-8 h-8 text-amber-500 fill-amber-400 -mt-2 drop-shadow-md" />
-              </div>
+              {weather ? (
+                <div className="flex -space-x-2">
+                  <Cloud className="w-8 h-8 text-sky-400 fill-sky-200 dark:fill-sky-900/50" />
+                  <Sun className="w-8 h-8 text-amber-500 fill-amber-400 -mt-2 drop-shadow-md" />
+                </div>
+              ) : <div className="w-8 h-8 bg-stone-100 animate-pulse rounded-full" />}
             </div>
             <div className="mb-2">
-              <p className="text-5xl lg:text-6xl font-bold text-stone-800 dark:text-stone-100 tracking-tighter">28<span className="text-3xl">°C</span></p>
-              <p className="text-stone-500 dark:text-stone-400 text-sm font-bold mt-1">32°C - 24°C <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block ml-2"></span></p>
+              {weather ? (
+                <>
+                  <p className="text-5xl lg:text-6xl font-bold text-stone-800 dark:text-stone-100 tracking-tighter">{weather.tempC}<span className="text-3xl">°C</span></p>
+                  <p className="text-stone-500 dark:text-stone-400 text-sm font-bold mt-1 max-w-full truncate">{weather.condition} <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block ml-2"></span></p>
+                </>
+              ) : (
+                <div className="space-y-2 mt-4">
+                  <div className="h-10 w-24 bg-stone-100 animate-pulse rounded-lg" />
+                  <div className="h-4 w-32 bg-stone-100 animate-pulse rounded" />
+                </div>
+              )}
+              
             </div>
             {/* Abstract Field Graphic */}
             <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-emerald-600/20 dark:from-emerald-400/10 to-transparent">
@@ -240,42 +293,56 @@ export default function Dashboard() {
 
         {/* ROW 2: Crop Health Trend & Weather Forecast */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6">
-
+          
           <div className={`${cardClass} lg:col-span-2`}>
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold">Crop Health Trend</h3>
-              <p className="text-stone-500 dark:text-stone-400 text-xs font-bold uppercase">Last 30 Days</p>
+             <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center gap-3">
+                 <h3 className="text-stone-800 dark:text-stone-100 font-bold">Crop Health Trend</h3>
+                 <div className="bg-stone-100 dark:bg-[#2A2A2D] px-2 py-1 flex items-center rounded-lg border border-stone-200 dark:border-stone-700">
+                    <select 
+                      value={selectedCrop} 
+                      onChange={(e) => setSelectedCrop(e.target.value)} 
+                      className="bg-transparent text-emerald-600 dark:text-emerald-400 text-xs font-bold focus:outline-none cursor-pointer border-none appearance-none pr-4 relative"
+                    >
+                      {cropsList.map(c => <option key={c} value={c} className="text-stone-800">{c}</option>)}
+                    </select>
+                    <div className="pointer-events-none -ml-4 flex items-center text-emerald-600 dark:text-emerald-400">
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                 </div>
+              </div>
+              <p className="text-stone-500 dark:text-stone-400 text-xs font-bold uppercase hidden sm:block">Last 30 Days</p>
             </div>
             <div className="h-48 w-full mt-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={cropHealthData}>
-                  <defs>
-                    <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis
-                    dataKey="date"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#78716c', fontSize: 10, fontWeight: 'bold' }}
-                    dy={10}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#78716c', fontSize: 10, fontWeight: 'bold' }}
-                    dx={-10}
-                    tickFormatter={(val) => `${val}%`}
-                  />
-                  <Tooltip
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    itemStyle={{ color: '#10b981', fontWeight: 'bold' }}
-                  />
-                  <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={3} fill="url(#colorTrend)" />
-                </AreaChart>
-              </ResponsiveContainer>
+               <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={currentCropData.trend}>
+                    <defs>
+                      <linearGradient id="colorTrend" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={currentCropData.currentHealth >= 80 ? "#10b981" : "#f59e0b"} stopOpacity={0.4}/>
+                        <stop offset="95%" stopColor={currentCropData.currentHealth >= 80 ? "#10b981" : "#f59e0b"} stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <XAxis 
+                      dataKey="date" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fill: '#78716c', fontSize: 10, fontWeight: 'bold'}}
+                      dy={10}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{fill: '#78716c', fontSize: 10, fontWeight: 'bold'}}
+                      dx={-10}
+                      tickFormatter={(val) => `${val}%`}
+                    />
+                    <Tooltip 
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      itemStyle={{ color: '#10b981', fontWeight: 'bold' }}
+                    />
+                    <Area type="monotone" dataKey="value" stroke={currentCropData.currentHealth >= 80 ? "#10b981" : "#f59e0b"} strokeWidth={3} fill="url(#colorTrend)" />
+                  </AreaChart>
+                </ResponsiveContainer>
             </div>
           </div>
 
@@ -283,18 +350,20 @@ export default function Dashboard() {
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-stone-800 dark:text-stone-100 font-bold">Weather Forecast</h3>
               <div className="flex gap-2">
-                <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold text-center cursor-pointer">Today</div>
-                <div className="text-stone-500 px-2 py-1 text-xs font-bold text-center cursor-pointer hover:text-stone-800 dark:hover:text-stone-200">Sensors</div>
+                <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold text-center cursor-default">Today</div>
               </div>
             </div>
-
+            
             <div className="flex items-end justify-between flex-1 pb-2">
-              {weatherForecast.map((day, i) => (
+               {(weather?.forecast?.slice(0,7).map(d => ({
+                  day: new Date(d.date).toLocaleDateString('en', { weekday: 'short' }),
+                  temp: `${d.maxTempC}°`,
+                  icon: d.condition.toLowerCase().includes('sun') ? '☀️' : d.condition.toLowerCase().includes('cloud') ? '⛅' : '🌦️'
+               })) || weatherForecast).map((day, i) => (
                 <div key={i} className="flex flex-col items-center gap-2">
                   <span className="text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase">{day.day}</span>
                   <span className="text-xl my-2 leading-none">{day.icon}</span>
                   <span className="text-sm font-bold text-stone-800 dark:text-stone-100">{day.temp}</span>
-                  {day.trend && <span className={`text-[10px] font-bold ${day.trendColor}`}>{day.trend}</span>}
                 </div>
               ))}
             </div>
@@ -303,23 +372,23 @@ export default function Dashboard() {
 
         {/* ROW 3: AI Insights/Market + Farm Map + Sustainability */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6">
-
+          
           {/* Col 1 */}
           <div className="flex flex-col gap-5 md:gap-6">
             <div className={`${cardClass} bg-stone-50 dark:bg-[#252528] border-none shadow-none`}>
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4 flex items-center gap-2">
-                <Brain className="w-5 h-5 text-indigo-500" /> AI Insights
-              </h3>
-              <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-6">
-                Reduce irrigation for the next two days to <span className="text-emerald-600 dark:text-emerald-400 font-bold">40%</span> due to forecasted rain and high soil moisture levels.
-              </p>
-              <button className="bg-stone-800 hover:bg-stone-900 dark:bg-[#333336] dark:hover:bg-[#444448] text-white py-3 px-4 rounded-xl text-sm font-bold transition-colors w-max flex items-center gap-2">
-                View Advice <ChevronRight className="w-4 h-4" />
-              </button>
+               <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4 flex items-center gap-2">
+                  <Brain className="w-5 h-5 text-indigo-500" /> AI Insights
+               </h3>
+               <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-6">
+                 Reduce irrigation for the next two days to <span className="text-emerald-600 dark:text-emerald-400 font-bold">40%</span> due to forecasted rain and high soil moisture levels.
+               </p>
+               <button className="bg-stone-800 hover:bg-stone-900 dark:bg-[#333336] dark:hover:bg-[#444448] text-white py-3 px-4 rounded-xl text-sm font-bold transition-colors w-max flex items-center gap-2">
+                 View Advice <ChevronRight className="w-4 h-4" />
+               </button>
             </div>
 
             <div className={`${cardClass} flex-1`}>
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4">Market Trends</h3>
+              <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4">Market Trends ({state.currentLocation.split(',')[0]})</h3>
               <div className="space-y-4">
                 {marketTrends.map((trend, i) => (
                   <div key={i} className="flex items-center justify-between">
@@ -341,92 +410,92 @@ export default function Dashboard() {
 
           {/* Col 2 */}
           <div className={`${cardClass} p-0 lg:p-0`}>
-            <div className="relative h-48 w-full">
-              <img
-                src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80"
-                className="w-full h-full object-cover"
-                alt="Farm aerial view"
-              />
-              <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
-                <div className="bg-white/90 dark:bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 text-stone-800 dark:text-stone-100">
-                  <MapPin className="w-3 h-3 text-emerald-600" /> Kutail, Karnal
+             <div className="relative h-48 w-full">
+                <img 
+                  src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" 
+                  className="w-full h-full object-cover"
+                  alt="Farm aerial view"
+                />
+                <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+                   <div className="bg-white/90 dark:bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 text-stone-800 dark:text-stone-100">
+                     <MapPin className="w-3 h-3 text-emerald-600" /> {state.currentLocation.split(',')[0]} Farm
+                   </div>
                 </div>
-              </div>
-              <div className="absolute bottom-4 right-4">
-                <div className="text-white/90 text-[10px] font-bold bg-black/40 px-2 py-1 rounded backdrop-blur-sm">Fields &gt;</div>
-              </div>
-            </div>
-            <div className="p-5 flex-1 flex flex-col">
-              <div className="flex gap-2 mb-6">
-                <div className="bg-stone-100 dark:bg-[#2A2A2D] text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer">
-                  <Leaf className="w-3.5 h-3.5" /> Crop Health
+                <div className="absolute bottom-4 right-4">
+                   <div className="text-white/90 text-[10px] font-bold bg-black/40 px-2 py-1 rounded backdrop-blur-sm">Fields &gt;</div>
                 </div>
-                <div className="text-stone-500 px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:text-stone-800 dark:hover:text-stone-200">
-                  <Activity className="w-3.5 h-3.5" /> Sensors
+             </div>
+             <div className="p-5 flex-1 flex flex-col">
+                <div className="flex gap-2 mb-6">
+                  <div className="bg-stone-100 dark:bg-[#2A2A2D] text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer">
+                     <Leaf className="w-3.5 h-3.5" /> Crop Health
+                  </div>
+                  <div className="text-stone-500 px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:text-stone-800 dark:hover:text-stone-200">
+                    <Activity className="w-3.5 h-3.5" /> Sensors
+                  </div>
                 </div>
-              </div>
-
-              <div className="h-20 w-full mt-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={timeSeriesData}>
-                    <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fill: '#78716c', fontSize: 9 }} dy={5} />
-                    <Line type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} dot={{ r: 3, fill: '#10b981', strokeWidth: 0 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+                
+                <div className="h-20 w-full mt-auto">
+                   <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={timeSeriesData}>
+                      <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{fill: '#78716c', fontSize: 9}} dy={5} />
+                      <Line type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} dot={{r: 3, fill: '#10b981', strokeWidth: 0}} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+             </div>
           </div>
 
           {/* Col 3 */}
           <div className={`${cardClass}`}>
-            <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-6">Sustainability Score</h3>
-
-            <div className="flex items-center gap-2 mb-6">
-              <div className="flex-1 space-y-4">
-                {sustainabilityItems.map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <item.icon className={`w-4 h-4 ${item.color}`} />
-                    <span className="text-xs font-bold text-stone-600 dark:text-stone-300 leading-tight block w-24">
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="w-32 h-32 relative flex-shrink-0">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[{ value: 82 }, { value: 18 }]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={45}
-                      outerRadius={55}
-                      startAngle={90}
-                      endAngle={-270}
-                      dataKey="value"
-                      stroke="none"
-                    >
-                      <Cell fill="#10b981" />
-                      <Cell fill="#e5e7eb" className="dark:fill-[#3f3f46]" />
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-bold text-stone-800 dark:text-stone-100">82%</span>
-                  <span className="text-[8px] font-bold text-stone-400 uppercase tracking-tighter text-center leading-none mt-1">Overall<br />Viability</span>
+             <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-6">Sustainability Score</h3>
+             
+             <div className="flex items-center gap-2 mb-6">
+                <div className="flex-1 space-y-4">
+                  {sustainabilityItems.map((item, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <item.icon className={`w-4 h-4 ${item.color}`} />
+                      <span className="text-xs font-bold text-stone-600 dark:text-stone-300 leading-tight block w-24">
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            </div>
-
-            <div className="mt-auto pt-4 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs font-bold text-stone-500">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Overall 82%
-              </div>
-              <button className="bg-emerald-50 hover:bg-emerald-100 dark:bg-[#1a2f24] dark:hover:bg-[#203c2b] text-emerald-700 dark:text-emerald-400 py-2.5 px-6 rounded-full text-xs font-bold transition-colors">
-                View Report
-              </button>
-            </div>
+                
+                <div className="w-32 h-32 relative flex-shrink-0">
+                   <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[{value: 82}, {value: 18}]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={45}
+                        outerRadius={55}
+                        startAngle={90}
+                        endAngle={-270}
+                        dataKey="value"
+                        stroke="none"
+                      >
+                         <Cell fill="#10b981" />
+                         <Cell fill="#e5e7eb" className="dark:fill-[#3f3f46]" />
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                     <span className="text-2xl font-bold text-stone-800 dark:text-stone-100">82%</span>
+                     <span className="text-[8px] font-bold text-stone-400 uppercase tracking-tighter text-center leading-none mt-1">Overall<br/>Viability</span>
+                  </div>
+                </div>
+             </div>
+             
+             <div className="mt-auto pt-4 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-stone-500">
+                   <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Overall 82%
+                </div>
+                <button className="bg-emerald-50 hover:bg-emerald-100 dark:bg-[#1a2f24] dark:hover:bg-[#203c2b] text-emerald-700 dark:text-emerald-400 py-2.5 px-6 rounded-full text-xs font-bold transition-colors">
+                  View Report
+                </button>
+             </div>
           </div>
         </div>
 

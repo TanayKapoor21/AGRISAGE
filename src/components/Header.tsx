@@ -1,6 +1,14 @@
-import { Sun, Moon, Globe, Eye, Search } from 'lucide-react'
+import { Sun, Moon, Globe, Eye, Search, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useApp } from '../context/AppContext'
+
+const availableLocations = [
+  'Karnal, Haryana',
+  'Ludhiana, Punjab',
+  'Pune, Maharashtra',
+  'Ahmedabad, Gujarat',
+  'Indore, MP'
+]
 
 export default function Header() {
   const { state, dispatch } = useApp()
@@ -37,6 +45,23 @@ export default function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-2 ml-4">
+          {/* Location Selector */}
+          <div className="flex items-center gap-2 mr-2 px-3 py-1.5 rounded-xl bg-earth-100/50 dark:bg-earth-800/30 border border-earth-200/50 dark:border-earth-700/30">
+            <MapPin className="w-4 h-4 text-emerald-600 dark:text-emerald-500" />
+            <div className="relative">
+              <select 
+                value={state.currentLocation}
+                onChange={(e) => dispatch({ type: 'SET_LOCATION', payload: e.target.value })}
+                className="bg-transparent text-sm font-medium text-earth-800 dark:text-earth-100 focus:outline-none cursor-pointer appearance-none pr-5"
+              >
+                {availableLocations.map(loc => <option key={loc} value={loc} className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">{loc}</option>)}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center text-earth-400">
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+            </div>
+          </div>
+
           {/* Language Toggle */}
           <motion.button
             whileTap={{ scale: 0.9 }}
@@ -94,10 +119,10 @@ export default function Header() {
           {/* User Avatar */}
           <div className="flex items-center gap-2 ml-2 pl-2 border-l border-earth-200/50 dark:border-earth-700/30">
             <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-white text-sm font-bold shadow-md shadow-sage-500/25">
-              {state.userName.charAt(0).toUpperCase()}
+              {state.userName ? state.userName.charAt(0).toUpperCase() : 'G'}
             </div>
             <span className="text-sm font-medium text-earth-700 dark:text-earth-300 hidden sm:block">
-              {state.userName}
+              {state.userName || 'Guest'}
             </span>
           </div>
         </div>
