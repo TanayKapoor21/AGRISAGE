@@ -4,6 +4,8 @@
 
 AgriSage is a unified, intelligent farming platform that integrates computer vision, real-time market intelligence, voice-enabled AI, and deep learning to empower farmers with actionable insights, yield optimization, and sustainable practices.
 
+🚀 **[Live Demo](https://agrisage-application-sigma.vercel.app/)**
+
 ---
 
 ## 🗺️ System Workflow
@@ -220,18 +222,6 @@ graph TD
 
 ---
 
-## 🛠️ Tech Stack
-
-- **Frontend:** React 18+ / TypeScript / Vite
-- **Styling:** Tailwind CSS (Dark Mode, Responsive, Glassmorphism)
-- **Animations:** Framer Motion
-- **Backend:** Node.js / Express / JWT Authentication
-- **Database:** SQLite (Persistent storage via `better-sqlite3`)
-- **AI/ML:** Google Gemini 2.0 Flash + GenAffNet Deep Learning Model
-- **Maps:** Google Maps JS API (@react-google-maps/api)
-- **APIs:** Google Generative AI SDK, WeatherAPI.com, Web Speech API
-- **Icons:** Lucide React
-- **Storage:** Persisted SQLite for Users/Activities & LocalStorage with 1-hour TTL Caching
 
 ## 🔬 Research & Publications
 
