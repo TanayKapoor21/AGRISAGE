@@ -68,25 +68,100 @@ export default function GenAffNetHub() {
               <h1 className="text-3xl md:text-4xl font-bold font-display text-white">
                 GenAffNet <span className="text-indigo-400">Diagnostics</span>
               </h1>
-              <p className="text-indigo-300/60 text-sm mt-1">DMLPFFN + GenAI Hyperspectral Inference Engine</p>
+              <p className="text-indigo-300/60 text-sm mt-1 uppercase tracking-[0.2em] font-black">Elite Hyperspectral Inference Platform</p>
             </div>
           </div>
           <p className="text-stone-400 max-w-2xl text-lg leading-relaxed">
-            Advanced spectral-spatial learning for plant disease detection. Utilizing Deep Multi-scale Layered Perceptrons 
-            with Convolutional VAE augmentation for precision diagnostics.
+            Our specialized <span className="font-bold text-white">DMLPFFN</span> (Deep Multi-scale Layered Perceptron Feature Fusion Network) engine 
+            achieves unparalleled disease detection accuracy through hierarchical spectral-spatial fusion. 
+            By integrating a <span className="font-bold text-white text-indigo-400">Convolutional VAE</span> for synthetic pattern augmentation, we facilitate 
+            precision mapping of plant manifestions with a research-validated <span className="font-bold text-white text-emerald-400">98.09% precision</span> rate.
           </p>
           
           <div className="flex flex-wrap items-center gap-6 mt-8">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm">
-                <Layers className="w-4 h-4" /> 96 Spectral Bands
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider shadow-inner">
+                <Layers className="w-3.5 h-3.5" /> 96 Spectral Bands
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm">
-                <Target className="w-4 h-4" /> 98.09% Precision
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider shadow-inner">
+                <Target className="w-3.5 h-3.5" /> 98.09% Precision
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm">
-                <Activity className="w-4 h-4" /> VAE Augmentation
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-wider shadow-inner">
+                <Activity className="w-3.5 h-3.5" /> VAE Augmented
             </div>
           </div>
+        </div>
+      </motion.div>
+
+      {/* ─── Horizontal Workflow Progress ───────────────────── */}
+      <motion.div variants={item} className="space-y-4">
+        <div className="flex items-center gap-2 mb-2 ml-2">
+          <Database className="w-4 h-4 text-indigo-500" />
+          <h3 className="font-bold text-white uppercase tracking-[0.2em] text-[10px]">DMLPFFN Engine Workflow</h3>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+          {HYPERSPECTRAL_WORKFLOW.map((stage, i) => {
+            const colors = [
+              'from-blue-500 to-cyan-500', 
+              'from-violet-500 to-purple-600', 
+              'from-amber-500 to-orange-600', 
+              'from-emerald-500 to-teal-500'
+            ]
+            const neons = [
+              'shadow-[0_0_15px_rgba(59,130,246,0.5)]',
+              'shadow-[0_0_15px_rgba(139,92,246,0.5)]',
+              'shadow-[0_0_15px_rgba(245,158,11,0.5)]',
+              'shadow-[0_0_15px_rgba(16,185,129,0.5)]'
+            ]
+            const glow = [
+              'shadow-blue-500/20',
+              'shadow-violet-500/20',
+              'shadow-amber-500/20',
+              'shadow-emerald-500/20'
+            ]
+            const isActive = activeStage === stage.stage
+            
+            return (
+              <div key={stage.stage} className="relative group">
+                <div className={`h-full p-6 rounded-2xl border-[1.5px] transition-all duration-500 ${
+                  isActive 
+                    ? `bg-stone-900/60 border-stone-500 shadow-2xl ${glow[i]}` 
+                    : 'bg-stone-900/20 border-white/5 opacity-60'
+                }`}>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${colors[i]} flex items-center justify-center text-white text-xs font-bold shadow-lg overflow-hidden relative ${isActive ? neons[i] : ''}`}>
+                      {isActive && <motion.div className="absolute inset-0 bg-white/20" animate={{ x: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1 }} />}
+                      {stage.stage}
+                    </div>
+                    <h4 className={`text-xs uppercase tracking-widest font-black text-white ${isActive ? 'opacity-100 shadow-[0_0_15px_rgba(255,255,255,0.4)]' : 'opacity-90'}`}>
+                      {stage.name}
+                    </h4>
+                  </div>
+                  <ul className="space-y-3 text-left">
+                    {stage.details.map((detail, j) => (
+                      <li key={j} className={`text-[10px] font-bold flex items-start gap-2.5 leading-tight transition-all duration-500 ${isActive ? 'text-white scale-[1.02]' : 'text-white/70'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${isActive ? `bg-white shadow-[0_0_10px_#ffffff]` : 'bg-white/20'}`} />
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                {/* Neon Flow Arrows */}
+                {i < 3 && (
+                  <div className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 items-center justify-center">
+                      <motion.div 
+                          animate={isActive ? { x: [0, 5, 0], opacity: [0.4, 1, 0.4] } : {}}
+                          transition={{ repeat: Infinity, duration: 2 }}
+                          className={`p-1.5 rounded-full bg-stone-950 border border-white/10 shadow-2xl ${isActive ? `${neons[i]} border-white/30` : 'opacity-20'}`}
+                      >
+                          <ChevronRight className={`w-4 h-4 ${isActive ? 'text-white' : 'text-stone-700'}`} />
+                      </motion.div>
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       </motion.div>
 
@@ -139,35 +214,14 @@ export default function GenAffNetHub() {
             </button>
           </div>
 
-          {/* Workflow Visualization */}
-          <div className="glass-card !bg-[#1c1c1e] !border-white/5 space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Database className="w-5 h-5 text-stone-500" />
-              <h3 className="font-bold text-stone-400 uppercase tracking-widest text-sm">Engine Workflow</h3>
-            </div>
-            
-            {HYPERSPECTRAL_WORKFLOW.map((stage, i) => (
-                <div key={stage.stage} className={`relative pl-8 pb-4 last:pb-0 border-l ${
-                    activeStage === stage.stage ? 'border-indigo-500/50' : 'border-stone-800'
-                }`}>
-                    <div className={`absolute -left-2.5 top-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                         activeStage === stage.stage ? 'bg-indigo-600 text-white animate-pulse' : 'bg-stone-800 text-stone-500'
-                    }`}>
-                        {stage.stage}
-                    </div>
-                    <h4 className={`text-xs font-bold mb-1 ${activeStage === stage.stage ? 'text-indigo-300' : 'text-stone-400'}`}>
-                        {stage.name}
-                    </h4>
-                    <ul className="space-y-1">
-                        {stage.details.map((detail, j) => (
-                            <li key={j} className="text-[10px] text-stone-500 flex items-center gap-1.5">
-                                <div className="w-1 h-1 rounded-full bg-stone-700" />
-                                {detail}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
+          <div className="p-6 rounded-2xl bg-stone-900/40 border border-white/5">
+             <div className="flex items-center gap-2 mb-3">
+                <Info className="w-4 h-4 text-stone-500" />
+                <h4 className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Model Specs</h4>
+             </div>
+             <p className="text-[10px] text-stone-500 leading-relaxed">
+                DMLPFFN architecture integrates multi-scale spatial patches with global spectral attention. Generative VAE augmentation ensures robust performance across varying sensor noise profiles.
+             </p>
           </div>
         </motion.div>
 

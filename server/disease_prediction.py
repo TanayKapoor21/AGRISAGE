@@ -76,6 +76,7 @@ def main():
 
     print("-" * 60)
     print(f"FILE: {args.file}")
+    class_id = None
     print(f"  -> INFECTION LEVEL: {level} (Stage {class_id + 1 if 'class_id' in locals() else '?'})")
     print(f"  -> CATEGORY       : {category}")
     print(f"  -> CONFIDENCE     : {conf:.2f}%")
