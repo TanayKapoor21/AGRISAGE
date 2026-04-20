@@ -48,17 +48,17 @@
 
 /* ─── Component Layer ────────────────────────────────────────── */
 @layer components {
-  /* Glass morphism */
+  /* Glass morphism (Upgraded to Solid Modern Theme) */
   .glass {
-    @apply bg-white/60 dark:bg-earth-900/60 backdrop-blur-xl border border-white/20 dark:border-earth-700/30 shadow-lg;
+    @apply bg-white dark:bg-[#1C1C1E] border-[1.5px] border-stone-200 dark:border dark:border-white/5 shadow-md dark:shadow-none backdrop-blur-none;
   }
 
   .glass-strong {
-    @apply bg-white/80 dark:bg-earth-900/80 backdrop-blur-2xl border border-white/30 dark:border-earth-700/40 shadow-xl;
+    @apply bg-white dark:bg-[#18181A] border-[1.5px] border-stone-200 dark:border dark:border-white/5 shadow-lg dark:shadow-none backdrop-blur-none;
   }
 
   .glass-card {
-    @apply glass rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-sage-500/5 hover:-translate-y-0.5;
+    @apply glass rounded-[1.5rem] p-6 transition-all duration-300 hover:shadow-lg dark:hover:shadow-none hover:-translate-y-0.5;
   }
 
   /* Gradients */

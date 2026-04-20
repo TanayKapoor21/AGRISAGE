@@ -37,12 +37,12 @@ export default function Sidebar() {
       animate={{ width: collapsed ? 80 : 260 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       className="fixed left-0 top-0 h-screen z-40 flex flex-col
-                 bg-white/70 dark:bg-earth-950/80 backdrop-blur-2xl
-                 border-r border-earth-200/50 dark:border-earth-800/50
-                 shadow-xl shadow-sage-900/5"
+                 bg-[#131412] backdrop-blur-2xl
+                 border-r border-earth-800/50
+                 shadow-xl shadow-black/20"
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-6 border-b border-earth-200/30 dark:border-earth-800/30">
+      <div className="flex items-center gap-3 px-5 py-6 border-b border-earth-800/50">
         <motion.div
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.2 }}
@@ -75,8 +75,8 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 relative
               ${isActive
-                ? 'bg-sage-500/10 dark:bg-sage-500/15 text-sage-700 dark:text-sage-300'
-                : 'text-earth-500 dark:text-earth-400 hover:bg-earth-100 dark:hover:bg-earth-800/50 hover:text-earth-900 dark:hover:text-earth-200'
+                ? 'bg-sage-500/15 text-sage-300'
+                : 'text-earth-400 hover:bg-earth-800/50 hover:text-earth-200'
               }`
             }
           >
@@ -89,7 +89,7 @@ export default function Sidebar() {
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
-                <item.icon className={`w-5 h-5 flex-shrink-0 transition-colors ${isActive ? 'text-sage-600 dark:text-sage-400' : ''}`} />
+                <item.icon className={`w-5 h-5 flex-shrink-0 transition-colors cursor-pointer text-earth-400 group-hover:text-earth-200 ${isActive ? '!text-sage-400' : ''}`} />
                 <AnimatePresence>
                   {!collapsed && (
                     <motion.span
@@ -137,12 +137,12 @@ export default function Sidebar() {
       </div>
 
       {/* Collapse Toggle */}
-      <div className="px-3 py-4 border-t border-earth-200/30 dark:border-earth-800/30">
+      <div className="px-3 py-4 border-t border-earth-800/30">
         <button
           onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
           className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl 
-                     text-earth-400 hover:text-earth-600 dark:hover:text-earth-300 
-                     hover:bg-earth-100 dark:hover:bg-earth-800/50 transition-all duration-200"
+                     text-earth-400 hover:text-earth-300 
+                     hover:bg-earth-800/50 transition-all duration-200"
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}

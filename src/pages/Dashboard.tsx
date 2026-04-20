@@ -128,8 +128,7 @@ export default function Dashboard() {
     return 'Good Evening'
   })()
 
-  // Standard graphical representation card styling
-  const cardClass = "bg-white dark:bg-[#1C1C1E] rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] dark:shadow-none border border-stone-100 dark:border-white/5 relative overflow-hidden transition-colors flex flex-col"
+  const cardClass = "bg-white dark:bg-[#1C1C1E] rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-md dark:shadow-none border-[1.5px] border-stone-200 dark:border dark:border-white/5 relative overflow-hidden transition-colors flex flex-col"
 
   const currentCropData = cropDataMap[selectedCrop] || cropDataMap['Wheat']
 
@@ -137,7 +136,7 @@ export default function Dashboard() {
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 pb-20">
 
       {/* ─── Hero Section ─────────────────────────────────── */}
-      <motion.div variants={item} className="bg-white dark:bg-[#1C1C1E] rounded-[2rem] p-8 md:p-10 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] dark:shadow-none border border-stone-100 dark:border-white/5 relative overflow-hidden transition-colors">
+      <motion.div variants={item} className="bg-white dark:bg-[#1C1C1E] rounded-[2rem] p-8 md:p-10 shadow-md dark:shadow-none border-[1.5px] border-stone-200 dark:border dark:border-white/5 relative overflow-hidden transition-colors">
         <div className="absolute -top-10 -right-10 p-12 opacity-[0.03] dark:opacity-[0.02] pointer-events-none rotate-12">
           <Sprout className="w-96 h-96" />
         </div>
@@ -190,7 +189,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
           {quickActions.map((action, i) => (
             <Link key={i} to={action.to}>
-              <motion.div whileHover={{ y: -2 }} className="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl bg-white dark:bg-[#1C1C1E] border border-stone-100 dark:border-white/5 shadow-sm dark:shadow-none hover:shadow-md transition-all text-center h-full">
+              <motion.div whileHover={{ y: -2 }} className="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl bg-white dark:bg-[#1C1C1E] border-[1.5px] border-stone-200 dark:border dark:border-white/5 shadow-sm dark:shadow-none hover:shadow-md transition-all text-center h-full">
                 <div className={`p-3 rounded-[1rem] ${action.color}`}>
                   <action.icon className="w-6 h-6" />
                 </div>
@@ -375,7 +374,7 @@ export default function Dashboard() {
           
           {/* Col 1 */}
           <div className="flex flex-col gap-5 md:gap-6">
-            <div className={`${cardClass} bg-stone-50 dark:bg-[#252528] border-none shadow-none`}>
+            <div className={`${cardClass} bg-stone-50/80 dark:bg-[#252528] !border-[1.5px] !border-indigo-100 dark:!border-white/5 !shadow-sm dark:!shadow-none`}>
                <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4 flex items-center gap-2">
                   <Brain className="w-5 h-5 text-indigo-500" /> AI Insights
                </h3>
