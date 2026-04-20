@@ -242,12 +242,12 @@ AgriSage serves as the primary implementation platform for our research on **Pre
 
 ## 👥 The AgriSage Team
 
-| Name | Primary Focus | Research Link |
+| Name | Primary Focus | Research Contribution |
 | :--- | :--- | :--- |
-| **Tanay Kapoor** | Core AI Architecture & Integration | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
-| **Akash Yadav** | System Logic & Data Pipeline | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
-| **Kanika Yadav** | UX Strategy & Frontend Design | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
-| **Srasthti Chauhan** | Agricultural Intelligence & Data Analysis | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
+| **Tanay Kapoor** | Core AI Architecture & Integration | Lead Model Training & DMLPFFN Optimization |
+| **Akash Yadav** | System Logic & Data Pipeline | Hyperspectral Preprocessing & PCA Band Reduction |
+| **Kanika Yadav** | UX Strategy & Frontend Design | UI Diagnostic Mapping & Stage-based Workflow |
+| **Srasthti Chauhan** | Agricultural Intelligence & Data Analysis | Dataset Validation & Precision Metric Analysis |
 
 ### 📚 Guidance & Mentorship
 Special thanks to **Dr. Anuradha Dhull** and **Dr. Asha Sohal** for their scientific guidance and agricultural insights.
