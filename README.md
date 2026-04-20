@@ -174,21 +174,80 @@ When API quotas are reached, AgriSage doesn't break:
 
 ---
 
+## 🧠 GenAffNet: Hyperspectral Diagnostic Engine
+
+AgriSage implements the **GenAffNet**, a state-of-the-art inference engine based on our research paper for plant disease detection. It utilizes **Hyperspectral Imaging (HSI)** and **Generative AI** to provide precision diagnostics.
+
+### 🛠️ The 4-Stage Workflow
+The diagnostic pipeline is structured into four distinct phases as validated in our sugarbeet dataset:
+
+1.  **Hyperspectral Preprocessing**: Automated PCA-based band reduction (from 224 to 96 bands) and 9×9 spatial patch extraction to eliminate redundancy.
+2.  **DMLPFFN Architecture**: A hierarchical spectral-spatial fusion network using Global, Partition, and Local Perceptrons with dilated convolutions.
+3.  **GenAI Augmentation**: Integration of a **Convolutional VAE (Variational Autoencoder)** to synthesize high-diversity spectral patterns, achieving **98.09% precision**.
+4.  **Diagnostic Mapping**: Automated classification into four classes: Healthy/Early Stress, Fungal, Bacterial, and Viral-Nematode manifestations.
+
+### 📊 Model Workflow
+```mermaid
+graph TD
+    Cube[HSI Cube .NPY] --> PCA[PCA Band Reduction]
+    PCA --> Patch[9x9x96 Patch Extraction]
+    
+    subgraph "DMLPFFN Block"
+        Patch --> GP[Global Perceptron]
+        Patch --> PP[Partition Perceptron]
+        Patch --> LP[Local Perceptron]
+        
+        GP --> Fusion[Feature Fusion]
+        PP --> Fusion
+        LP --> Fusion
+    end
+    
+    subgraph "VAE Augmentation"
+        CVAE[Conv-VAE] --> Synth[Synthetic Patterns]
+        Synth -.-> Fusion
+    end
+    
+    Fusion --> Voting[Patch-Level Voting]
+    Voting --> Classify{Diagnostic Result}
+    
+    Classify --> H[Healthy]
+    Classify --> F[Fungal]
+    Classify --> B[Bacterial]
+    Classify --> V[Viral/Nematode]
+```
+
+🔗 **Full Research Code & Results**: [sugarbeet-genai Repository](https://github.com/TanayKapoor21/sugarbeet-genai)
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React 18+ / TypeScript / Vite
+- **Styling:** Tailwind CSS (Dark Mode, Responsive, Glassmorphism)
+- **Animations:** Framer Motion
+- **Backend:** Node.js / Express / JWT Authentication
+- **Database:** SQLite (Persistent storage via `better-sqlite3`)
+- **AI/ML:** Google Gemini 2.0 Flash + GenAffNet Deep Learning Model
+- **Maps:** Google Maps JS API (@react-google-maps/api)
+- **APIs:** Google Generative AI SDK, WeatherAPI.com, Web Speech API
+- **Icons:** Lucide React
+- **Storage:** Persisted SQLite for Users/Activities & LocalStorage with 1-hour TTL Caching
+
 ## 🔬 Research & Publications
 
 ### 🧪 Sugarbeet GenAI Research
-AgriSage serves as the primary implementation platform for our ongoing research on **Precision Sugarbeet Cultivation**. Using an advanced iteration of the **GenAffNet (Agricultural Affinity Network)** deep learning model, we are investigating spatial-spectral fusion techniques to optimize nitrogen application and predict sucrose content with 97%+ accuracy.
+AgriSage serves as the primary implementation platform for our research on **Precision Sugarbeet Cultivation**. Using an advanced iteration of the **GenAffNet (Agricultural Affinity Network)** deep learning model, we optimize nitrogen application and identify diseases with elite accuracy.
 
 ---
 
 ## 👥 The AgriSage Team
 
-| Name | Primary Focus |
-| :--- | :--- |
-| **Tanay Kapoor** | Core AI Architecture & Integration |
-| **Akash Yadav** | System Logic & Data Pipeline |
-| **Kanika Yadav** | UX Strategy & Frontend Design |
-| **Srasthti Chauhan** | Agricultural Intelligence & Data Analysis |
+| Name | Primary Focus | Research Link |
+| :--- | :--- | :--- |
+| **Tanay Kapoor** | Core AI Architecture & Integration | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
+| **Akash Yadav** | System Logic & Data Pipeline | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
+| **Kanika Yadav** | UX Strategy & Frontend Design | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
+| **Srasthti Chauhan** | Agricultural Intelligence & Data Analysis | [sugarbeet-genai](https://github.com/TanayKapoor21/sugarbeet-genai) |
 
 ### 📚 Guidance & Mentorship
 Special thanks to **Dr. Anuradha Dhull** and **Dr. Asha Sohal** for their scientific guidance and agricultural insights.
