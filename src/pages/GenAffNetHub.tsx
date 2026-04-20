@@ -3,348 +3,379 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Brain, Loader2, Zap, Target, AlertTriangle,
   TrendingUp, BarChart3, Layers, Sliders, Play,
-  ChevronRight, Activity,
+  ChevronRight, Activity, FileDigit, Upload, CheckCircle2,
+  Database, Info, Search
 } from 'lucide-react'
-import { getGenAffNetPrediction } from '../services/gemini'
 import { useApp } from '../context/AppContext'
-import type { PredictionInput, PredictionResult, SoilType } from '../types'
-
-const soilOptions: { value: SoilType; label: string }[] = [
-  { value: 'alluvial', label: 'Alluvial' },
-  { value: 'black_cotton', label: 'Black Cotton' },
-  { value: 'red', label: 'Red Soil' },
-  { value: 'laterite', label: 'Laterite' },
-  { value: 'desert', label: 'Desert (Sandy)' },
-  { value: 'mountain', label: 'Mountain' },
-  { value: 'saline', label: 'Saline/Alkaline' },
-]
-
-const riskColors = {
-  low: { bg: 'bg-emerald-500/10', text: 'text-emerald-500', border: 'border-emerald-500/20', label: 'Low Risk' },
-  medium: { bg: 'bg-amber-500/10', text: 'text-amber-500', border: 'border-amber-500/20', label: 'Medium Risk' },
-  high: { bg: 'bg-red-500/10', text: 'text-red-500', border: 'border-red-500/20', label: 'High Risk' },
-}
+import { processHyperspectralData, HYPERSPECTRAL_WORKFLOW, type HyperspectralResult } from '../services/hyperspectral'
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
 const item = { hidden: { opacity: 0, y: 15 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } }
 
+const mockFiles = [
+  'sugarbeet hsi 1', 'sugarbeet hsi 2', 'sugarbeet hsi 3',
+  'sugarbeet hsi 4', 'sugarbeet hsi 5', 'sugarbeet hsi 6',
+  'sugarbeet hsi 7', 'sugarbeet hsi 8'
+]
+
 export default function GenAffNetHub() {
   const { state } = useApp()
-  const [input, setInput] = useState<PredictionInput>({
-    soilType: 'alluvial',
-    temperature: 28,
-    rainfall: 800,
-    humidity: 65,
-    ph: 6.5,
-    nitrogen: 80,
-    phosphorus: 45,
-    potassium: 60,
-  })
-  const [predictions, setPredictions] = useState<PredictionResult[]>([])
+  const [selectedFile, setSelectedFile] = useState<string>('')
+  const [results, setResults] = useState<HyperspectralResult[]>([])
+  const [lastResult, setLastResult] = useState<HyperspectralResult | null>(null)
   const [loading, setLoading] = useState(false)
-  const [hasRun, setHasRun] = useState(false)
+  const [activeStage, setActiveStage] = useState(0)
 
-  const updateField = (field: keyof PredictionInput, value: number | SoilType) => {
-    setInput((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const runPrediction = useCallback(async () => {
+  const runDiagnostic = useCallback(async () => {
+    if (!selectedFile) return
     setLoading(true)
-    setHasRun(true)
+    setLastResult(null)
+    
+    // Simulate stage progression for visual effect
+    for (let i = 1; i <= 4; i++) {
+        setActiveStage(i)
+        await new Promise(r => setTimeout(r, 600))
+    }
+
     try {
-      const results = await getGenAffNetPrediction(input)
-      setPredictions(results)
+      const res = await processHyperspectralData(selectedFile)
+      setResults(prev => [...prev, res].sort((a, b) => a.confidence - b.confidence))
+      setLastResult(res)
+      setSelectedFile('')
     } finally {
       setLoading(false)
+      setActiveStage(0)
     }
-  }, [input])
-
-  const sliderFields: { key: keyof PredictionInput; label: string; min: number; max: number; step: number; unit: string; color: string }[] = [
-    { key: 'temperature', label: 'Temperature', min: 5, max: 50, step: 1, unit: '°C', color: 'from-orange-400 to-red-500' },
-    { key: 'rainfall', label: 'Annual Rainfall', min: 100, max: 3000, step: 50, unit: 'mm', color: 'from-blue-400 to-cyan-500' },
-    { key: 'humidity', label: 'Humidity', min: 10, max: 100, step: 1, unit: '%', color: 'from-teal-400 to-emerald-500' },
-    { key: 'ph', label: 'Soil pH', min: 3.5, max: 9.5, step: 0.1, unit: '', color: 'from-purple-400 to-violet-500' },
-    { key: 'nitrogen', label: 'Nitrogen (N)', min: 0, max: 200, step: 5, unit: 'kg/ha', color: 'from-green-400 to-lime-500' },
-    { key: 'phosphorus', label: 'Phosphorus (P)', min: 0, max: 150, step: 5, unit: 'kg/ha', color: 'from-amber-400 to-yellow-500' },
-    { key: 'potassium', label: 'Potassium (K)', min: 0, max: 200, step: 5, unit: 'kg/ha', color: 'from-pink-400 to-rose-500' },
-  ]
+  }, [selectedFile])
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
-      {/* Hero Header */}
-      <motion.div variants={item} className="relative overflow-hidden rounded-3xl p-8 md:p-10"
-        style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #0c0a09 40%, #312e81 100%)' }}
+      {/* ─── Hero Header ─────────────────────────────────── */}
+      <motion.div variants={item} className="relative overflow-hidden rounded-[2rem] p-8 md:p-10 border-[1.5px] border-stone-200 dark:border-white/5"
+        style={{ background: 'linear-gradient(135deg, #131412 0%, #1c1c1e 100%)' }}
       >
-        <div className="absolute inset-0 dot-pattern opacity-30" />
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-60 h-60 bg-violet-500/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 dot-pattern opacity-10" />
+        <div className="absolute -top-24 -right-24 p-24 opacity-[0.05] pointer-events-none rotate-12">
+            <Brain className="w-96 h-96" />
+        </div>
+        
         <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-              <Brain className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-xl shadow-indigo-500/20">
+              <Zap className="w-7 h-7 text-white" />
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold font-display text-white">
-                GenAffNet <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-violet-300">Hub</span>
+                GenAffNet <span className="text-indigo-400">Diagnostics</span>
               </h1>
-              <p className="text-indigo-300/70 text-sm">Agricultural Affinity Network — Deep Learning Engine</p>
+              <p className="text-indigo-300/60 text-sm mt-1">DMLPFFN + GenAI Hyperspectral Inference Engine</p>
             </div>
           </div>
-          <p className="text-earth-400 max-w-2xl mt-3">
-            {state.language === 'hi'
-              ? 'उन्नत डीप लर्निंग एनालिटिक्स — मिट्टी के मापदंडों से फसल की उपज और उपयुक्तता का प्रेडिक्शन करें।'
-              : 'Advanced deep learning analytics for predictive farming. Input soil and climate parameters to get crop yield predictions and agricultural affinity mapping.'}
+          <p className="text-stone-400 max-w-2xl text-lg leading-relaxed">
+            Advanced spectral-spatial learning for plant disease detection. Utilizing Deep Multi-scale Layered Perceptrons 
+            with Convolutional VAE augmentation for precision diagnostics.
           </p>
-          <div className="flex items-center gap-4 mt-4 text-xs text-indigo-400/60">
-            <span className="flex items-center gap-1"><Layers className="w-3 h-3" /> 12-Layer Neural Network</span>
-            <span className="flex items-center gap-1"><Activity className="w-3 h-3" /> 97.3% Accuracy</span>
-            <span className="flex items-center gap-1"><Zap className="w-3 h-3" /> Real-time Inference</span>
+          
+          <div className="flex flex-wrap items-center gap-6 mt-8">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm">
+                <Layers className="w-4 h-4" /> 96 Spectral Bands
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm">
+                <Target className="w-4 h-4" /> 98.09% Precision
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm">
+                <Activity className="w-4 h-4" /> VAE Augmentation
+            </div>
           </div>
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* ─── Input Panel (2 cols) ─────────────────────── */}
-        <motion.div variants={item} className="lg:col-span-2 space-y-4">
-          <div className="glass-card">
-            <div className="flex items-center gap-2 mb-5">
-              <Sliders className="w-5 h-5 text-indigo-500" />
-              <h3 className="font-bold font-display text-earth-800 dark:text-earth-200">
-                {state.language === 'hi' ? 'इनपुट पैरामीटर' : 'Input Parameters'}
-              </h3>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* ─── Control Center (4 cols) ─────────────────────── */}
+        <motion.div variants={item} className="lg:col-span-4 space-y-6">
+          <div className="glass-card !bg-[#1c1c1e] !border-white/5">
+            <div className="flex items-center gap-2 mb-6">
+              <Upload className="w-5 h-5 text-indigo-500" />
+              <h3 className="font-bold text-white uppercase tracking-widest text-sm">Inference Input</h3>
             </div>
 
-            {/* Soil Type */}
-            <div className="mb-5">
-              <label className="text-xs font-semibold text-earth-400 uppercase tracking-wider mb-2 block">Soil Type</label>
-              <select
-                value={input.soilType}
-                onChange={(e) => updateField('soilType', e.target.value as SoilType)}
-                className="input-field"
-              >
-                {soilOptions.map((s) => (
-                  <option key={s.value} value={s.value}>{s.label}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Sliders */}
             <div className="space-y-4">
-              {sliderFields.map((field) => (
-                <div key={field.key}>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-xs font-medium text-earth-500 dark:text-earth-400">{field.label}</label>
-                    <span className="text-xs font-bold text-earth-700 dark:text-earth-300">
-                      {typeof input[field.key] === 'number' ? (input[field.key] as number).toFixed(field.step < 1 ? 1 : 0) : input[field.key]} {field.unit}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min={field.min}
-                    max={field.max}
-                    step={field.step}
-                    value={input[field.key] as number}
-                    onChange={(e) => updateField(field.key, parseFloat(e.target.value))}
-                    className="w-full h-1.5 bg-earth-200 dark:bg-earth-800 rounded-full appearance-none cursor-pointer
-                               [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 
-                               [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-indigo-500 [&::-webkit-slider-thumb]:shadow-lg
-                               [&::-webkit-slider-thumb]:shadow-indigo-500/30 [&::-webkit-slider-thumb]:cursor-pointer"
-                  />
-                </div>
-              ))}
+              <p className="text-xs text-stone-500 font-medium">SELECT HYPERSPECTRAL CUBE (.NPY)</p>
+              <div className="grid grid-cols-1 gap-2 overflow-y-auto max-h-[300px] pr-2 scrollbar-thin scrollbar-thumb-stone-800">
+                {mockFiles.map(file => (
+                  <button
+                    key={file}
+                    onClick={() => setSelectedFile(file)}
+                    className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all border ${
+                      selectedFile === file 
+                        ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300' 
+                        : 'bg-stone-900/50 border-white/5 text-stone-400 hover:bg-stone-800'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                        <FileDigit className="w-4 h-4" />
+                        <span className="text-sm font-mono">{file}</span>
+                    </div>
+                    {selectedFile === file && <CheckCircle2 className="w-4 h-4" />}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Run Button */}
-            <motion.button
-              whileTap={{ scale: 0.97 }}
-              onClick={runPrediction}
-              disabled={loading}
-              className="w-full mt-6 px-6 py-3.5 rounded-xl font-semibold text-white
-                         bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600
-                         shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40
-                         transition-all duration-300 hover:-translate-y-0.5
-                         disabled:opacity-50 disabled:cursor-not-allowed
-                         flex items-center justify-center gap-2"
+            <button
+              onClick={runDiagnostic}
+              disabled={loading || !selectedFile}
+              className="w-full mt-8 px-6 py-4 rounded-2xl font-bold text-white
+                         bg-indigo-600 hover:bg-indigo-500 shadow-xl shadow-indigo-600/20
+                         transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed
+                         flex items-center justify-center gap-3 group"
             >
               {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Running Inference...
-                </>
+                <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                <>
-                  <Play className="w-5 h-5" />
-                  {state.language === 'hi' ? 'प्रेडिक्शन चलाएँ' : 'Run GenAffNet Prediction'}
-                </>
+                <Play className={`w-5 h-5 transition-transform ${selectedFile ? 'group-hover:scale-110' : ''}`} />
               )}
-            </motion.button>
+              {loading ? 'PROCESSING STAGE ' + activeStage : 'RUN DMLPFFN PREDICTION'}
+            </button>
+          </div>
+
+          {/* Workflow Visualization */}
+          <div className="glass-card !bg-[#1c1c1e] !border-white/5 space-y-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Database className="w-5 h-5 text-stone-500" />
+              <h3 className="font-bold text-stone-400 uppercase tracking-widest text-sm">Engine Workflow</h3>
+            </div>
+            
+            {HYPERSPECTRAL_WORKFLOW.map((stage, i) => (
+                <div key={stage.stage} className={`relative pl-8 pb-4 last:pb-0 border-l ${
+                    activeStage === stage.stage ? 'border-indigo-500/50' : 'border-stone-800'
+                }`}>
+                    <div className={`absolute -left-2.5 top-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                         activeStage === stage.stage ? 'bg-indigo-600 text-white animate-pulse' : 'bg-stone-800 text-stone-500'
+                    }`}>
+                        {stage.stage}
+                    </div>
+                    <h4 className={`text-xs font-bold mb-1 ${activeStage === stage.stage ? 'text-indigo-300' : 'text-stone-400'}`}>
+                        {stage.name}
+                    </h4>
+                    <ul className="space-y-1">
+                        {stage.details.map((detail, j) => (
+                            <li key={j} className="text-[10px] text-stone-500 flex items-center gap-1.5">
+                                <div className="w-1 h-1 rounded-full bg-stone-700" />
+                                {detail}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
           </div>
         </motion.div>
 
-        {/* ─── Results Panel (3 cols) ───────────────────── */}
-        <motion.div variants={item} className="lg:col-span-3">
-          <AnimatePresence mode="wait">
-            {loading ? (
+        {/* ─── Diagnostics Output (8 cols) ───────────────────── */}
+        <motion.div variants={item} className="lg:col-span-8 space-y-6">
+          <AnimatePresence mode="popLayout">
+            {lastResult ? (
               <motion.div
-                key="loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="glass-card flex flex-col items-center justify-center py-20"
+                key="active-report"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="glass-card !bg-[#1c1c1e] !border-indigo-500/30 shadow-2xl shadow-indigo-500/10 p-0 overflow-hidden"
               >
-                <div className="relative">
-                  <Brain className="w-16 h-16 text-indigo-500/30" />
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
-                    className="absolute inset-0 w-16 h-16 border-2 border-transparent border-t-indigo-500 rounded-full"
-                  />
+                <div className="bg-indigo-500/5 border-b border-white/5 p-6 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                            <BarChart3 className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h3 className="text-white font-bold uppercase tracking-widest text-xs">Active Diagnostic Report</h3>
+                            <p className="text-stone-500 text-[10px] font-mono">{lastResult.fileName}</p>
+                        </div>
+                    </div>
+                    <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">
+                        COMPLETED
+                    </div>
                 </div>
-                <p className="text-sm text-earth-400 mt-4">GenAffNet is processing your parameters...</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <motion.div
-                    animate={{ width: ['0%', '100%'] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="h-1 bg-indigo-500 rounded-full"
-                    style={{ width: '120px' }}
-                  />
-                </div>
-              </motion.div>
-            ) : predictions.length > 0 ? (
-              <motion.div
-                key="results"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-4"
-              >
-                {predictions.map((pred, i) => {
-                  const risk = riskColors[pred.riskLevel]
-                  return (
-                    <motion.div
-                      key={pred.crop}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="glass-card"
-                    >
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold font-display text-lg shadow-lg shadow-indigo-500/20">
-                            {i + 1}
-                          </div>
-                          <div>
-                            <h4 className="text-lg font-bold font-display text-earth-800 dark:text-white">{pred.crop}</h4>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${risk.bg} ${risk.text} border ${risk.border}`}>
-                                {risk.label}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold font-display bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-violet-400">
-                            {pred.yieldPrediction} q/ha
-                          </p>
-                          <p className="text-[10px] text-earth-400">Predicted Yield</p>
-                        </div>
-                      </div>
 
-                      {/* Metrics Row */}
-                      <div className="grid grid-cols-2 gap-3 mb-4">
-                        <div className="p-3 rounded-xl bg-earth-100/50 dark:bg-earth-800/30">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Target className="w-4 h-4 text-indigo-400" />
-                            <p className="text-xs text-earth-400">Confidence</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 h-1.5 rounded-full bg-earth-200 dark:bg-earth-700 overflow-hidden">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${pred.confidence * 100}%` }}
-                                transition={{ delay: i * 0.1 + 0.3, duration: 0.6 }}
-                                className="h-full rounded-full bg-indigo-500"
-                              />
+                <div className="p-8 space-y-8">
+                    <div className="flex flex-col md:flex-row gap-8 justify-between">
+                        <div className="space-y-4">
+                            <div>
+                                <span className="text-[10px] font-bold text-stone-500 uppercase tracking-[0.2em] mb-2 block">Detection Category</span>
+                                <h2 className="text-3xl font-bold font-display text-white">{lastResult.infectionLevel}</h2>
+                                <p className={`text-sm mt-1 font-medium ${
+                                    lastResult.class === 3 ? 'text-red-400' : 
+                                    lastResult.class === 2 ? 'text-amber-400' : 'text-emerald-400'
+                                }`}>{lastResult.category}</p>
                             </div>
-                            <span className="text-xs font-bold text-earth-700 dark:text-earth-300">{(pred.confidence * 100).toFixed(0)}%</span>
-                          </div>
-                        </div>
-                        <div className="p-3 rounded-xl bg-earth-100/50 dark:bg-earth-800/30">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Zap className="w-4 h-4 text-violet-400" />
-                            <p className="text-xs text-earth-400">Affinity Score</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 h-1.5 rounded-full bg-earth-200 dark:bg-earth-700 overflow-hidden">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${pred.affinityScore * 100}%` }}
-                                transition={{ delay: i * 0.1 + 0.4, duration: 0.6 }}
-                                className="h-full rounded-full bg-violet-500"
-                              />
-                            </div>
-                            <span className="text-xs font-bold text-earth-700 dark:text-earth-300">{(pred.affinityScore * 100).toFixed(0)}%</span>
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Factor Analysis */}
-                      <div>
-                        <p className="text-xs font-semibold text-earth-400 uppercase tracking-wider mb-2">Factor Impact Analysis</p>
-                        <div className="space-y-1.5">
-                          {pred.factors.map((factor) => (
-                            <div key={factor.name} className="flex items-center gap-2">
-                              <span className="text-xs text-earth-500 w-24 flex-shrink-0">{factor.name}</span>
-                              <div className="flex-1 flex items-center gap-1">
-                                <div className="flex-1 h-1 rounded-full bg-earth-200 dark:bg-earth-800 relative overflow-hidden">
-                                  <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${Math.abs(factor.impact) * 50}%` }}
-                                    transition={{ delay: i * 0.1 + 0.5, duration: 0.5 }}
-                                    className={`absolute top-0 h-full rounded-full ${
-                                      factor.impact >= 0 ? 'left-1/2 bg-emerald-500' : 'right-1/2 bg-red-500'
-                                    }`}
-                                  />
-                                  <div className="absolute left-1/2 top-0 w-px h-full bg-earth-400/30" />
+                            <div className="flex items-center gap-8">
+                                <div>
+                                    <p className="text-3xl font-black text-white">{(lastResult.confidence * 100).toFixed(2)}%</p>
+                                    <p className="text-[10px] font-bold text-stone-500 uppercase mt-1">Confidence</p>
                                 </div>
-                              </div>
-                              <span className={`text-xs font-semibold w-10 text-right ${factor.impact >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-                                {factor.impact >= 0 ? '+' : ''}{(factor.impact * 100).toFixed(0)}%
-                              </span>
+                                <div className="h-10 w-px bg-stone-800" />
+                                <div>
+                                    <p className="text-3xl font-black text-indigo-400">STAGE {lastResult.stage}</p>
+                                    <p className="text-[10px] font-bold text-stone-500 uppercase mt-1">Infection Stage</p>
+                                </div>
                             </div>
-                          ))}
                         </div>
-                      </div>
-                    </motion.div>
-                  )
-                })}
+                        
+                        <div className="w-full md:w-64 space-y-4">
+                             <div className="p-4 rounded-2xl bg-stone-900 border border-white/5">
+                                <h4 className="text-[10px] font-bold text-stone-400 uppercase mb-3 flex items-center gap-2">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Potential Diseases
+                                </h4>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {lastResult.possibleDiseases.map(d => (
+                                        <span key={d} className="text-[9px] px-2 py-1 rounded bg-stone-800 border border-white/5 text-stone-300">
+                                            {d}
+                                        </span>
+                                    ))}
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <div className="p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10">
+                            <h4 className="text-[10px] font-bold text-indigo-300 uppercase mb-4 flex items-center gap-2">
+                                <Info className="w-4 h-4" /> Analysis Summary
+                            </h4>
+                            <p className="text-xs text-stone-400 leading-relaxed">
+                                Our DMLPFFN engine detected significant {lastResult.category.toLowerCase()} spectral signatures during Stage {lastResult.stage} manifestation. VAE validation suggests a {lastResult.class === 3 ? 'severe' : 'noticeable'} deviation from healthy sugarbeet physiological baselines.
+                            </p>
+                         </div>
+                         <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
+                            <h4 className="text-[10px] font-bold text-emerald-300 uppercase mb-4 flex items-center gap-2">
+                                <Activity className="w-4 h-4" /> Safety Recommendations
+                            </h4>
+                            <ul className="space-y-2">
+                                {lastResult.precautions.map((p, i) => (
+                                    <li key={i} className="text-[10px] text-stone-400 flex items-center gap-2">
+                                        <div className="w-1 h-1 rounded-full bg-emerald-500" />
+                                        {p}
+                                    </li>
+                                ))}
+                            </ul>
+                         </div>
+                    </div>
+                </div>
               </motion.div>
+            ) : results.length > 0 ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest flex items-center gap-2">
+                        <Search className="w-4 h-4" /> Diagnostic History (Sorted by lowest confidence)
+                    </h3>
+                    <span className="text-[10px] bg-stone-800 text-stone-400 px-2 py-1 rounded border border-white/5">
+                        {results.length} RECORDED
+                    </span>
+                </div>
+                {results.map((res, i) => (
+                  <motion.div
+                    key={`${res.fileName}-${i}`}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="glass-card !bg-stone-900/40 border-stone-800 relative overflow-hidden"
+                  >
+                    <div className={`absolute top-0 right-0 w-1 h-full ${
+                        res.class === 3 ? 'bg-red-500' : 
+                        res.class === 2 ? 'bg-amber-500' : 
+                        res.class === 1 ? 'bg-emerald-500' : 'bg-blue-500'
+                    }`} />
+                    
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                                <div className={`p-2 rounded-lg ${
+                                    res.class === 3 ? 'bg-red-500/10 text-red-500' : 
+                                    res.class === 2 ? 'bg-amber-500/10 text-amber-500' : 
+                                    res.class === 1 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-blue-500/10 text-blue-500'
+                                }`}>
+                                    <AlertTriangle className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <h4 className="text-lg font-bold text-white">{res.infectionLevel}</h4>
+                                        <span className="text-[10px] font-mono text-stone-500 bg-black/30 px-1.5 py-0.5 rounded">CLASS_{res.class}</span>
+                                    </div>
+                                    <p className="text-sm font-medium text-stone-400">{res.category}</p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-4 text-[10px] text-stone-500 uppercase tracking-widest font-bold">
+                                <span className="flex items-center gap-1.5"><FileDigit className="w-3.5 h-3.5" /> {res.fileName}</span>
+                                <span className="flex items-center gap-1.5"><Layers className="w-3.5 h-3.5" /> STAGE {res.stage} MANIFESTATION</span>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col items-end gap-2">
+                            <div className="text-right">
+                                <p className="text-2xl font-black font-display text-white">{(res.confidence * 100).toFixed(2)}%</p>
+                                <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Confidence Score</p>
+                            </div>
+                        </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             ) : (
               <motion.div
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="glass-card flex flex-col items-center justify-center py-20 text-center"
+                className="glass-card flex flex-col items-center justify-center py-32 text-center !bg-[#1c1c1e] !border-dashed !border-white/10"
               >
-                <div className="w-24 h-24 rounded-3xl bg-indigo-500/5 dark:bg-indigo-500/10 flex items-center justify-center mb-4 border border-indigo-500/10">
-                  <Brain className="w-12 h-12 text-indigo-400/30" />
+                <div className="w-24 h-24 rounded-full bg-stone-900 flex items-center justify-center mb-6 relative">
+                    <div className="absolute inset-0 rounded-full border border-indigo-500/20 animate-ping" />
+                    <Search className="w-10 h-10 text-stone-700" />
                 </div>
-                <h3 className="text-lg font-bold font-display text-earth-400 dark:text-earth-500 mb-1">
-                  {state.language === 'hi' ? 'मॉडल तैयार है' : 'Model Ready'}
-                </h3>
-                <p className="text-sm text-earth-400 dark:text-earth-500 max-w-sm">
-                  {state.language === 'hi'
-                    ? 'बाएं पैनल में मापदंड सेट करें और प्रेडिक्शन चलाएँ'
-                    : 'Configure soil and climate parameters on the left panel, then run the GenAffNet prediction engine'}
+                <h3 className="text-xl font-bold text-stone-400 mb-2">Awaiting Hyperspectral Input</h3>
+                <p className="text-stone-500 max-w-sm text-sm">
+                    Select a .npy hyperspectral data cube from the Control Center to begin the 4-stage DMLPFFN diagnostic workflow.
                 </p>
-                <div className="flex items-center gap-1 mt-4 text-indigo-400/50 text-xs">
-                  <ChevronRight className="w-4 h-4" />
-                  <span>Adjust parameters and click "Run GenAffNet Prediction"</span>
+                <div className="mt-8 grid grid-cols-2 gap-3 text-left">
+                    <div className="p-3 rounded-xl bg-stone-900 border border-white/5 space-y-1">
+                        <p className="text-[10px] font-bold text-stone-500 uppercase">Input Shape</p>
+                        <p className="text-xs text-stone-300">9x9x96 Patch</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-stone-900 border border-white/5 space-y-1">
+                        <p className="text-[10px] font-bold text-stone-500 uppercase">Engine State</p>
+                        <p className="text-xs text-emerald-500 flex items-center gap-1.5">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            Ready
+                        </p>
+                    </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Quick Stats / Observations */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="glass-card !bg-stone-900/40 border-stone-800">
+                  <div className="flex items-center gap-2 mb-4">
+                      <TrendingUp className="w-4 h-4 text-emerald-500" />
+                      <h4 className="text-xs font-bold text-stone-400 uppercase">GenAI Impact Analysis</h4>
+                  </div>
+                  <p className="text-xs text-stone-500 leading-relaxed">
+                      Synthetic pattern synthesis via convolutional VAE accounts for <span className="text-emerald-400 font-bold">+1.3%</span> accuracy gain on base DMLPFFN architecture.
+                  </p>
+              </div>
+              <div className="glass-card !bg-stone-900/40 border-stone-800">
+                  <div className="flex items-center gap-2 mb-4">
+                      <Info className="w-4 h-4 text-indigo-500" />
+                      <h4 className="text-xs font-bold text-stone-400 uppercase">Scale Efficiency</h4>
+                  </div>
+                  <p className="text-xs text-stone-500 leading-relaxed">
+                      Dilated convolutions (d=1,2,3) in the Local Perceptron block provide multi-scale context without increasing parameter overhead.
+                  </p>
+              </div>
+          </div>
         </motion.div>
       </div>
     </motion.div>
   )
 }
+
