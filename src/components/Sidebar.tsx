@@ -17,14 +17,14 @@ import {
 import { useApp } from '../context/AppContext'
 
 const navItems = [
-  { path: '/', icon: LayoutDashboard, label: 'Dashboard', shortLabel: 'Home' },
-  { path: '/scanner', icon: ScanLine, label: 'Crop Scanner', shortLabel: 'Scan' },
-  { path: '/advisor', icon: Mic, label: 'AI Advisor', shortLabel: 'Ask AI' },
-  { path: '/market', icon: BarChart3, label: 'Market Intel', shortLabel: 'Market' },
-  { path: '/advisory', icon: Sprout, label: 'Crop Advisory', shortLabel: 'Advise' },
-  { path: '/sustainable', icon: Recycle, label: 'Sustainable', shortLabel: 'Green' },
-  { path: '/library', icon: BookOpen, label: 'Agri Library', shortLabel: 'Library' },
-  { path: '/genaffnet', icon: Brain, label: 'GenAffNet', shortLabel: 'ML Hub' },
+  { path: '/', icon: LayoutDashboard, label: 'Dashboard', labelHi: 'डैशबोर्ड', shortLabel: 'Home' },
+  { path: '/scanner', icon: ScanLine, label: 'Crop Scanner', labelHi: 'फसल स्कैनर', shortLabel: 'Scan' },
+  { path: '/advisor', icon: Mic, label: 'AI Advisor', labelHi: 'AI सलाहकार', shortLabel: 'Ask AI' },
+  { path: '/market', icon: BarChart3, label: 'Market Intel', labelHi: 'बाज़ार की जानकारी', shortLabel: 'Market' },
+  { path: '/advisory', icon: Sprout, label: 'Crop Advisory', labelHi: 'फसल सलाहकार', shortLabel: 'Advise' },
+  { path: '/sustainable', icon: Recycle, label: 'Sustainable', labelHi: 'टिकाऊ खेती', shortLabel: 'Green' },
+  { path: '/library', icon: BookOpen, label: 'Agri Library', labelHi: 'कृषि पुस्तकालय', shortLabel: 'Library' },
+  { path: '/genaffnet', icon: Brain, label: 'GenAffNet', labelHi: 'ML हब', shortLabel: 'ML Hub' },
 ]
 
 export default function Sidebar() {
@@ -99,7 +99,7 @@ export default function Sidebar() {
                       transition={{ duration: 0.15 }}
                       className="text-sm font-medium whitespace-nowrap"
                     >
-                      {item.label}
+                      {state.language === 'hi' ? item.labelHi : item.label}
                     </motion.span>
                   )}
                 </AnimatePresence>
@@ -118,7 +118,7 @@ export default function Sidebar() {
           }}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
                      text-rose-400 hover:bg-rose-500/10 hover:text-rose-500"
-          title={collapsed ? 'Logout' : ''}
+          title={collapsed ? (state.language === 'hi' ? 'लॉगआउट' : 'Logout') : ''}
         >
           <LogOut className="w-5 h-5 flex-shrink-0" />
           <AnimatePresence>
@@ -129,7 +129,7 @@ export default function Sidebar() {
                 exit={{ opacity: 0 }}
                 className="text-sm font-medium"
               >
-                Logout
+                {state.language === 'hi' ? 'लॉगआउट' : 'Logout'}
               </motion.span>
             )}
           </AnimatePresence>
@@ -143,7 +143,7 @@ export default function Sidebar() {
           className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl 
                      text-earth-400 hover:text-earth-300 
                      hover:bg-earth-800/50 transition-all duration-200"
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          title={collapsed ? (state.language === 'hi' ? 'विस्तार करें' : 'Expand') : (state.language === 'hi' ? 'छोटा करें' : 'Collapse')}
         >
           {collapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
           <AnimatePresence>
@@ -154,7 +154,7 @@ export default function Sidebar() {
                 exit={{ opacity: 0 }}
                 className="text-xs"
               >
-                Collapse
+                {state.language === 'hi' ? 'छोटा करें' : 'Collapse'}
               </motion.span>
             )}
           </AnimatePresence>

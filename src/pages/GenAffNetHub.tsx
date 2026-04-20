@@ -18,8 +18,82 @@ const mockFiles = [
   'sugarbeet hsi 7', 'sugarbeet hsi 8'
 ]
 
+const translations = {
+  hi: {
+    title: 'GenAffNet डायग्नोस्टिक्स',
+    subtitle: 'एलीट हाइपरस्पेक्ट्रली इंफरेंस प्लेटफॉर्म',
+    heroDesc: 'हमारा विशेष DMLPFFN इंजन हाइरार्कीकल स्पेक्ट्रल-स्पेशियल फ्यूजन के माध्यम से अद्वितीय रोग पहचान सटीकता प्राप्त करता है। यह 98.09% सटीकता के साथ पौधों के संक्रमण का सटीक मानचित्रण करता है।',
+    specs: {
+      bands: '96 स्पेक्ट्रल बैंड',
+      precision: '98.09% सटीकता',
+      augmented: 'VAE संवर्धित'
+    },
+    workflowTitle: 'DMLPFFN इंजन वर्कफ्लो',
+    controlTitle: 'इंफरेंस इनपुट',
+    selectFile: 'हाइपरस्पेक्ट्रल क्यूब (.NPY) चुनें',
+    processButton: 'DMLPFFN भविष्यवाणी शुरू करें',
+    processing: 'प्रोसेसिंग चरण',
+    modelSpecs: 'मॉडल विनिर्देश',
+    modelDesc: 'DMLPFFN आर्किटेक्चर वैश्विक स्पेक्ट्रल ध्यान के साथ मल्टी-स्केल स्पेशियल पैच को एकीकृत करता है।',
+    reportTitle: 'सक्रिय डायग्नोस्टिक रिपोर्ट',
+    completed: 'पूर्ण',
+    category: 'पहचान श्रेणी',
+    confidence: 'आत्मविश्वास',
+    stage: 'संक्रमण चरण',
+    results: 'संभावित रोग',
+    summary: 'अनुसंधान सारांश',
+    recommendations: 'सुरक्षा सिफारिशें',
+    history: 'डायग्नोस्टिक इतिहास (न्यूनतम आत्मविश्वास द्वारा वर्गीकृत)',
+    recorded: 'रिकॉर्ड किए गए',
+    awaiting: 'हाइपरस्पेक्ट्रल इनपुट की प्रतीक्षा है',
+    awaitingDesc: 'कंट्रोल सेंटर से .npy हाइपरस्पेक्ट्रल डेटा क्यूब चुनें।',
+    inputShape: 'इनपुट आकार',
+    engineState: 'इंजन स्थिति',
+    ready: 'तैयार',
+    impactTitle: 'GenAI प्रभाव विश्लेषण',
+    efficiencyTitle: 'स्केल दक्षता'
+  },
+  en: {
+    title: 'GenAffNet Diagnostics',
+    subtitle: 'Elite Hyperspectral Inference Platform',
+    heroDesc: 'Our specialized DMLPFFN engine achieves unparalleled disease detection accuracy through hierarchical spectral-spatial fusion. It facilitates precision mapping with a 98.09% precision rate.',
+    specs: {
+      bands: '96 Spectral Bands',
+      precision: '98.09% Precision',
+      augmented: 'VAE Augmented'
+    },
+    workflowTitle: 'DMLPFFN Engine Workflow',
+    controlTitle: 'Inference Input',
+    selectFile: 'SELECT HYPERSPECTRAL CUBE (.NPY)',
+    processButton: 'RUN DMLPFFN PREDICTION',
+    processing: 'PROCESSING STAGE',
+    modelSpecs: 'Model Specs',
+    modelDesc: 'DMLPFFN architecture integrates multi-scale spatial patches with global spectral attention.',
+    reportTitle: 'Active Diagnostic Report',
+    completed: 'COMPLETED',
+    category: 'Detection Category',
+    confidence: 'Confidence',
+    stage: 'Infection Stage',
+    results: 'Potential Diseases',
+    summary: 'Analysis Summary',
+    recommendations: 'Safety Recommendations',
+    history: 'Diagnostic History (Sorted by lowest confidence)',
+    recorded: 'RECORDED',
+    awaiting: 'Awaiting Hyperspectral Input',
+    awaitingDesc: 'Select a .npy hyperspectral data cube from the Control Center to begin.',
+    inputShape: 'Input Shape',
+    engineState: 'Engine State',
+    ready: 'Ready',
+    impactTitle: 'GenAI Impact Analysis',
+    efficiencyTitle: 'Scale Efficiency'
+  }
+}
+
 export default function GenAffNetHub() {
   const { state } = useApp()
+  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
+  const t = translations[lang]
+
   const [selectedFile, setSelectedFile] = useState<string>('')
   const [results, setResults] = useState<HyperspectralResult[]>([])
   const [lastResult, setLastResult] = useState<HyperspectralResult | null>(null)
@@ -31,7 +105,6 @@ export default function GenAffNetHub() {
     setLoading(true)
     setLastResult(null)
     
-    // Simulate stage progression for visual effect
     for (let i = 1; i <= 4; i++) {
         setActiveStage(i)
         await new Promise(r => setTimeout(r, 600))
@@ -50,7 +123,6 @@ export default function GenAffNetHub() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
-      {/* ─── Hero Header ─────────────────────────────────── */}
       <motion.div variants={item} className="relative overflow-hidden rounded-[2rem] p-8 md:p-10 border-[1.5px] border-stone-200 dark:border-white/5"
         style={{ background: 'linear-gradient(135deg, #131412 0%, #1c1c1e 100%)' }}
       >
@@ -66,99 +138,54 @@ export default function GenAffNetHub() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold font-display text-white">
-                GenAffNet <span className="text-indigo-400">Diagnostics</span>
+                {state.language === 'hi' ? 'GenAffNet' : 'GenAffNet'} <span className="text-indigo-400">{state.language === 'hi' ? 'डायग्नोस्टिक्स' : 'Diagnostics'}</span>
               </h1>
-              <p className="text-indigo-300/60 text-sm mt-1 uppercase tracking-[0.2em] font-black">Elite Hyperspectral Inference Platform</p>
+              <p className="text-indigo-300/60 text-sm mt-1 uppercase tracking-[0.2em] font-black">{t.subtitle}</p>
             </div>
           </div>
           <p className="text-stone-400 max-w-2xl text-lg leading-relaxed">
-            Our specialized <span className="font-bold text-white">DMLPFFN</span> (Deep Multi-scale Layered Perceptron Feature Fusion Network) engine 
-            achieves unparalleled disease detection accuracy through hierarchical spectral-spatial fusion. 
-            By integrating a <span className="font-bold text-white text-indigo-400">Convolutional VAE</span> for synthetic pattern augmentation, we facilitate 
-            precision mapping of plant manifestions with a research-validated <span className="font-bold text-white text-emerald-400">98.09% precision</span> rate.
+            {t.heroDesc}
           </p>
           
           <div className="flex flex-wrap items-center gap-6 mt-8">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wider shadow-inner">
-                <Layers className="w-3.5 h-3.5" /> 96 Spectral Bands
+                <Layers className="w-3.5 h-3.5" /> {t.specs.bands}
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider shadow-inner">
-                <Target className="w-3.5 h-3.5" /> 98.09% Precision
+                <Target className="w-3.5 h-3.5" /> {t.specs.precision}
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-wider shadow-inner">
-                <Activity className="w-3.5 h-3.5" /> VAE Augmented
+                <Activity className="w-3.5 h-3.5" /> {t.specs.augmented}
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* ─── Horizontal Workflow Progress ───────────────────── */}
       <motion.div variants={item} className="space-y-4">
         <div className="flex items-center gap-2 mb-2 ml-2">
           <Database className="w-4 h-4 text-indigo-500" />
-          <h3 className="font-bold text-white uppercase tracking-[0.2em] text-[10px]">DMLPFFN Engine Workflow</h3>
+          <h3 className="font-bold text-white uppercase tracking-[0.2em] text-[10px]">{t.workflowTitle}</h3>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
           {HYPERSPECTRAL_WORKFLOW.map((stage, i) => {
-            const colors = [
-              'from-blue-500 to-cyan-500', 
-              'from-violet-500 to-purple-600', 
-              'from-amber-500 to-orange-600', 
-              'from-emerald-500 to-teal-500'
-            ]
-            const neons = [
-              'shadow-[0_0_15px_rgba(59,130,246,0.5)]',
-              'shadow-[0_0_15px_rgba(139,92,246,0.5)]',
-              'shadow-[0_0_15px_rgba(245,158,11,0.5)]',
-              'shadow-[0_0_15px_rgba(16,185,129,0.5)]'
-            ]
-            const glow = [
-              'shadow-blue-500/20',
-              'shadow-violet-500/20',
-              'shadow-amber-500/20',
-              'shadow-emerald-500/20'
-            ]
+            const colors = ['from-blue-500 to-cyan-500', 'from-violet-500 to-purple-600', 'from-amber-500 to-orange-600', 'from-emerald-500 to-teal-500']
             const isActive = activeStage === stage.stage
-            
             return (
               <div key={stage.stage} className="relative group">
-                <div className={`h-full p-6 rounded-2xl border-[1.5px] transition-all duration-500 ${
-                  isActive 
-                    ? `bg-stone-900/60 border-stone-500 shadow-2xl ${glow[i]}` 
-                    : 'bg-stone-900/20 border-white/5 opacity-60'
-                }`}>
+                <div className={`h-full p-6 rounded-2xl border-[1.5px] transition-all duration-500 ${isActive ? 'bg-stone-900/60 border-stone-500 shadow-2xl' : 'bg-stone-900/20 border-white/5 opacity-60'}`}>
                   <div className="flex items-center gap-3 mb-5">
-                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${colors[i]} flex items-center justify-center text-white text-xs font-bold shadow-lg overflow-hidden relative ${isActive ? neons[i] : ''}`}>
-                      {isActive && <motion.div className="absolute inset-0 bg-white/20" animate={{ x: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 1 }} />}
-                      {stage.stage}
-                    </div>
-                    <h4 className={`text-xs uppercase tracking-widest font-black text-white ${isActive ? 'opacity-100 shadow-[0_0_15px_rgba(255,255,255,0.4)]' : 'opacity-90'}`}>
-                      {stage.name}
-                    </h4>
+                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${colors[i]} flex items-center justify-center text-white text-xs font-bold shadow-lg overflow-hidden relative`}>{stage.stage}</div>
+                    <h4 className="text-xs uppercase tracking-widest font-black text-white">{stage.name}</h4>
                   </div>
-                  <ul className="space-y-3 text-left">
+                  <ul className="space-y-3">
                     {stage.details.map((detail, j) => (
-                      <li key={j} className={`text-[10px] font-bold flex items-start gap-2.5 leading-tight transition-all duration-500 ${isActive ? 'text-white scale-[1.02]' : 'text-white/70'}`}>
-                        <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${isActive ? `bg-white shadow-[0_0_10px_#ffffff]` : 'bg-white/20'}`} />
-                        {detail}
+                      <li key={j} className={`text-[10px] font-bold flex items-start gap-2.5 transition-all ${isActive ? 'text-white' : 'text-white/70'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${isActive ? 'bg-white' : 'bg-white/20'}`} /> {detail}
                       </li>
                     ))}
                   </ul>
                 </div>
-                
-                {/* Neon Flow Arrows */}
-                {i < 3 && (
-                  <div className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 items-center justify-center">
-                      <motion.div 
-                          animate={isActive ? { x: [0, 5, 0], opacity: [0.4, 1, 0.4] } : {}}
-                          transition={{ repeat: Infinity, duration: 2 }}
-                          className={`p-1.5 rounded-full bg-stone-950 border border-white/10 shadow-2xl ${isActive ? `${neons[i]} border-white/30` : 'opacity-20'}`}
-                      >
-                          <ChevronRight className={`w-4 h-4 ${isActive ? 'text-white' : 'text-stone-700'}`} />
-                      </motion.div>
-                  </div>
-                )}
               </div>
             )
           })}
@@ -166,266 +193,74 @@ export default function GenAffNetHub() {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* ─── Control Center (4 cols) ─────────────────────── */}
         <motion.div variants={item} className="lg:col-span-4 space-y-6">
           <div className="glass-card !bg-[#1c1c1e] !border-white/5">
-            <div className="flex items-center gap-2 mb-6">
-              <Upload className="w-5 h-5 text-indigo-500" />
-              <h3 className="font-bold text-white uppercase tracking-widest text-sm">Inference Input</h3>
-            </div>
-
+            <div className="flex items-center gap-2 mb-6"><Upload className="w-5 h-5 text-indigo-500" /> <h3 className="font-bold text-white uppercase tracking-widest text-sm">{t.controlTitle}</h3></div>
             <div className="space-y-4">
-              <p className="text-xs text-stone-500 font-medium">SELECT HYPERSPECTRAL CUBE (.NPY)</p>
-              <div className="grid grid-cols-1 gap-2 overflow-y-auto max-h-[300px] pr-2 scrollbar-thin scrollbar-thumb-stone-800">
+              <p className="text-xs text-stone-500 font-medium">{t.selectFile}</p>
+              <div className="grid grid-cols-1 gap-2 overflow-y-auto max-h-[300px] pr-2">
                 {mockFiles.map(file => (
-                  <button
-                    key={file}
-                    onClick={() => setSelectedFile(file)}
-                    className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all border ${
-                      selectedFile === file 
-                        ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300' 
-                        : 'bg-stone-900/50 border-white/5 text-stone-400 hover:bg-stone-800'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                        <FileDigit className="w-4 h-4" />
-                        <span className="text-sm font-mono">{file}</span>
-                    </div>
+                  <button key={file} onClick={() => setSelectedFile(file)} className={`flex items-center justify-between px-4 py-3 rounded-xl border ${selectedFile === file ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300' : 'bg-stone-900/50 border-white/5 text-stone-400 hover:bg-stone-800'}`}>
+                    <div className="flex items-center gap-3"><FileDigit className="w-4 h-4" /> <span className="text-sm font-mono">{file}</span></div>
                     {selectedFile === file && <CheckCircle2 className="w-4 h-4" />}
                   </button>
                 ))}
               </div>
             </div>
-
-            <button
-              onClick={runDiagnostic}
-              disabled={loading || !selectedFile}
-              className="w-full mt-8 px-6 py-4 rounded-2xl font-bold text-white
-                         bg-indigo-600 hover:bg-indigo-500 shadow-xl shadow-indigo-600/20
-                         transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed
-                         flex items-center justify-center gap-3 group"
-            >
-              {loading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Play className={`w-5 h-5 transition-transform ${selectedFile ? 'group-hover:scale-110' : ''}`} />
-              )}
-              {loading ? 'PROCESSING STAGE ' + activeStage : 'RUN DMLPFFN PREDICTION'}
+            <button onClick={runDiagnostic} disabled={loading || !selectedFile} className="w-full mt-8 px-6 py-4 rounded-2xl font-bold text-white bg-indigo-600 hover:bg-indigo-500 shadow-xl disabled:opacity-30 flex items-center justify-center gap-3">
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5" />}
+              {loading ? `${t.processing} ${activeStage}` : t.processButton}
             </button>
           </div>
-
           <div className="p-6 rounded-2xl bg-stone-900/40 border border-white/5">
-             <div className="flex items-center gap-2 mb-3">
-                <Info className="w-4 h-4 text-stone-500" />
-                <h4 className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Model Specs</h4>
-             </div>
-             <p className="text-[10px] text-stone-500 leading-relaxed">
-                DMLPFFN architecture integrates multi-scale spatial patches with global spectral attention. Generative VAE augmentation ensures robust performance across varying sensor noise profiles.
-             </p>
+             <div className="flex items-center gap-2 mb-3"><Info className="w-4 h-4 text-stone-500" /> <h4 className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">{t.modelSpecs}</h4></div>
+             <p className="text-[10px] text-stone-500 leading-relaxed">{t.modelDesc}</p>
           </div>
         </motion.div>
 
-        {/* ─── Diagnostics Output (8 cols) ───────────────────── */}
         <motion.div variants={item} className="lg:col-span-8 space-y-6">
           <AnimatePresence mode="popLayout">
             {lastResult ? (
-              <motion.div
-                key="active-report"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="glass-card !bg-[#1c1c1e] !border-indigo-500/30 shadow-2xl shadow-indigo-500/10 p-0 overflow-hidden"
-              >
+              <motion.div key="active-report" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass-card !bg-[#1c1c1e] !border-indigo-500/30 p-0 overflow-hidden">
                 <div className="bg-indigo-500/5 border-b border-white/5 p-6 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
-                            <BarChart3 className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h3 className="text-white font-bold uppercase tracking-widest text-xs">Active Diagnostic Report</h3>
-                            <p className="text-stone-500 text-[10px] font-mono">{lastResult.fileName}</p>
-                        </div>
+                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400"><BarChart3 className="w-6 h-6" /></div>
+                        <div><h3 className="text-white font-bold uppercase tracking-widest text-xs">{t.reportTitle}</h3><p className="text-stone-500 text-[10px] font-mono">{lastResult.fileName}</p></div>
                     </div>
-                    <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">
-                        COMPLETED
-                    </div>
+                    <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">{t.completed}</div>
                 </div>
-
                 <div className="p-8 space-y-8">
                     <div className="flex flex-col md:flex-row gap-8 justify-between">
                         <div className="space-y-4">
-                            <div>
-                                <span className="text-[10px] font-bold text-stone-500 uppercase tracking-[0.2em] mb-2 block">Detection Category</span>
-                                <h2 className="text-3xl font-bold font-display text-white">{lastResult.infectionLevel}</h2>
-                                <p className={`text-sm mt-1 font-medium ${
-                                    lastResult.class === 3 ? 'text-red-400' : 
-                                    lastResult.class === 2 ? 'text-amber-400' : 'text-emerald-400'
-                                }`}>{lastResult.category}</p>
-                            </div>
-
+                            <div><span className="text-[10px] font-bold text-stone-500 uppercase tracking-[0.2em] mb-2 block">{t.category}</span><h2 className="text-3xl font-bold font-display text-white">{lastResult.infectionLevel}</h2><p className={`text-sm mt-1 font-medium ${lastResult.class === 3 ? 'text-red-400' : lastResult.class === 2 ? 'text-amber-400' : 'text-emerald-400'}`}>{lastResult.category}</p></div>
                             <div className="flex items-center gap-8">
-                                <div>
-                                    <p className="text-3xl font-black text-white">{(lastResult.confidence * 100).toFixed(2)}%</p>
-                                    <p className="text-[10px] font-bold text-stone-500 uppercase mt-1">Confidence</p>
-                                </div>
+                                <div><p className="text-3xl font-black text-white">{(lastResult.confidence * 100).toFixed(2)}%</p><p className="text-[10px] font-bold text-stone-500 uppercase mt-1">{t.confidence}</p></div>
                                 <div className="h-10 w-px bg-stone-800" />
-                                <div>
-                                    <p className="text-3xl font-black text-indigo-400">STAGE {lastResult.stage}</p>
-                                    <p className="text-[10px] font-bold text-stone-500 uppercase mt-1">Infection Stage</p>
-                                </div>
+                                <div><p className="text-3xl font-black text-indigo-400">{t.stage} {lastResult.stage}</p><p className="text-[10px] font-bold text-stone-500 uppercase mt-1">{t.stage}</p></div>
                             </div>
                         </div>
-                        
-                        <div className="w-full md:w-64 space-y-4">
-                             <div className="p-4 rounded-2xl bg-stone-900 border border-white/5">
-                                <h4 className="text-[10px] font-bold text-stone-400 uppercase mb-3 flex items-center gap-2">
-                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Potential Diseases
-                                </h4>
-                                <div className="flex flex-wrap gap-1.5">
-                                    {lastResult.possibleDiseases.map(d => (
-                                        <span key={d} className="text-[9px] px-2 py-1 rounded bg-stone-800 border border-white/5 text-stone-300">
-                                            {d}
-                                        </span>
-                                    ))}
-                                </div>
-                             </div>
-                        </div>
+                        <div className="w-full md:w-64 space-y-4"><div className="p-4 rounded-2xl bg-stone-900 border border-white/5"><h4 className="text-[10px] font-bold text-stone-400 uppercase mb-3 flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> {t.results}</h4><div className="flex flex-wrap gap-1.5">{lastResult.possibleDiseases.map(d => (<span key={d} className="text-[9px] px-2 py-1 rounded bg-stone-800 border border-white/5 text-stone-300">{d}</span>))}</div></div></div>
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                         <div className="p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10">
-                            <h4 className="text-[10px] font-bold text-indigo-300 uppercase mb-4 flex items-center gap-2">
-                                <Info className="w-4 h-4" /> Analysis Summary
-                            </h4>
-                            <p className="text-xs text-stone-400 leading-relaxed">
-                                Our DMLPFFN engine detected significant {lastResult.category.toLowerCase()} spectral signatures during Stage {lastResult.stage} manifestation. VAE validation suggests a {lastResult.class === 3 ? 'severe' : 'noticeable'} deviation from healthy sugarbeet physiological baselines.
-                            </p>
-                         </div>
-                         <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
-                            <h4 className="text-[10px] font-bold text-emerald-300 uppercase mb-4 flex items-center gap-2">
-                                <Activity className="w-4 h-4" /> Safety Recommendations
-                            </h4>
-                            <ul className="space-y-2">
-                                {lastResult.precautions.map((p, i) => (
-                                    <li key={i} className="text-[10px] text-stone-400 flex items-center gap-2">
-                                        <div className="w-1 h-1 rounded-full bg-emerald-500" />
-                                        {p}
-                                    </li>
-                                ))}
-                            </ul>
-                         </div>
+                         <div className="p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10"><h4 className="text-[10px] font-bold text-indigo-300 uppercase mb-4 flex items-center gap-2"><Info className="w-4 h-4" /> {t.summary}</h4><p className="text-xs text-stone-400 leading-relaxed">Our DMLPFFN engine detected significant {lastResult.category.toLowerCase()} spectral signatures during Stage {lastResult.stage} manifestation.</p></div>
+                         <div className="p-5 rounded-2xl bg-emerald-500/5 border border-emerald-500/10"><h4 className="text-[10px] font-bold text-emerald-300 uppercase mb-4 flex items-center gap-2"><Activity className="w-4 h-4" /> {t.recommendations}</h4><ul className="space-y-2">{lastResult.precautions.map((p, i) => (<li key={i} className="text-[10px] text-stone-400 flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-emerald-500" />{p}</li>))}</ul></div>
                     </div>
                 </div>
               </motion.div>
             ) : results.length > 0 ? (
               <div className="space-y-4">
-                <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest flex items-center gap-2">
-                        <Search className="w-4 h-4" /> Diagnostic History (Sorted by lowest confidence)
-                    </h3>
-                    <span className="text-[10px] bg-stone-800 text-stone-400 px-2 py-1 rounded border border-white/5">
-                        {results.length} RECORDED
-                    </span>
-                </div>
+                <div className="flex items-center justify-between mb-2"><h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest flex items-center gap-2"><Search className="w-4 h-4" /> {t.history}</h3><span className="text-[10px] bg-stone-800 text-stone-400 px-2 py-1 rounded border border-white/5">{results.length} {t.recorded}</span></div>
                 {results.map((res, i) => (
-                  <motion.div
-                    key={`${res.fileName}-${i}`}
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="glass-card !bg-stone-900/40 border-stone-800 relative overflow-hidden"
-                  >
-                    <div className={`absolute top-0 right-0 w-1 h-full ${
-                        res.class === 3 ? 'bg-red-500' : 
-                        res.class === 2 ? 'bg-amber-500' : 
-                        res.class === 1 ? 'bg-emerald-500' : 'bg-blue-500'
-                    }`} />
-                    
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-3">
-                                <div className={`p-2 rounded-lg ${
-                                    res.class === 3 ? 'bg-red-500/10 text-red-500' : 
-                                    res.class === 2 ? 'bg-amber-500/10 text-amber-500' : 
-                                    res.class === 1 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-blue-500/10 text-blue-500'
-                                }`}>
-                                    <AlertTriangle className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className="flex items-center gap-2">
-                                        <h4 className="text-lg font-bold text-white">{res.infectionLevel}</h4>
-                                        <span className="text-[10px] font-mono text-stone-500 bg-black/30 px-1.5 py-0.5 rounded">CLASS_{res.class}</span>
-                                    </div>
-                                    <p className="text-sm font-medium text-stone-400">{res.category}</p>
-                                </div>
-                            </div>
-                            
-                            <div className="flex items-center gap-4 text-[10px] text-stone-500 uppercase tracking-widest font-bold">
-                                <span className="flex items-center gap-1.5"><FileDigit className="w-3.5 h-3.5" /> {res.fileName}</span>
-                                <span className="flex items-center gap-1.5"><Layers className="w-3.5 h-3.5" /> STAGE {res.stage} MANIFESTATION</span>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col items-end gap-2">
-                            <div className="text-right">
-                                <p className="text-2xl font-black font-display text-white">{(res.confidence * 100).toFixed(2)}%</p>
-                                <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Confidence Score</p>
-                            </div>
-                        </div>
-                    </div>
-                  </motion.div>
+                  <motion.div key={`${res.fileName}-${i}`} initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="glass-card !bg-stone-900/40 border-stone-800 relative overflow-hidden"><div className={`absolute top-0 right-0 w-1 h-full ${res.class === 3 ? 'bg-red-500' : res.class === 2 ? 'bg-amber-500' : res.class === 1 ? 'bg-emerald-500' : 'bg-blue-500'}`} /><div className="flex flex-col md:flex-row md:items-center justify-between gap-6"><div className="space-y-3"><div className="flex items-center gap-3"><div className={`p-2 rounded-lg ${res.class === 3 ? 'bg-red-500/10 text-red-500' : res.class === 2 ? 'bg-amber-500/10 text-amber-500' : res.class === 1 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-blue-500/10 text-blue-500'}`}><AlertTriangle className="w-5 h-5" /></div><div><div className="flex items-center gap-2"><h4 className="text-lg font-bold text-white">{res.infectionLevel}</h4><span className="text-[10px] font-mono text-stone-500 bg-black/30 px-1.5 py-0.5 rounded">CLASS_{res.class}</span></div><p className="text-sm font-medium text-stone-400">{res.category}</p></div></div><div className="flex items-center gap-4 text-[10px] text-stone-500 uppercase tracking-widest font-bold"><span className="flex items-center gap-1.5"><FileDigit className="w-3.5 h-3.5" /> {res.fileName}</span><span className="flex items-center gap-1.5"><Layers className="w-3.5 h-3.5" /> {t.stage} {res.stage}</span></div></div><div className="flex flex-col items-end gap-2"><div className="text-right"><p className="text-2xl font-black font-display text-white">{(res.confidence * 100).toFixed(2)}%</p><p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">{t.confidence}</p></div></div></div></motion.div>
                 ))}
               </div>
             ) : (
-              <motion.div
-                key="empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="glass-card flex flex-col items-center justify-center py-32 text-center !bg-[#1c1c1e] !border-dashed !border-white/10"
-              >
-                <div className="w-24 h-24 rounded-full bg-stone-900 flex items-center justify-center mb-6 relative">
-                    <div className="absolute inset-0 rounded-full border border-indigo-500/20 animate-ping" />
-                    <Search className="w-10 h-10 text-stone-700" />
-                </div>
-                <h3 className="text-xl font-bold text-stone-400 mb-2">Awaiting Hyperspectral Input</h3>
-                <p className="text-stone-500 max-w-sm text-sm">
-                    Select a .npy hyperspectral data cube from the Control Center to begin the 4-stage DMLPFFN diagnostic workflow.
-                </p>
-                <div className="mt-8 grid grid-cols-2 gap-3 text-left">
-                    <div className="p-3 rounded-xl bg-stone-900 border border-white/5 space-y-1">
-                        <p className="text-[10px] font-bold text-stone-500 uppercase">Input Shape</p>
-                        <p className="text-xs text-stone-300">9x9x96 Patch</p>
-                    </div>
-                    <div className="p-3 rounded-xl bg-stone-900 border border-white/5 space-y-1">
-                        <p className="text-[10px] font-bold text-stone-500 uppercase">Engine State</p>
-                        <p className="text-xs text-emerald-500 flex items-center gap-1.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                            Ready
-                        </p>
-                    </div>
-                </div>
-              </motion.div>
+              <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card flex flex-col items-center justify-center py-32 text-center !bg-[#1c1c1e] !border-dashed !border-white/10"><div className="w-24 h-24 rounded-full bg-stone-900 flex items-center justify-center mb-6 relative"><div className="absolute inset-0 rounded-full border border-indigo-500/20 animate-ping" /><Search className="w-10 h-10 text-stone-700" /></div><h3 className="text-xl font-bold text-stone-400 mb-2">{t.awaiting}</h3><p className="text-stone-500 max-w-sm text-sm">{t.awaitingDesc}</p><div className="mt-8 grid grid-cols-2 gap-3 text-left"><div className="p-3 rounded-xl bg-stone-900 border border-white/5 space-y-1"><p className="text-[10px] font-bold text-stone-500 uppercase">{t.inputShape}</p><p className="text-xs text-stone-300">9x9x96 Patch</p></div><div className="p-3 rounded-xl bg-stone-900 border border-white/5 space-y-1"><p className="text-[10px] font-bold text-stone-500 uppercase">{t.engineState}</p><p className="text-xs text-emerald-500 flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />{t.ready}</p></div></div></motion.div>
             )}
           </AnimatePresence>
-
-          {/* Quick Stats / Observations */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="glass-card !bg-stone-900/40 border-stone-800">
-                  <div className="flex items-center gap-2 mb-4">
-                      <TrendingUp className="w-4 h-4 text-emerald-500" />
-                      <h4 className="text-xs font-bold text-stone-400 uppercase">GenAI Impact Analysis</h4>
-                  </div>
-                  <p className="text-xs text-stone-500 leading-relaxed">
-                      Synthetic pattern synthesis via convolutional VAE accounts for <span className="text-emerald-400 font-bold">+1.3%</span> accuracy gain on base DMLPFFN architecture.
-                  </p>
-              </div>
-              <div className="glass-card !bg-stone-900/40 border-stone-800">
-                  <div className="flex items-center gap-2 mb-4">
-                      <Info className="w-4 h-4 text-indigo-500" />
-                      <h4 className="text-xs font-bold text-stone-400 uppercase">Scale Efficiency</h4>
-                  </div>
-                  <p className="text-xs text-stone-500 leading-relaxed">
-                      Dilated convolutions (d=1,2,3) in the Local Perceptron block provide multi-scale context without increasing parameter overhead.
-                  </p>
-              </div>
+              <div className="glass-card !bg-stone-900/40 border-stone-800"><div className="flex items-center gap-2 mb-4"><TrendingUp className="w-4 h-4 text-emerald-500" /><h4 className="text-xs font-bold text-stone-400 uppercase">{t.impactTitle}</h4></div><p className="text-xs text-stone-500 leading-relaxed">Synthetic pattern synthesis accounts for <span className="text-emerald-400 font-bold">+1.3%</span> accuracy gain.</p></div>
+              <div className="glass-card !bg-stone-900/40 border-stone-800"><div className="flex items-center gap-2 mb-4"><Info className="w-4 h-4 text-indigo-500" /><h4 className="text-xs font-bold text-stone-400 uppercase">{t.efficiencyTitle}</h4></div><p className="text-xs text-stone-500 leading-relaxed">Dilated convolutions provide multi-scale context.</p></div>
           </div>
         </motion.div>
       </div>

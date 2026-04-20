@@ -102,8 +102,82 @@ const timeSeriesData = [
   { time: '13:20', value: 65 },
 ]
 
+const translations = {
+  hi: {
+    scans: 'कुल स्कैन',
+    chats: 'AI चैट',
+    alerts: 'बाज़ार अलर्ट',
+    carbon: 'कार्बन क्रेडिट',
+    quickActions: 'त्वरित कार्य',
+    cropHealth: 'फसल स्वास्थ्य',
+    healthy: 'स्वस्थ',
+    needsCare: 'देखभाल की ज़रूरत',
+    weather: 'मौसम',
+    soilMoisture: 'मिट्टी की नमी',
+    optimal: 'इष्टतम स्तर',
+    avgMoisture: 'औसत नमी वितरण',
+    trend: 'फसल स्वास्थ्य रुझान',
+    forecast: 'मौसम पूर्वानुमान',
+    today: 'आज',
+    insights: 'AI अंतर्दृष्टि',
+    viewAdvice: 'सलाह देखें',
+    marketTrends: 'बाज़ार के रुझान',
+    sustainability: 'सस्टेनेबिलिटी स्कोर',
+    viability: 'कुल व्यवहार्यता',
+    viewReport: 'रिपोर्ट देखें',
+    heroSubtitle: 'आपका स्मार्ट कृषि डैशबोर्ड आज आपकी मदद के लिए तैयार है।',
+    last30Days: 'पिछले 30 दिन',
+    actions: {
+      'SCAN CROP': 'फसल स्कैन',
+      'AI ADVISOR': 'AI सलाहकार',
+      'MARKET INTEL': 'बाज़ार भाव',
+      'CROP ADVISORY': 'फसल सलाह',
+      'SUSTAINABILITY': 'सस्टेनेबिलिटी',
+      'AGRILIBRARY': 'कृषि लाइब्रेरी',
+      'GENAFFNET': 'ML हब'
+    }
+  },
+  en: {
+    scans: 'TOTAL SCANS',
+    chats: 'AI CHATS',
+    alerts: 'MARKET ALERTS',
+    carbon: 'CARBON CREDITS',
+    quickActions: 'QUICK ACTIONS',
+    cropHealth: 'Crop Health',
+    healthy: 'Healthy',
+    needsCare: 'Needs Care',
+    weather: 'Weather',
+    soilMoisture: 'Soil Moisture',
+    optimal: 'Optimal levels',
+    avgMoisture: 'Avg. moisture delivery tracked',
+    trend: 'Crop Health Trend',
+    forecast: 'Weather Forecast',
+    today: 'Today',
+    insights: 'AI Insights',
+    viewAdvice: 'View Advice',
+    marketTrends: 'Market Trends',
+    sustainability: 'Sustainability Score',
+    viability: 'Overall Viability',
+    viewReport: 'View Report',
+    heroSubtitle: 'Your smart agricultural dashboard is ready to assist you today.',
+    last30Days: 'Last 30 Days',
+    actions: {
+      'SCAN CROP': 'SCAN CROP',
+      'AI ADVISOR': 'AI ADVISOR',
+      'MARKET INTEL': 'MARKET INTEL',
+      'CROP ADVISORY': 'CROP ADVISORY',
+      'SUSTAINABILITY': 'SUSTAINABILITY',
+      'AGRILIBRARY': 'AGRILIBRARY',
+      'GENAFFNET': 'GENAFFNET'
+    }
+  }
+}
+
 export default function Dashboard() {
   const { state } = useApp()
+  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
+  const t = translations[lang]
+
   const profile = getUserProfile()
   
   const [selectedCrop, setSelectedCrop] = useState('Wheat')
@@ -149,16 +223,16 @@ export default function Dashboard() {
             {greeting}, <span className="text-emerald-600 dark:text-emerald-500">{state.userName || 'Guest Farmer'}</span> 🧑‍🌾
           </h1>
           <p className="text-stone-500 dark:text-stone-400 max-w-lg text-sm pt-2">
-            Your smart agricultural dashboard is ready to assist you today.
+            {t.heroSubtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
           {[
-            { icon: ScanLine, value: profile.totalScans, label: 'TOTAL SCANS', bgColor: 'bg-emerald-50/70 dark:bg-[#1a2f24]' },
-            { icon: Activity, value: profile.totalChats, label: 'AI CHATS', bgColor: 'bg-purple-50/70 dark:bg-purple-900/20' },
-            { icon: TrendingUp, value: '12', label: 'MARKET ALERTS', bgColor: 'bg-amber-50/70 dark:bg-amber-900/20' },
-            { icon: Leaf, value: '79.7', label: 'CARBON CREDITS', bgColor: 'bg-cyan-50/70 dark:bg-cyan-900/20' },
+            { icon: ScanLine, value: profile.totalScans, label: t.scans, bgColor: 'bg-emerald-50/70 dark:bg-[#1a2f24]' },
+            { icon: Activity, value: profile.totalChats, label: t.chats, bgColor: 'bg-purple-50/70 dark:bg-purple-900/20' },
+            { icon: TrendingUp, value: '12', label: t.alerts, bgColor: 'bg-amber-50/70 dark:bg-amber-900/20' },
+            { icon: Leaf, value: '79.7', label: t.carbon, bgColor: 'bg-cyan-50/70 dark:bg-cyan-900/20' },
           ].map((s) => (
             <motion.div
               key={s.label}
@@ -183,7 +257,7 @@ export default function Dashboard() {
           <div className="p-2 bg-amber-50 dark:bg-amber-900/30 rounded-xl">
             <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
           </div>
-          <h2 className="text-lg font-bold font-display text-stone-800 dark:text-stone-100 uppercase tracking-tight">Quick Actions</h2>
+          <h2 className="text-lg font-bold font-display text-stone-800 dark:text-stone-100 uppercase tracking-tight">{t.quickActions}</h2>
         </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
@@ -193,7 +267,7 @@ export default function Dashboard() {
                 <div className={`p-3 rounded-[1rem] ${action.color}`}>
                   <action.icon className="w-6 h-6" />
                 </div>
-                <span className="text-[10px] font-bold text-stone-600 dark:text-stone-400 uppercase tracking-tighter">{action.label}</span>
+                <span className="text-[10px] font-bold text-stone-600 dark:text-stone-400 uppercase tracking-tighter">{t.actions[action.label as keyof typeof t.actions] || action.label}</span>
               </motion.div>
             </Link>
           ))}
@@ -209,9 +283,9 @@ export default function Dashboard() {
           {/* Card 1: Crop Health */}
           <div className={cardClass}>
             <div className="flex justify-between items-start mb-6 z-10 relative">
-               <h3 className="text-stone-800 dark:text-stone-100 font-bold whitespace-nowrap">Crop Health</h3>
+               <h3 className="text-stone-800 dark:text-stone-100 font-bold whitespace-nowrap">{t.cropHealth}</h3>
                <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                 <Leaf className="w-3 h-3" /> {currentCropData.currentHealth >= 80 ? 'Healthy' : 'Needs Care'}
+                 <Leaf className="w-3 h-3" /> {currentCropData.currentHealth >= 80 ? t.healthy : t.needsCare}
                </div>
             </div>
             <div className="z-10 relative flex justify-between items-end">
@@ -236,7 +310,7 @@ export default function Dashboard() {
           {/* Card 2: Weather */}
           <div className={`${cardClass} bg-gradient-to-b from-transparent to-emerald-50/50 dark:to-emerald-900/10`}>
             <div className="flex justify-between items-start mb-2">
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold">Weather</h3>
+              <h3 className="text-stone-800 dark:text-stone-100 font-bold">{t.weather}</h3>
               {weather ? (
                 <div className="flex -space-x-2">
                   <Cloud className="w-8 h-8 text-sky-400 fill-sky-200 dark:fill-sky-900/50" />
@@ -268,7 +342,7 @@ export default function Dashboard() {
           {/* Card 3: Soil Moisture */}
           <div className={cardClass}>
             <div className="flex justify-between items-start mb-6">
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold">Soil Moisture</h3>
+              <h3 className="text-stone-800 dark:text-stone-100 font-bold">{t.soilMoisture}</h3>
               <div className="flex relative">
                 <Droplets className="w-8 h-8 text-sky-500 fill-sky-400 opacity-60 absolute -right-4 -top-2" />
                 <Droplets className="w-10 h-10 text-sky-600 fill-sky-500 drop-shadow-md" />
@@ -282,8 +356,8 @@ export default function Dashboard() {
                 <Leaf className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div className="text-xs">
-                <p className="font-bold text-stone-800 dark:text-stone-100">Optimal levels</p>
-                <p className="text-stone-500 dark:text-stone-400 truncate">Avg. moisture delivery tracked</p>
+                <p className="font-bold text-stone-800 dark:text-stone-100">{t.optimal}</p>
+                <p className="text-stone-500 dark:text-stone-400 truncate">{t.avgMoisture}</p>
               </div>
             </div>
           </div>
@@ -296,7 +370,7 @@ export default function Dashboard() {
           <div className={`${cardClass} lg:col-span-2`}>
              <div className="flex justify-between items-center mb-6">
               <div className="flex items-center gap-3">
-                 <h3 className="text-stone-800 dark:text-stone-100 font-bold">Crop Health Trend</h3>
+                 <h3 className="text-stone-800 dark:text-stone-100 font-bold">{t.trend}</h3>
                  <div className="bg-stone-100 dark:bg-[#2A2A2D] px-2 py-1 flex items-center rounded-lg border border-stone-200 dark:border-stone-700">
                     <select 
                       value={selectedCrop} 
@@ -310,7 +384,7 @@ export default function Dashboard() {
                     </div>
                  </div>
               </div>
-              <p className="text-stone-500 dark:text-stone-400 text-xs font-bold uppercase hidden sm:block">Last 30 Days</p>
+              <p className="text-stone-500 dark:text-stone-400 text-xs font-bold uppercase hidden sm:block">{t.last30Days}</p>
             </div>
             <div className="h-48 w-full mt-4">
                <ResponsiveContainer width="100%" height="100%">
@@ -347,9 +421,9 @@ export default function Dashboard() {
 
           <div className={`${cardClass} lg:col-span-1`}>
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold">Weather Forecast</h3>
+              <h3 className="text-stone-800 dark:text-stone-100 font-bold">{t.forecast}</h3>
               <div className="flex gap-2">
-                <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold text-center cursor-default">Today</div>
+                <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold text-center cursor-default">{t.today}</div>
               </div>
             </div>
             
@@ -376,18 +450,18 @@ export default function Dashboard() {
           <div className="flex flex-col gap-5 md:gap-6">
             <div className={`${cardClass} bg-stone-50/80 dark:bg-[#252528] !border-[1.5px] !border-indigo-100 dark:!border-white/5 !shadow-sm dark:!shadow-none`}>
                <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4 flex items-center gap-2">
-                  <Brain className="w-5 h-5 text-indigo-500" /> AI Insights
+                  <Brain className="w-5 h-5 text-indigo-500" /> {t.insights}
                </h3>
                <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-6">
                  Reduce irrigation for the next two days to <span className="text-emerald-600 dark:text-emerald-400 font-bold">40%</span> due to forecasted rain and high soil moisture levels.
                </p>
                <button className="bg-stone-800 hover:bg-stone-900 dark:bg-[#333336] dark:hover:bg-[#444448] text-white py-3 px-4 rounded-xl text-sm font-bold transition-colors w-max flex items-center gap-2">
-                 View Advice <ChevronRight className="w-4 h-4" />
+                 {t.viewAdvice} <ChevronRight className="w-4 h-4" />
                </button>
             </div>
 
             <div className={`${cardClass} flex-1`}>
-              <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4">Market Trends ({state.currentLocation.split(',')[0]})</h3>
+              <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-4">{t.marketTrends}</h3>
               <div className="space-y-4">
                 {marketTrends.map((trend, i) => (
                   <div key={i} className="flex items-center justify-between">
@@ -427,7 +501,7 @@ export default function Dashboard() {
              <div className="p-5 flex-1 flex flex-col">
                 <div className="flex gap-2 mb-6">
                   <div className="bg-stone-100 dark:bg-[#2A2A2D] text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 cursor-pointer">
-                     <Leaf className="w-3.5 h-3.5" /> Crop Health
+                     <Leaf className="w-3.5 h-3.5" /> {t.cropHealth}
                   </div>
                   <div className="text-stone-500 px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:text-stone-800 dark:hover:text-stone-200">
                     <Activity className="w-3.5 h-3.5" /> Sensors
@@ -447,7 +521,7 @@ export default function Dashboard() {
 
           {/* Col 3 */}
           <div className={`${cardClass}`}>
-             <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-6">Sustainability Score</h3>
+             <h3 className="text-stone-800 dark:text-stone-100 font-bold mb-6">{t.sustainability}</h3>
              
              <div className="flex items-center gap-2 mb-6">
                 <div className="flex-1 space-y-4">
@@ -482,7 +556,7 @@ export default function Dashboard() {
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                      <span className="text-2xl font-bold text-stone-800 dark:text-stone-100">82%</span>
-                     <span className="text-[8px] font-bold text-stone-400 uppercase tracking-tighter text-center leading-none mt-1">Overall<br/>Viability</span>
+                     <span className="text-[8px] font-bold text-stone-400 uppercase tracking-tighter text-center leading-none mt-1">{t.viability}</span>
                   </div>
                 </div>
              </div>
@@ -492,7 +566,7 @@ export default function Dashboard() {
                    <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Overall 82%
                 </div>
                 <button className="bg-emerald-50 hover:bg-emerald-100 dark:bg-[#1a2f24] dark:hover:bg-[#203c2b] text-emerald-700 dark:text-emerald-400 py-2.5 px-6 rounded-full text-xs font-bold transition-colors">
-                  View Report
+                  {t.viewReport}
                 </button>
              </div>
           </div>

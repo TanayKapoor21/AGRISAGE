@@ -21,8 +21,52 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 }
 
+const translations = {
+  hi: {
+    title: 'बाज़ार बुद्धिमत्ता',
+    subtitle: 'रीयल-टाइम मंडी भाव और मौसम पूर्वानुमान',
+    avgPrice: 'औसत मोडल मूल्य',
+    trendingUp: 'ऊपर की ओर रुझान',
+    search: 'फसल या मंडी खोजें...',
+    refresh: 'अपडेट करें',
+    crop: 'फसल',
+    market: 'मंडी',
+    min: 'न्यूनतम',
+    max: 'अधिकतम',
+    modal: 'मोडल',
+    trend: 'रुझान',
+    weatherForecast: 'मौसम पूर्वानुमान',
+    humidity: 'आर्द्रता',
+    wind: 'हवा',
+    forecast7Day: '7-दिवसीय पूर्वानुमान',
+    noResults: 'कोई परिणाम नहीं मिला',
+  },
+  en: {
+    title: 'Market Intelligence',
+    subtitle: 'Real-time Mandi prices, trend analysis, and precision weather forecasting',
+    avgPrice: 'Avg Modal Price',
+    trendingUp: 'Trending Upward',
+    search: 'Search crops or markets...',
+    refresh: 'Refresh',
+    crop: 'Crop',
+    market: 'Market',
+    min: 'Min',
+    max: 'Max',
+    modal: 'Modal',
+    trend: 'Trend',
+    weatherForecast: 'Weather Forecast',
+    humidity: 'Humidity',
+    wind: 'Wind',
+    forecast7Day: '7-Day Forecast',
+    noResults: 'No results matched your search',
+  }
+}
+
 export default function MarketIntelligence() {
   const { state } = useApp()
+  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
+  const t = translations[lang]
+
   const [prices, setPrices] = useState<MandiPrice[]>([])
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [selectedState, setSelectedState] = useState('Haryana')
@@ -57,7 +101,7 @@ export default function MarketIntelligence() {
   )
 
   const avgPrice = prices.length ? Math.round(prices.reduce((s, p) => s + p.modalPrice, 0) / prices.length) : 0
-  const trendingUp = prices.filter((p) => p.trend === 'up').length
+  const trendingUpCount = prices.filter((p) => p.trend === 'up').length
   const totalCrops = prices.length
 
   const TrendIcon = ({ trend }: { trend: 'up' | 'down' | 'stable' }) => {
@@ -72,13 +116,9 @@ export default function MarketIntelligence() {
       <motion.div variants={item}>
         <h1 className="page-title flex items-center gap-3">
           <BarChart3 className="w-8 h-8 text-amber-500" />
-          {state.language === 'hi' ? 'बाज़ार बुद्धिमत्ता' : 'Market Intelligence'}
+          {t.title}
         </h1>
-        <p className="page-subtitle">
-          {state.language === 'hi'
-            ? 'रीयल-टाइम मंडी भाव और मौसम पूर्वानुमान'
-            : 'Real-time Mandi prices, trend analysis, and precision weather forecasting'}
-        </p>
+        <p className="page-subtitle">{t.subtitle}</p>
       </motion.div>
 
 
@@ -91,7 +131,7 @@ export default function MarketIntelligence() {
             </div>
             <div>
               <p className="stat-card-value">₹{avgPrice.toLocaleString()}</p>
-              <p className="stat-card-label">{state.language === 'hi' ? 'औसत मोडल मूल्य' : 'Avg Modal Price'}</p>
+              <p className="stat-card-label">{t.avgPrice}</p>
             </div>
           </div>
         </div>
@@ -101,8 +141,8 @@ export default function MarketIntelligence() {
               <ArrowUpRight className="w-5 h-5 text-emerald-500" />
             </div>
             <div>
-              <p className="stat-card-value">{trendingUp}/{totalCrops}</p>
-              <p className="stat-card-label">{state.language === 'hi' ? 'ऊपर की ओर रुझान' : 'Trending Upward'}</p>
+              <p className="stat-card-value">{trendingUpCount}/{totalCrops}</p>
+              <p className="stat-card-label">{t.trendingUp}</p>
             </div>
           </div>
         </div>
@@ -127,14 +167,14 @@ export default function MarketIntelligence() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={state.language === 'hi' ? 'फसल, बाज़ार खोजें...' : 'Search crops, markets...'}
+            placeholder={t.search}
             className="input-field !pl-10"
           />
         </div>
         <select
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
-          className="input-field !w-auto min-w-[180px]"
+          className="input-field !w-auto min-w-[180px] cursor-pointer"
         >
           {STATES.map((s) => (
             <option key={s} value={s}>{s}</option>
@@ -144,10 +184,10 @@ export default function MarketIntelligence() {
           whileTap={{ scale: 0.95 }}
           onClick={() => fetchData(selectedState)}
           disabled={loading}
-          className="btn-primary flex items-center gap-2"
+          className="btn-primary flex items-center gap-2 justify-center"
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          {state.language === 'hi' ? 'रीफ़्रेश' : 'Refresh'}
+          {t.refresh}
         </motion.button>
       </motion.div>
 
@@ -158,12 +198,12 @@ export default function MarketIntelligence() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-earth-200/30 dark:border-earth-700/30">
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">Crop</th>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">Market</th>
-                  <th className="text-right px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">Min</th>
-                  <th className="text-right px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">Max</th>
-                  <th className="text-right px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">Modal</th>
-                  <th className="text-center px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">Trend</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">{t.crop}</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">{t.market}</th>
+                  <th className="text-right px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">{t.min}</th>
+                  <th className="text-right px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">{t.max}</th>
+                  <th className="text-right px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">{t.modal}</th>
+                  <th className="text-center px-5 py-3 text-xs font-semibold text-earth-400 uppercase tracking-wider">{t.trend}</th>
                 </tr>
               </thead>
               <tbody>
@@ -180,7 +220,7 @@ export default function MarketIntelligence() {
                 ) : filteredPrices.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-5 py-12 text-center text-earth-400">
-                      {state.language === 'hi' ? 'कोई परिणाम नहीं मिला' : 'No results found'}
+                      {t.noResults}
                     </td>
                   </tr>
                 ) : (
@@ -234,7 +274,7 @@ export default function MarketIntelligence() {
             <div className="flex items-center gap-2 mb-4">
               <Cloud className="w-5 h-5 text-blue-500" />
               <h3 className="font-bold font-display text-earth-800 dark:text-earth-200">
-                {state.language === 'hi' ? 'मौसम पूर्वानुमान' : 'Weather Forecast'}
+                {t.weatherForecast}
               </h3>
             </div>
             {weather ? (
@@ -247,22 +287,22 @@ export default function MarketIntelligence() {
                 <div className="grid grid-cols-2 gap-2">
                   <div className="text-center p-2 rounded-lg bg-earth-100/50 dark:bg-earth-800/30">
                     <Droplets className="w-4 h-4 mx-auto text-blue-400 mb-1" />
-                    <p className="text-xs text-earth-400">Humidity</p>
+                    <p className="text-xs text-earth-400">{t.humidity}</p>
                     <p className="text-sm font-bold text-earth-700 dark:text-earth-300">{weather.humidity}%</p>
                   </div>
                   <div className="text-center p-2 rounded-lg bg-earth-100/50 dark:bg-earth-800/30">
                     <Wind className="w-4 h-4 mx-auto text-teal-400 mb-1" />
-                    <p className="text-xs text-earth-400">Wind</p>
-                    <p className="text-sm font-bold text-earth-700 dark:text-earth-300">{weather.windKph} km/h</p>
+                    <p className="text-xs text-earth-400">{t.wind}</p>
+                    <p className="text-sm font-bold text-earth-700 dark:text-earth-300">{weather.windKph} <span className="text-[10px]">km/h</span></p>
                   </div>
                 </div>
                 {/* 7-day forecast */}
                 <div className="space-y-2">
-                  <p className="text-xs font-semibold text-earth-400 uppercase">7-Day Forecast</p>
+                  <p className="text-xs font-semibold text-earth-400 uppercase">{t.forecast7Day}</p>
                   {weather.forecast.map((day) => (
                     <div key={day.date} className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-earth-100/30 dark:hover:bg-earth-800/20 transition-colors">
-                      <span className="text-xs text-earth-500 w-12">
-                        {new Date(day.date).toLocaleDateString('en', { weekday: 'short' })}
+                      <span className="text-xs text-earth-500 w-12 text-left">
+                        {new Date(day.date).toLocaleDateString(state.language === 'hi' ? 'hi' : 'en', { weekday: 'short' })}
                       </span>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1">

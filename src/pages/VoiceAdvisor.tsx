@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Mic, MicOff, Send, Volume2, VolumeX, Bot, User,
-  Globe, Trash2, Sparkles,
+  Globe, Trash2, Sparkles, MapPin,
 } from 'lucide-react'
 import { getAdvisorResponse } from '../services/gemini'
 import { startListening, stopListening, speak, stopSpeaking, isSpeechRecognitionSupported } from '../services/speech'
@@ -10,15 +10,60 @@ import { incrementStat, addActivity } from '../services/db'
 import { useApp } from '../context/AppContext'
 import type { ChatMessage } from '../types'
 
+const availableLocations = [
+  'Karnal, Haryana',
+  'Ludhiana, Punjab',
+  'Pune, Maharashtra',
+  'Ahmedabad, Gujarat',
+  'Indore, MP',
+  'Latur, Maharashtra',
+  'Sirsa, Haryana',
+  'Bathinda, Punjab'
+]
+
+const translations = {
+  hi: {
+    title: 'AI कृषि सलाहकार',
+    subtitle: 'हैंड्स-फ़्री, बहुभाषी कृषि सहायक',
+    welcome: 'नमस्ते! 🌾 मैं AgriSage AI सलाहकार हूँ। आप मुझसे कृषि से जुड़ा कोई भी सवाल पूछ सकते हैं — कीट नियंत्रण, सिंचाई, आधुनिक तकनीक, या बाज़ार की जानकारी। बोलकर या लिखकर पूछें!',
+    chatCleared: 'चैट साफ़ हो गई। नया सवाल पूछें! 🌱',
+    listening: 'सुन रहा हूँ... बोलें',
+    placeholder: 'अपना सवाल लिखें...',
+    stopListening: 'सुनना बंद करें',
+    startVoice: 'बोलना शुरू करें',
+    readAloud: 'ज़ोर से पढ़ें',
+    clearChat: 'चैट मिटाएं',
+    error: 'क्षमा करें, कोई त्रुटि हुई। कृपया पुनः प्रयास करें।',
+    location: 'क्षेत्र',
+    send: 'भेजें'
+  },
+  en: {
+    title: 'Voice AI Advisor',
+    subtitle: 'Hands-free, multilingual agricultural assistant powered by Gemini AI',
+    welcome: "Namaste! 🌾 I'm your AgriSage AI Advisor. Ask me anything about farming — pest control, irrigation, modern techniques, or market insights. You can type or use voice input!",
+    chatCleared: 'Chat cleared. Ask me a new question! 🌱',
+    listening: 'Listening... speak now',
+    placeholder: 'Type your question...',
+    stopListening: 'Stop listening',
+    startVoice: 'Start voice input',
+    readAloud: 'Read aloud',
+    clearChat: 'Clear Chat',
+    error: 'Sorry, something went wrong. Please try again.',
+    location: 'Location',
+    send: 'Send'
+  }
+}
+
 export default function VoiceAdvisor() {
   const { state, dispatch } = useApp()
+  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
+  const t = translations[lang]
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
       role: 'assistant',
-      content: state.language === 'hi'
-        ? 'नमस्ते! 🌾 मैं AgriSage AI सलाहकार हूँ। आप मुझसे कृषि से जुड़ा कोई भी सवाल पूछ सकते हैं — कीट नियंत्रण, सिंचाई, आधुनिक तकनीक, या बाज़ार की जानकारी। बोलकर या लिखकर पूछें!'
-        : 'Namaste! 🌾 I\'m your AgriSage AI Advisor. Ask me anything about farming — pest control, irrigation, modern techniques, or market insights. You can type or use voice input!',
+      content: t.welcome,
       timestamp: new Date(),
       language: state.language,
     },
@@ -38,6 +83,17 @@ export default function VoiceAdvisor() {
     scrollToBottom()
   }, [messages, scrollToBottom])
 
+  // Update welcome message when language changes if it's the only message
+  useEffect(() => {
+    if (messages.length === 1 && (messages[0].id === 'welcome' || messages[0].id === 'welcome_new')) {
+      setMessages([{
+        ...messages[0],
+        content: t.welcome,
+        language: state.language
+      }])
+    }
+  }, [state.language, t.welcome])
+
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim()) return
 
@@ -54,7 +110,7 @@ export default function VoiceAdvisor() {
     setIsLoading(true)
 
     try {
-      const response = await getAdvisorResponse(text, state.language)
+      const response = await getAdvisorResponse(text, state.language, state.currentLocation)
       const botMsg: ChatMessage = {
         id: `bot_${Date.now()}`,
         role: 'assistant',
@@ -75,9 +131,7 @@ export default function VoiceAdvisor() {
         {
           id: `err_${Date.now()}`,
           role: 'assistant',
-          content: state.language === 'hi'
-            ? 'क्षमा करें, कोई त्रुटि हुई। कृपया पुनः प्रयास करें।'
-            : 'Sorry, something went wrong. Please try again.',
+          content: t.error,
           timestamp: new Date(),
           language: state.language,
         },
@@ -85,7 +139,7 @@ export default function VoiceAdvisor() {
     } finally {
       setIsLoading(false)
     }
-  }, [state.language])
+  }, [state.language, t.error])
 
   const handleVoiceInput = useCallback(() => {
     if (isListening) {
@@ -130,39 +184,56 @@ export default function VoiceAdvisor() {
     setMessages([{
       id: 'welcome_new',
       role: 'assistant',
-      content: state.language === 'hi'
-        ? 'चैट साफ़ हो गई। नया सवाल पूछें! 🌱'
-        : 'Chat cleared. Ask me a new question! 🌱',
+      content: t.chatCleared,
       timestamp: new Date(),
       language: state.language,
     }])
   }
 
+  const handleLocationChange = (loc: string) => {
+    dispatch({ type: 'SET_LOCATION', payload: loc })
+  }
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h1 className="page-title flex items-center gap-3">
             <Mic className="w-8 h-8 text-violet-500" />
-            {state.language === 'hi' ? 'AI कृषि सलाहकार' : 'Voice AI Advisor'}
+            {t.title}
           </h1>
-          <p className="page-subtitle">
-            {state.language === 'hi'
-              ? 'हैंड्स-फ़्री, बहुभाषी कृषि सहायक'
-              : 'Hands-free, multilingual agricultural assistant powered by Gemini AI'}
-          </p>
+          <p className="page-subtitle">{t.subtitle}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          {/* Location Dropdown */}
+          <div className="relative flex-1 md:flex-none min-w-[160px]">
+             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400 z-10" />
+             <select 
+               value={state.currentLocation}
+               onChange={(e) => handleLocationChange(e.target.value)}
+               className="input-field !py-2 !pl-10 !pr-8 !text-xs !rounded-xl appearance-none cursor-pointer bg-white dark:bg-earth-800"
+             >
+                {availableLocations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+             </select>
+          </div>
+
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => dispatch({ type: 'SET_LANGUAGE', payload: state.language === 'en' ? 'hi' : 'en' })}
-            className="btn-secondary flex items-center gap-2 text-sm"
+            className="btn-secondary !p-2 !rounded-xl flex items-center gap-2 text-xs"
+            title="Switch Language"
           >
             <Globe className="w-4 h-4" />
-            {state.language === 'en' ? 'हिंदी' : 'English'}
+            {state.language === 'en' ? 'हिंदी' : 'EN'}
           </motion.button>
-          <motion.button whileTap={{ scale: 0.9 }} onClick={clearChat} className="btn-secondary flex items-center gap-2 text-sm text-red-500">
+          
+          <motion.button 
+            whileTap={{ scale: 0.9 }} 
+            onClick={clearChat} 
+            className="btn-secondary !p-2 !rounded-xl flex items-center gap-2 text-xs text-red-500"
+            title={t.clearChat}
+          >
             <Trash2 className="w-4 h-4" />
           </motion.button>
         </div>
@@ -205,7 +276,7 @@ export default function VoiceAdvisor() {
                       <button
                         onClick={() => handleSpeak(msg.content)}
                         className="p-1 rounded hover:bg-earth-200/50 dark:hover:bg-earth-700/50 transition-colors"
-                        title="Read aloud"
+                        title={t.readAloud}
                       >
                         {isSpeakingState ? (
                           <VolumeX className="w-3 h-3 text-earth-400" />
@@ -260,7 +331,7 @@ export default function VoiceAdvisor() {
                   ? 'bg-red-500 text-white shadow-lg shadow-red-500/30 animate-pulse'
                   : 'bg-earth-100 dark:bg-earth-800/50 text-earth-500 dark:text-earth-400 hover:bg-sage-100 dark:hover:bg-sage-900/30 hover:text-sage-600 dark:hover:text-sage-400'
               }`}
-              title={isListening ? 'Stop listening' : 'Start voice input'}
+              title={isListening ? t.stopListening : t.startVoice}
             >
               {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
             </motion.button>
@@ -273,7 +344,7 @@ export default function VoiceAdvisor() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
-                placeholder={state.language === 'hi' ? 'अपना सवाल लिखें...' : 'Type your question...'}
+                placeholder={t.placeholder}
                 className="input-field !pr-12"
                 disabled={isLoading}
               />
@@ -296,6 +367,7 @@ export default function VoiceAdvisor() {
               className="p-3 rounded-xl gradient-primary text-white shadow-lg shadow-sage-500/25 
                          disabled:opacity-40 disabled:shadow-none disabled:cursor-not-allowed
                          hover:shadow-sage-500/40 transition-all duration-300 flex-shrink-0"
+              title={t.send}
             >
               <Send className="w-5 h-5" />
             </motion.button>
@@ -308,7 +380,7 @@ export default function VoiceAdvisor() {
               animate={{ opacity: 1, y: 0 }}
               className="text-xs text-center text-red-500 mt-2"
             >
-              🎤 {state.language === 'hi' ? 'सुन रहा हूँ... बोलें' : 'Listening... speak now'}
+              🎤 {t.listening}
             </motion.p>
           )}
         </div>
@@ -316,3 +388,4 @@ export default function VoiceAdvisor() {
     </div>
   )
 }
+

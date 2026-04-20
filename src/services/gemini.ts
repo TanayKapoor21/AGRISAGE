@@ -246,7 +246,7 @@ const keywords: Record<string, string[]> = {
   'well_being': ['how are you', 'kaise ho', 'how do you do'],
 }
 
-export async function getAdvisorResponse(message: string, language: string = 'en'): Promise<string> {
+export async function getAdvisorResponse(message: string, language: string = 'en', location: string = 'Karnal, Haryana'): Promise<string> {
   const query = message.toLowerCase()
   
   // 1. Check Offline Knowledge Base
@@ -267,7 +267,7 @@ export async function getAdvisorResponse(message: string, language: string = 'en
         : 'Respond in English. You are a friendly, knowledgeable agricultural advisor for Indian farmers.'
 
       const result = await model.generateContent(
-        `${langInstruction}\n\nThe farmer asks: "${message}"\n\nProvide a helpful, practical response covering relevant aspects like timing, techniques, costs, or traditional wisdom. Keep it conversational and under 200 words.`
+        `${langInstruction}\n\nThe farmer is located in: ${location}\n\nThe farmer asks: "${message}"\n\nProvide a helpful, practical response specific to their location if relevant. Cover relevant aspects like timing, techniques, costs, or local wisdom. Keep it conversational and under 200 words.`
       )
       return result.response.text()
     } catch (error) {

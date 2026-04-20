@@ -9,32 +9,81 @@ import { addActivity } from '../services/db'
 import { useApp } from '../context/AppContext'
 import type { CropRecommendation, SoilType } from '../types'
 
+const availableLocations = [
+  'Karnal, Haryana',
+  'Ludhiana, Punjab',
+  'Pune, Maharashtra',
+  'Ahmedabad, Gujarat',
+  'Indore, MP',
+  'Latur, Maharashtra',
+  'Sirsa, Haryana',
+  'Bathinda, Punjab'
+]
+
 const soilTypes: { value: SoilType; label: string; labelHi: string; color: string }[] = [
-  { value: 'alluvial', label: 'Alluvial', labelHi: 'जलोढ़', color: 'from-amber-400 to-yellow-500' },
-  { value: 'black_cotton', label: 'Black Cotton', labelHi: 'काली कपास', color: 'from-gray-700 to-gray-900' },
-  { value: 'red', label: 'Red Soil', labelHi: 'लाल मिट्टी', color: 'from-red-500 to-orange-600' },
-  { value: 'laterite', label: 'Laterite', labelHi: 'लेटेराइट', color: 'from-orange-600 to-red-700' },
-  { value: 'desert', label: 'Desert (Sandy)', labelHi: 'रेगिस्तानी', color: 'from-yellow-400 to-amber-600' },
-  { value: 'mountain', label: 'Mountain', labelHi: 'पर्वतीय', color: 'from-emerald-600 to-teal-700' },
-  { value: 'saline', label: 'Saline/Alkaline', labelHi: 'लवणीय', color: 'from-slate-400 to-slate-600' },
+  { value: 'alluvial', label: 'Alluvial', labelHi: 'जलोढ़', color: 'from-amber-100 to-amber-200' },
+  { value: 'black_cotton', label: 'Black Cotton', labelHi: 'काली मिट्टी', color: 'from-stone-700 to-stone-900' },
+  { value: 'red', label: 'Red', labelHi: 'लाल मिट्टी', color: 'from-red-400 to-red-600' },
+  { value: 'laterite', label: 'Laterite', labelHi: 'लैटेराइट', color: 'from-orange-300 to-orange-500' },
+  { value: 'desert', label: 'Desert', labelHi: 'रेगिस्तानी', color: 'from-yellow-200 to-yellow-400' },
+  { value: 'mountain', label: 'Mountain', labelHi: 'पर्वतीय', color: 'from-slate-400 to-slate-600' },
+  { value: 'saline', label: 'Saline', labelHi: 'खारा', color: 'from-cyan-100 to-cyan-300' }
 ]
 
 const waterIcons = {
-  low: { color: 'text-blue-300', bars: 1 },
-  medium: { color: 'text-blue-500', bars: 2 },
-  high: { color: 'text-blue-700', bars: 3 },
+  low: { color: 'text-blue-300' },
+  medium: { color: 'text-blue-500' },
+  high: { color: 'text-blue-700' }
 }
 
-const demandColors = {
-  low: 'badge-info',
-  medium: 'badge-warning',
-  high: 'badge-success',
+const translations = {
+  hi: {
+    title: 'फसल सलाहकार',
+    subtitle: 'मिट्टी और स्थान आधारित व्यक्तिगत फसल सिफारिशें',
+    landInfo: '🌍 अपनी ज़मीन की जानकारी दें',
+    selectSoil: 'मिट्टी का प्रकार चुनें',
+    enterLocation: 'स्थान चुनें',
+    getRecs: 'सिफारिशें प्राप्त करें',
+    season: 'मौसम',
+    water: 'पानी',
+    duration: 'अवधि',
+    yield: 'पैदावार',
+    demand: 'मांग',
+    tips: 'सुझाव',
+    suitability: 'सटीकता',
+    noResults: 'कोई सिफारिश नहीं मिली। कृपया पुनः प्रयास करें।',
+    seasons: { kharif: 'खरीफ', rabi: 'रबी', zaid: 'जायद' },
+    waterNeeds: { low: 'कम', medium: 'मध्यम', high: 'अधिक' },
+    demandLevels: { low: 'कम', medium: 'मध्यम', high: 'अधिक' }
+  },
+  en: {
+    title: 'Crop Advisory Engine',
+    subtitle: 'Personalized crop recommendations based on soil type and geographic location',
+    landInfo: '🌍 Tell us about your land',
+    selectSoil: 'Select Soil Type',
+    enterLocation: 'Select Location',
+    getRecs: 'Get Recommendations',
+    season: 'Season',
+    water: 'Water',
+    duration: 'Duration',
+    yield: 'Yield',
+    demand: 'Demand',
+    tips: 'Tips',
+    suitability: 'Suitability',
+    noResults: 'No recommendations found. Try a different combination.',
+    seasons: { kharif: 'Kharif', rabi: 'Rabi', zaid: 'Zaid' },
+    waterNeeds: { low: 'Low', medium: 'Medium', high: 'High' },
+    demandLevels: { low: 'Low', medium: 'Medium', high: 'High' }
+  }
 }
 
 export default function CropAdvisory() {
   const { state } = useApp()
+  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
+  const t = translations[lang]
+
   const [soilType, setSoilType] = useState<SoilType>('alluvial')
-  const [location, setLocation] = useState('Maharashtra')
+  const [location, setLocation] = useState('Haryana')
   const [recommendations, setRecommendations] = useState<CropRecommendation[]>([])
   const [loading, setLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
@@ -67,13 +116,9 @@ export default function CropAdvisory() {
       <div>
         <h1 className="page-title flex items-center gap-3">
           <Sprout className="w-8 h-8 text-lime-500" />
-          {state.language === 'hi' ? 'फसल सलाहकार' : 'Crop Advisory Engine'}
+          {t.title}
         </h1>
-        <p className="page-subtitle">
-          {state.language === 'hi'
-            ? 'मिट्टी और स्थान आधारित व्यक्तिगत फसल सिफारिशें'
-            : 'Personalized crop recommendations based on soil type and geographic location'}
-        </p>
+        <p className="page-subtitle">{t.subtitle}</p>
       </div>
 
       {/* Input Panel */}
@@ -83,11 +128,11 @@ export default function CropAdvisory() {
         className="glass-card"
       >
         <h3 className="font-bold font-display text-earth-800 dark:text-earth-200 mb-4">
-          {state.language === 'hi' ? '🌍 अपनी ज़मीन की जानकारी दें' : '🌍 Tell us about your land'}
+          {t.landInfo}
         </h3>
 
         {/* Soil Type Grid */}
-        <p className="text-sm text-earth-500 mb-3">{state.language === 'hi' ? 'मिट्टी का प्रकार चुनें' : 'Select Soil Type'}</p>
+        <p className="text-sm text-earth-500 mb-3">{t.selectSoil}</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-2 mb-6">
           {soilTypes.map((soil) => (
             <motion.button
@@ -112,22 +157,25 @@ export default function CropAdvisory() {
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
-            <input
-              type="text"
+            <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder={state.language === 'hi' ? 'अपना स्थान दर्ज करें' : 'Enter your location'}
-              className="input-field !pl-10"
-            />
+              className="input-field !pl-10 appearance-none cursor-pointer"
+            >
+              <option value="" disabled>{t.enterLocation}</option>
+              {availableLocations.map(loc => (
+                <option key={loc} value={loc}>{loc}</option>
+              ))}
+            </select>
           </div>
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={fetchRecommendations}
             disabled={loading || !location.trim()}
-            className="btn-primary flex items-center gap-2"
+            className="btn-primary flex items-center gap-2 justify-center"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
-            {state.language === 'hi' ? 'सिफारिशें प्राप्त करें' : 'Get Recommendations'}
+            {t.getRecs}
           </motion.button>
         </div>
       </motion.div>
@@ -173,12 +221,15 @@ export default function CropAdvisory() {
                   <div>
                     <h4 className="text-lg font-bold font-display text-earth-800 dark:text-white">{rec.name}</h4>
                     <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mt-1 ${seasonColors[rec.season] || ''}`}>
-                      {rec.season.charAt(0).toUpperCase() + rec.season.slice(1)} Season
+                      {t.seasons[rec.season as keyof typeof t.seasons] || rec.season}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-harvest-400 fill-harvest-400" />
-                    <span className="text-sm font-bold text-earth-700 dark:text-earth-300">{(rec.suitability * 100).toFixed(0)}%</span>
+                  <div className="flex flex-col items-end">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 text-harvest-400 fill-harvest-400" />
+                      <span className="text-sm font-bold text-earth-700 dark:text-earth-300">{(rec.suitability * 100).toFixed(0)}%</span>
+                    </div>
+                    <span className="text-[10px] text-earth-400 uppercase font-bold tracking-wider mt-1">{t.suitability}</span>
                   </div>
                 </div>
 
@@ -197,31 +248,39 @@ export default function CropAdvisory() {
                 {/* Info Grid */}
                 <div className="grid grid-cols-2 gap-2 mb-4">
                   <div className="flex items-center gap-2 p-2 rounded-lg bg-earth-100/50 dark:bg-earth-800/30">
-                    <Droplets className={`w-4 h-4 ${waterIcons[rec.waterNeeds].color}`} />
+                    <Droplets className={`w-4 h-4 ${waterIcons[rec.waterNeeds as keyof typeof waterIcons]?.color || 'text-earth-400'}`} />
                     <div>
-                      <p className="text-[10px] text-earth-400">Water</p>
-                      <p className="text-xs font-semibold text-earth-700 dark:text-earth-300 capitalize">{rec.waterNeeds}</p>
+                      <p className="text-[10px] text-earth-400">{t.water}</p>
+                      <p className="text-xs font-semibold text-earth-700 dark:text-earth-300">
+                        {t.waterNeeds[rec.waterNeeds as keyof typeof t.waterNeeds] || rec.waterNeeds}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 p-2 rounded-lg bg-earth-100/50 dark:bg-earth-800/30">
                     <Calendar className="w-4 h-4 text-earth-400" />
                     <div>
-                      <p className="text-[10px] text-earth-400">Duration</p>
+                      <p className="text-[10px] text-earth-400">{t.duration}</p>
                       <p className="text-xs font-semibold text-earth-700 dark:text-earth-300">{rec.growthDuration}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 p-2 rounded-lg bg-earth-100/50 dark:bg-earth-800/30">
                     <Gauge className="w-4 h-4 text-earth-400" />
                     <div>
-                      <p className="text-[10px] text-earth-400">Yield</p>
+                      <p className="text-[10px] text-earth-400">{t.yield}</p>
                       <p className="text-xs font-semibold text-earth-700 dark:text-earth-300">{rec.expectedYield}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 p-2 rounded-lg bg-earth-100/50 dark:bg-earth-800/30">
                     <TrendingUp className="w-4 h-4 text-earth-400" />
                     <div>
-                      <p className="text-[10px] text-earth-400">Demand</p>
-                      <span className={`${demandColors[rec.marketDemand]} !text-[10px]`}>{rec.marketDemand}</span>
+                      <p className="text-[10px] text-earth-400">{t.demand}</p>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
+                        rec.marketDemand === 'high' ? 'bg-emerald-500/10 text-emerald-600' :
+                        rec.marketDemand === 'medium' ? 'bg-amber-500/10 text-amber-600' :
+                        'bg-slate-500/10 text-slate-600'
+                      }`}>
+                        {t.demandLevels[rec.marketDemand as keyof typeof t.demandLevels] || rec.marketDemand}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -230,7 +289,7 @@ export default function CropAdvisory() {
                 {rec.tips.length > 0 && (
                   <div>
                     <p className="text-xs font-semibold text-earth-400 mb-1.5 flex items-center gap-1">
-                      <Leaf className="w-3 h-3" /> Tips
+                      <Leaf className="w-3 h-3" /> {t.tips}
                     </p>
                     <ul className="space-y-1">
                       {rec.tips.map((tip, j) => (
@@ -247,10 +306,11 @@ export default function CropAdvisory() {
         ) : hasSearched ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card text-center py-12">
             <Sprout className="w-12 h-12 mx-auto text-earth-300 dark:text-earth-600 mb-3" />
-            <p className="text-earth-400">{state.language === 'hi' ? 'कोई सिफारिश नहीं मिली' : 'No recommendations found. Try a different combination.'}</p>
+            <p className="text-earth-400">{t.noResults}</p>
           </motion.div>
         ) : null}
       </AnimatePresence>
     </div>
   )
 }
+
