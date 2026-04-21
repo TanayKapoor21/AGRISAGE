@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Leaf,
   LogOut,
+  Youtube,
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 
@@ -24,6 +25,7 @@ const navItems = [
   { path: '/advisory', icon: Sprout, label: 'Crop Advisory', labelHi: 'फसल सलाहकार', shortLabel: 'Advise' },
   { path: '/sustainable', icon: Recycle, label: 'Sustainable', labelHi: 'टिकाऊ खेती', shortLabel: 'Green' },
   { path: '/library', icon: BookOpen, label: 'Agri Library', labelHi: 'कृषि पुस्तकालय', shortLabel: 'Library' },
+  { path: '/learning', icon: Youtube, label: 'Learning Portal', labelHi: 'लर्निंग पोर्टल', shortLabel: 'Videos' },
   { path: '/genaffnet', icon: Brain, label: 'GenAffNet', labelHi: 'ML हब', shortLabel: 'ML Hub' },
 ]
 

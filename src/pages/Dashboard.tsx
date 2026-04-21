@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import {
   ScanLine, Mic, BarChart3, Sprout, Recycle, BookOpen, Brain,
   Cloud, Droplets, Wind, TrendingUp, Activity, Leaf, Zap,
-  Sun, ChevronRight, CheckCircle2, TrendingDown, MapPin
+  Sun, ChevronRight, CheckCircle2, TrendingDown, MapPin, Youtube
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { getUserProfile } from '../services/db'
@@ -34,6 +34,7 @@ const quickActions = [
   { to: '/advisory', icon: Sprout, label: 'CROP ADVISORY', color: 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400', iconColor: 'text-emerald-600 dark:text-emerald-400' },
   { to: '/sustainable', icon: Recycle, label: 'SUSTAINABILITY', color: 'bg-cyan-50 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400', iconColor: 'text-cyan-600 dark:text-cyan-400' },
   { to: '/library', icon: BookOpen, label: 'AGRILIBRARY', color: 'bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400', iconColor: 'text-teal-600 dark:text-teal-400' },
+  { to: '/learning', icon: Youtube, label: 'LEARNING', color: 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400', iconColor: 'text-red-600 dark:text-red-400' },
   { to: '/genaffnet', icon: Brain, label: 'GENAFFNET', color: 'bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400', iconColor: 'text-violet-600 dark:text-violet-400' },
 ]
 
@@ -134,6 +135,7 @@ const translations = {
       'CROP ADVISORY': 'फसल सलाह',
       'SUSTAINABILITY': 'सस्टेनेबिलिटी',
       'AGRILIBRARY': 'कृषि लाइब्रेरी',
+      'LEARNING': 'लर्निंग पोर्टल',
       'GENAFFNET': 'ML हब'
     }
   },
@@ -168,6 +170,7 @@ const translations = {
       'CROP ADVISORY': 'CROP ADVISORY',
       'SUSTAINABILITY': 'SUSTAINABILITY',
       'AGRILIBRARY': 'AGRILIBRARY',
+      'LEARNING': 'LEARNING PORTAL',
       'GENAFFNET': 'GENAFFNET'
     }
   }
@@ -260,7 +263,7 @@ export default function Dashboard() {
           <h2 className="text-lg font-bold font-display text-stone-800 dark:text-stone-100 uppercase tracking-tight">{t.quickActions}</h2>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
           {quickActions.map((action, i) => (
             <Link key={i} to={action.to}>
               <motion.div whileHover={{ y: -2 }} className="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl bg-white dark:bg-[#1C1C1E] border-[1.5px] border-stone-200 dark:border dark:border-white/5 shadow-sm dark:shadow-none hover:shadow-md transition-all text-center h-full">

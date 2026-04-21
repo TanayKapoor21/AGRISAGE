@@ -9,6 +9,7 @@ import CropAdvisory from './pages/CropAdvisory'
 import SustainablePortal from './pages/SustainablePortal'
 import AgriLibrary from './pages/AgriLibrary'
 import GenAffNetHub from './pages/GenAffNetHub'
+import LearningPortal from './pages/LearningPortal'
 import Auth from './pages/Auth'
 
 function ProtectedRoute() {
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/advisory" element={<CropAdvisory />} />
               <Route path="/sustainable" element={<SustainablePortal />} />
               <Route path="/library" element={<AgriLibrary />} />
+              <Route path="/learning" element={<LearningPortal />} />
               <Route path="/genaffnet" element={<GenAffNetHub />} />
             </Route>
           </Route>
