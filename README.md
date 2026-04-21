@@ -20,6 +20,7 @@ graph TD
     Dashboard --> Market[Market Intel]
     Dashboard --> Sustainable[Sustainable Portal]
     Dashboard --> ML[GenAffNet Hub]
+    Dashboard --> Learning[Learning Portal]
     
     Dashboard --> SQLite[(SQLite DB)]
     
@@ -73,6 +74,9 @@ A multilingual, voice-enabled assistant that provides science-backed agricultura
 ### ♻️ Sustainable Portal
 - **Waste Exchange**: Connect with biomass energy plants to monetize farm stubble.
 - **Carbon Credits**: A conceptual ledger for earning credits through sustainable practices.
+
+### 📚 Learning Portal
+A curated, multilingual video library designed to enhance agricultural expertise. Features 25+ hand-picked tutorials on crop cultivation (Wheat, Rice, Corn, Cotton), market price analysis, sustainable stubble management, and disease prevention techniques.
 
 
 ## 🛠️ Tech Stack
@@ -139,7 +143,7 @@ agrisage/
 ├── src/               # Frontend source code
 │   ├── components/    # Layout, Sidebar, Header, WasteCollectionMap
 │   ├── context/       # AppContext (Auth state, Theme, Language)
-│   ├── pages/         # Dashboard, Auth (Login/Signup), Scanner, Advisor, etc.
+│   ├── pages/         # Dashboard, Auth, Scanner, Advisor, Market, Sustainable, Learning Portal, etc.
 │   ├── services/      # Gemini AI, Weather API, Local/Backend Sync
 │   └── types/         # TypeScript interfaces
 ├── server/            # Backend Node/Express server
