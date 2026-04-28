@@ -62,6 +62,12 @@ Real-time Google Maps integration to locate verified stubble recycling, composti
 ### 🔍 Computer Vision Crop Scanner
 Identify pests and diseases instantly using your device's camera. Leveraging 3D-CNN streams for spatial-spectral fusion.
 
+**Dataset Integration:**
+The scanner leverages a comprehensive agricultural dataset featuring multiple crop images captured from various different angles to ensure robust classification.
+*🔗 [View the Training Dataset](https://www.kaggle.com/datasets/aman2000jaiswal/agriculture-crop-images?resource=download)*
+
+*Note: For extra support and significantly more accurate diagnostic results, you can integrate your Gemini API key to unlock advanced cloud-based analysis.*
+
 ### 📊 Market Intelligence Pulse
 Live Mandi prices for major commodities (Wheat, Paddy, Cotton, etc.) scraped and structured in real-time from trusted national sources.
 
