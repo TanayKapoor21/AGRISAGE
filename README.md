@@ -262,7 +262,7 @@ AgriSage serves as the primary implementation platform for our research on **Pre
 | **Srasthti Chauhan** | Agricultural Intelligence & Data Analysis | Dataset Validation & Precision Metric Analysis |
 
 ### 📚 Guidance & Mentorship
-Special thanks to **Dr. Anuradha Dhull** and **Dr. Asha Sohal** for their scientific guidance and agricultural insights.
+Special thanks to **Dr. Anuradha Dhull** and **Dr Asha Sohal** for their scientific guidance and agricultural insights.
 
 ---
 
