@@ -51,13 +51,88 @@ const translations = {
     error: 'Sorry, something went wrong. Please try again.',
     location: 'Location',
     send: 'Send'
+  },
+  pa: {
+    title: 'ਆਵਾਜ਼ AI ਸਲਾਹਕਾਰ',
+    subtitle: 'ਹੈਂਡਸ-ਫ੍ਰੀ, ਬਹੁਭਾਸ਼ਾਈ ਖੇਤੀਬਾੜੀ ਸਹਾਇਕ',
+    welcome: 'ਸਤਿ ਸ਼੍ਰੀ ਅਕਾਲ! 🌾 ਮੈਂ AgriSage AI ਸਲਾਹਕਾਰ ਹਾਂ। ਮੈਨੂੰ ਖੇਤੀਬਾੜੀ ਬਾਰੇ ਕੁਝ ਵੀ ਪੁੱਛੋ - ਕੀਟ ਕੰਟਰੋਲ, ਸਿੰਚਾਈ, ਆਧੁਨਿਕ ਤਕਨੀਕਾਂ, ਜਾਂ ਬਾਜ਼ਾਰ ਦੀ ਜਾਣਕਾਰੀ। ਤੁਸੀਂ ਟਾਈਪ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਆਵਾਜ਼ ਦੀ ਵਰਤੋਂ ਕਰ ਸਕਦੇ ਹੋ!',
+    chatCleared: 'ਚੈਟ ਸਾਫ਼ ਹੋ ਗਈ। ਮੈਨੂੰ ਨਵਾਂ ਸਵਾਲ ਪੁੱਛੋ! 🌱',
+    listening: 'ਸੁਣ ਰਿਹਾ ਹਾਂ... ਹੁਣੇ ਬੋਲੋ',
+    placeholder: 'ਆਪਣਾ ਸਵਾਲ ਲਿਖੋ...',
+    stopListening: 'ਸੁਣਨਾ ਬੰਦ ਕਰੋ',
+    startVoice: 'ਆਵਾਜ਼ ਇਨਪੁਟ ਸ਼ੁਰੂ ਕਰੋ',
+    readAloud: 'ਉੱਚੀ ਪੜ੍ਹੋ',
+    clearChat: 'ਚੈਟ ਸਾਫ਼ ਕਰੋ',
+    error: 'ਮਾਫ਼ ਕਰਨਾ, ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',
+    location: 'ਸਥਾਨ',
+    send: 'ਭੇਜੋ'
+  },
+  mr: {
+    title: 'व्हॉइस एआय सल्लागार',
+    subtitle: 'हँड्स-फ्री, बहुभाषिक कृषी सहाय्यक',
+    welcome: 'नमस्कार! 🌾 मी तुमचा AgriSage AI सल्लागार आहे. मला शेतीबद्दल काहीही विचारा — कीड नियंत्रण, सिंचन, आधुनिक तंत्रज्ञान किंवा बाजार माहिती. तुम्ही टाइप करू शकता किंवा व्हॉइस इनपुट वापरू शकता!',
+    chatCleared: 'चॅट साफ केली. मला नवीन प्रश्न विचारा! 🌱',
+    listening: 'ऐकत आहे... आता बोला',
+    placeholder: 'तुमचा प्रश्न टाइप करा...',
+    stopListening: 'ऐकणे थांबवा',
+    startVoice: 'व्हॉइस इनपुट सुरू करा',
+    readAloud: 'मोठ्याने वाचा',
+    clearChat: 'चॅट साफ करा',
+    error: 'क्षमस्व, काहीतरी चुकले. कृपया पुन्हा प्रयत्न करा.',
+    location: 'स्थान',
+    send: 'पाठवा'
+  },
+  ta: {
+    title: 'குரல் AI ஆலோசகர்',
+    subtitle: 'ஹேண்ட்ஸ்-ஃப்ரீ, பன்மொழி விவசாய உதவியாளர்',
+    welcome: 'வணக்கம்! 🌾 நான் உங்கள் AgriSage AI ஆலோசகர். விவசாயத்தைப் பற்றி எது வேண்டுமானாலும் என்னிடம் கேளுங்கள் — பூச்சி கட்டுப்பாடு, நீர்ப்பாசனம், நவீன நுட்பங்கள் அல்லது சந்தை நுண்ணறிவு. நீங்கள் தட்டச்சு செய்யலாம் அல்லது குரல் உள்ளீட்டைப் பயன்படுத்தலாம்!',
+    chatCleared: 'அரட்டை நீக்கப்பட்டது. என்னிடம் ஒரு புதிய கேள்வியைக் கேளுங்கள்! 🌱',
+    listening: 'கேட்கிறது... இப்போது பேசுங்கள்',
+    placeholder: 'உங்கள் கேள்வியைத் தட்டச்சு செய்க...',
+    stopListening: 'கேட்பதை நிறுத்து',
+    startVoice: 'குரல் உள்ளீட்டைத் தொடங்கு',
+    readAloud: 'சத்தமாகப் படிக்கவும்',
+    clearChat: 'அரட்டையை அழிக்கவும்',
+    error: 'மன்னிக்கவும், ஏதோ தவறு நடந்துவிட்டது. மீண்டும் முயற்சிக்கவும்.',
+    location: 'இடம்',
+    send: 'அனுப்பு'
+  },
+  te: {
+    title: 'వాయిస్ AI సలహాదారు',
+    subtitle: 'హ్యాండ్స్-ఫ్రీ, బహుభాషా వ్యవసాయ సహాయకుడు',
+    welcome: 'నమస్కారం! 🌾 నేను మీ AgriSage AI సలహాదారుని. వ్యవసాయం గురించి ఏదైనా నన్ను అడగండి — తెగుళ్ల నియంత్రణ, నీటి పారుదల, ఆధునిక పద్ధతులు లేదా మార్కెట్ అంతర్దృష్టులు. మీరు టైప్ చేయవచ్చు లేదా వాయిస్ ఇన్‌పుట్‌ని ఉపయోగించవచ్చు!',
+    chatCleared: 'చాట్ క్లియర్ చేయబడింది. నన్ను కొత్త ప్రశ్న అడగండి! 🌱',
+    listening: 'వింటున్నాను... ఇప్పుడు మాట్లాడండి',
+    placeholder: 'మీ ప్రశ్నను టైప్ చేయండి...',
+    stopListening: 'వినడం ఆపండి',
+    startVoice: 'వాయిస్ ఇన్‌పుట్‌ను ప్రారంభించండి',
+    readAloud: 'బిగ్గరగా చదవండి',
+    clearChat: 'చాట్‌ను క్లియర్ చేయండి',
+    error: 'క్షమించండి, ఏదో తప్పు జరిగింది. దయచేసి మళ్ళీ ప్రయత్నించండి.',
+    location: 'స్థానం',
+    send: 'పంపండి'
+  },
+  kn: {
+    title: 'ವಾಯ್ಸ್ AI ಸಲಹೆಗಾರ',
+    subtitle: 'ಹ್ಯಾಂಡ್ಸ್-ಫ್ರೀ, ಬಹುಭಾಷಾ ಕೃಷಿ ಸಹಾಯಕ',
+    welcome: 'ನಮಸ್ಕಾರ! 🌾 ನಾನು ನಿಮ್ಮ AgriSage AI ಸಲಹೆಗಾರ. ಕೃಷಿಯ ಬಗ್ಗೆ ಯಾವುದನ್ನಾದರೂ ನನ್ನನ್ನು ಕೇಳಿ — ಕೀಟ ನಿಯಂತ್ರಣ, ನೀರಾವರಿ, ಆಧುನಿಕ ತಂತ್ರಗಳು ಅಥವಾ ಮಾರುಕಟ್ಟೆ ಒಳನೋಟಗಳು. ನೀವು ಟೈಪ್ ಮಾಡಬಹುದು ಅಥವಾ ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬಳಸಬಹುದು!',
+    chatCleared: 'ಚಾಟ್ ತೆರವುಗೊಳಿಸಲಾಗಿದೆ. ನನಗೆ ಹೊಸ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ! 🌱',
+    listening: 'ಕೇಳಿಸಿಕೊಳ್ಳುತ್ತಿದೆ... ಈಗ ಮಾತನಾಡಿ',
+    placeholder: 'ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ...',
+    stopListening: 'ಕೇಳಿಸಿಕೊಳ್ಳುವುದನ್ನು ನಿಲ್ಲಿಸಿ',
+    startVoice: 'ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಪ್ರಾರಂಭಿಸಿ',
+    readAloud: 'ಗಟ್ಟಿಯಾಗಿ ಓದಿ',
+    clearChat: 'ಚಾಟ್ ಅಳಿಸಿ',
+    error: 'ಕ್ಷಮಿಸಿ, ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.',
+    location: 'ಸ್ಥಳ',
+    send: 'ಕಳುಹಿಸಿ'
   }
 }
 
 export default function VoiceAdvisor() {
   const { state, dispatch } = useApp()
-  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
-  const t = translations[lang]
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -220,12 +295,16 @@ export default function VoiceAdvisor() {
 
           <motion.button
             whileTap={{ scale: 0.9 }}
-            onClick={() => dispatch({ type: 'SET_LANGUAGE', payload: state.language === 'en' ? 'hi' : 'en' })}
+            onClick={() => {
+              const langs = ['en', 'hi', 'pa', 'mr', 'ta', 'te', 'kn']
+              const nextIdx = (langs.indexOf(state.language) + 1) % langs.length
+              dispatch({ type: 'SET_LANGUAGE', payload: langs[nextIdx] as any })
+            }}
             className="btn-secondary !p-2 !rounded-xl flex items-center gap-2 text-xs"
             title="Switch Language"
           >
             <Globe className="w-4 h-4" />
-            {state.language === 'en' ? 'हिंदी' : 'EN'}
+            <span className="uppercase">{state.language}</span>
           </motion.button>
           
           <motion.button 

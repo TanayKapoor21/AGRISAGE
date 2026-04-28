@@ -42,13 +42,18 @@ const translations = {
     agreement: "By continuing, you agree to AgriSage's Terms of Service and Privacy Policy.",
     errorTitle: 'Error',
     subtitle: 'Agricultural Operating System'
-  }
+  },
+  pa: { login: 'ਲੌਗਇਨ', signup: 'ਸਾਈਨ ਅੱਪ', fullName: 'ਪੂਰਾ ਨਾਮ', email: 'ਈਮੇਲ ਪਤਾ', password: 'ਪਾਸਵਰਡ', signIn: 'ਸਾਈਨ ਇਨ ਕਰੋ', createAccount: 'ਖਾਤਾ ਬਣਾਓ', orContinue: 'ਜਾਂ ਇਸ ਤਰ੍ਹਾਂ ਜਾਰੀ ਰੱਖੋ', guest: 'ਮਹਿਮਾਨ ਵਜੋਂ ਜਾਰੀ ਰੱਖੋ', agreement: "ਜਾਰੀ ਰੱਖ ਕੇ, ਤੁਸੀਂ AgriSage ਦੀਆਂ ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ ਅਤੇ ਗੋਪਨੀਯਤਾ ਨੀਤੀ ਨਾਲ ਸਹਿਮਤ ਹੁੰਦੇ ਹੋ।", errorTitle: 'ਗਲਤੀ', subtitle: 'ਖੇਤੀਬਾੜੀ ਓਪਰੇਟਿੰਗ ਸਿਸਟਮ' },
+  mr: { login: 'लॉगिन', signup: 'साइन अप', fullName: 'पूर्ण नाव', email: 'ईमेल पत्ता', password: 'पासवर्ड', signIn: 'साइन इन करा', createAccount: 'खाते तयार करा', orContinue: 'किंवा याद्वारे सुरू ठेवा', guest: 'अतिथी म्हणून सुरू ठेवा', agreement: "सुरू ठेवून, आपण AgriSage च्या सेवा अटी आणि गोपनीयता धोरणाशी सहमत आहात.", errorTitle: 'त्रुटी', subtitle: 'कृषी ऑपरेटिंग सिस्टम' },
+  ta: { login: 'உள்நுழை', signup: 'பதிவுபெறு', fullName: 'முழு பெயர்', email: 'மின்னஞ்சல் முகவரி', password: 'கடவுச்சொல்', signIn: 'உள்நுழைக', createAccount: 'கணக்கை உருவாக்கு', orContinue: 'அல்லது தொடரவும்', guest: 'விருந்தினராக தொடரவும்', agreement: "தொடர்வதன் மூலம், AgriSage இன் சேவை விதிமுறைகள் மற்றும் தனியுரிமைக் கொள்கையை ஏற்கிறீர்கள்.", errorTitle: 'பிழை', subtitle: 'விவசாய இயக்க முறைமை' },
+  te: { login: 'లాగిన్', signup: 'సైన్ అప్', fullName: 'పూర్తి పేరు', email: 'ఈమెయిల్ చిరునామా', password: 'పాస్‌వర్డ్', signIn: 'సైన్ ఇన్ చేయండి', createAccount: 'ఖాతాను సృష్టించండి', orContinue: 'లేదా ఇలా కొనసాగించండి', guest: 'అతిథిగా కొనసాగండి', agreement: "కొనసాగించడం ద్వారా, మీరు AgriSage సేవా నిబంధనలు మరియు గోప్యతా విధానానికి అంగీకరిస్తున్నారు.", errorTitle: 'లోపం', subtitle: 'వ్యవసాయ ఆపరేటింగ్ సిస్టమ్' },
+  kn: { login: 'ಲಾಗಿನ್', signup: 'ಸೈನ್ ಅಪ್', fullName: 'ಪೂರ್ಣ ಹೆಸರು', email: 'ಇಮೇಲ್ ವಿಳಾಸ', password: 'ಪಾಸ್‌ವರ್ಡ್', signIn: 'ಸೈನ್ ಇನ್ ಮಾಡಿ', createAccount: 'ಖಾತೆಯನ್ನು ರಚಿಸಿ', orContinue: 'ಅಥವಾ ಹೀಗೆ ಮುಂದುವರಿಯಿರಿ', guest: 'ಅತಿಥಿಯಾಗಿ ಮುಂದುವರಿಯಿರಿ', agreement: "ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು AgriSage ನ ಸೇವಾ ನಿಯಮಗಳು ಮತ್ತು ಗೌಪ್ಯತಾ ನೀತಿಯನ್ನು ಒಪ್ಪುತ್ತೀರಿ.", errorTitle: 'ದೋಷ', subtitle: 'ಕೃಷಿ ಆಪರೇಟಿಂಗ್ ಸಿಸ್ಟಮ್' }
 }
 
 export default function Auth() {
   const { state, dispatch } = useApp()
-  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
-  const t = translations[lang]
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
 
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
@@ -65,7 +70,9 @@ export default function Auth() {
   }
 
   const toggleLanguage = () => {
-    dispatch({ type: 'SET_LANGUAGE', payload: state.language === 'en' ? 'hi' : 'en' })
+    const langs = ['en', 'hi', 'pa', 'mr', 'ta', 'te', 'kn']
+    const nextIndex = (langs.indexOf(state.language) + 1) % langs.length
+    dispatch({ type: 'SET_LANGUAGE', payload: langs[nextIndex] as any })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -106,7 +113,7 @@ export default function Auth() {
           onClick={toggleLanguage}
           className="px-4 py-2 rounded-full glass border border-white/10 text-white text-xs font-bold hover:bg-white/10 transition-all flex items-center gap-2"
         >
-          {state.language === 'en' ? 'हिंदी' : 'English'}
+          {state.language.toUpperCase()}
         </button>
       </div>
 

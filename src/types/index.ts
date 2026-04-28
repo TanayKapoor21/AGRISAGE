@@ -1,6 +1,6 @@
 // ─── Core Types ────────────────────────────────────────────────
 
-export type Language = 'en' | 'hi'
+export type Language = 'en' | 'hi' | 'pa' | 'mr' | 'ta' | 'te' | 'kn'
 export type ThemeMode = 'light' | 'dark'
 export type ApiHealth = 'active' | 'limited' | 'offline'
 

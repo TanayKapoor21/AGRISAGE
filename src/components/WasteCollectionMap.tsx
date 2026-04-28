@@ -33,8 +33,30 @@ const mapOptions = {
 
 const GREEN_MARKER = 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
 
+const translations = {
+  hi: {
+    mapNotAvailable: 'मानचित्र उपलब्ध नहीं',
+    mapNotAvailableSubtitle: 'Google Maps API कुंजी जोड़ें। सुविधा सूची दाईं ओर उपलब्ध है।',
+    nearbyFacilities: 'निकटतम सुविधाएं',
+    getDirections: 'दिशा-निर्देश'
+  },
+  en: {
+    mapNotAvailable: 'Map Not Available',
+    mapNotAvailableSubtitle: 'Add your Google Maps API key in .env to enable the interactive map. Facility list is available on the right.',
+    nearbyFacilities: 'Nearby Facilities',
+    getDirections: 'Get Directions'
+  },
+  pa: { mapNotAvailable: 'Map Not Available', mapNotAvailableSubtitle: 'Add your Google Maps API key in .env to enable the interactive map. Facility list is available on the right.', nearbyFacilities: 'Nearby Facilities', getDirections: 'Get Directions' },
+  mr: { mapNotAvailable: 'Map Not Available', mapNotAvailableSubtitle: 'Add your Google Maps API key in .env to enable the interactive map. Facility list is available on the right.', nearbyFacilities: 'Nearby Facilities', getDirections: 'Get Directions' },
+  ta: { mapNotAvailable: 'Map Not Available', mapNotAvailableSubtitle: 'Add your Google Maps API key in .env to enable the interactive map. Facility list is available on the right.', nearbyFacilities: 'Nearby Facilities', getDirections: 'Get Directions' },
+  te: { mapNotAvailable: 'Map Not Available', mapNotAvailableSubtitle: 'Add your Google Maps API key in .env to enable the interactive map. Facility list is available on the right.', nearbyFacilities: 'Nearby Facilities', getDirections: 'Get Directions' },
+  kn: { mapNotAvailable: 'Map Not Available', mapNotAvailableSubtitle: 'Add your Google Maps API key in .env to enable the interactive map. Facility list is available on the right.', nearbyFacilities: 'Nearby Facilities', getDirections: 'Get Directions' }
+}
+
 export default function WasteCollectionMap() {
   const { state } = useApp()
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
   const facilities = useMemo(() => getWasteFacilities(), [])
   const [selectedFacility, setSelectedFacility] = useState<WasteFacility | null>(null)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
@@ -139,12 +161,10 @@ export default function WasteCollectionMap() {
                 <MapPinOff className="w-8 h-8 text-sage-500/50" />
               </div>
               <h4 className="font-bold font-display text-earth-600 dark:text-earth-400 mb-2">
-                {state.language === 'hi' ? 'मानचित्र उपलब्ध नहीं' : 'Map Not Available'}
+                {t.mapNotAvailable}
               </h4>
               <p className="text-sm text-earth-400 max-w-xs mx-auto mb-4">
-                {state.language === 'hi'
-                  ? 'Google Maps API कुंजी जोड़ें। सुविधा सूची दाईं ओर उपलब्ध है।'
-                  : 'Add your Google Maps API key in .env to enable the interactive map. Facility list is available on the right.'}
+                {t.mapNotAvailableSubtitle}
               </p>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-earth-200/50 dark:bg-earth-700/50 text-xs text-earth-500 font-mono">
                 VITE_GOOGLE_MAPS_API_KEY=...
@@ -177,7 +197,7 @@ export default function WasteCollectionMap() {
         {/* Sticky Header */}
         <div className="sticky top-0 z-10 px-5 py-3.5 bg-white/90 dark:bg-earth-900/90 backdrop-blur-md border-b border-earth-200/50 dark:border-earth-700/30">
           <p className="text-xs font-bold uppercase tracking-widest text-sage-600 dark:text-sage-400">
-            {state.language === 'hi' ? `निकटतम सुविधाएं (${facilities.length})` : `Nearby Facilities (${facilities.length})`}
+            {t.nearbyFacilities} ({facilities.length})
           </p>
         </div>
 
@@ -255,7 +275,7 @@ export default function WasteCollectionMap() {
                              hover:bg-sage-500/20 transition-colors"
                 >
                   <Navigation className="w-3 h-3" />
-                  {state.language === 'hi' ? 'दिशा-निर्देश' : 'Get Directions'}
+                  {t.getDirections}
                   <ExternalLink className="w-3 h-3" />
                 </motion.a>
               )}

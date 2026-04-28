@@ -54,7 +54,18 @@ const translations = {
     noResults: 'कोई सिफारिश नहीं मिली। कृपया पुनः प्रयास करें।',
     seasons: { kharif: 'खरीफ', rabi: 'रबी', zaid: 'जायद' },
     waterNeeds: { low: 'कम', medium: 'मध्यम', high: 'अधिक' },
-    demandLevels: { low: 'कम', medium: 'मध्यम', high: 'अधिक' }
+    demandLevels: { low: 'कम', medium: 'मध्यम', high: 'अधिक' },
+    activityTitle: 'सलाहकार',
+    activityDescription: '{count} फसल सिफारिशें मिलीं',
+    soil: {
+      alluvial: 'जलोढ़',
+      black_cotton: 'काली मिट्टी',
+      red: 'लाल मिट्टी',
+      laterite: 'लैटेराइट',
+      desert: 'रेगिस्तानी',
+      mountain: 'पर्वतीय',
+      saline: 'खारा'
+    }
   },
   en: {
     title: 'Crop Advisory Engine',
@@ -73,17 +84,178 @@ const translations = {
     noResults: 'No recommendations found. Try a different combination.',
     seasons: { kharif: 'Kharif', rabi: 'Rabi', zaid: 'Zaid' },
     waterNeeds: { low: 'Low', medium: 'Medium', high: 'High' },
-    demandLevels: { low: 'Low', medium: 'Medium', high: 'High' }
+    demandLevels: { low: 'Low', medium: 'Medium', high: 'High' },
+    activityTitle: 'Advisory',
+    activityDescription: 'Got {count} crop recommendations',
+    soil: {
+      alluvial: 'Alluvial',
+      black_cotton: 'Black Cotton',
+      red: 'Red',
+      laterite: 'Laterite',
+      desert: 'Desert',
+      mountain: 'Mountain',
+      saline: 'Saline'
+    }
+  },
+  pa: {
+    title: 'ਫਸਲ ਸਲਾਹਕਾਰ ਇੰਜਣ',
+    subtitle: 'ਮਿੱਟੀ ਦੀ ਕਿਸਮ ਅਤੇ ਭੂਗੋਲਿਕ ਸਥਾਨ ਦੇ ਅਧਾਰ ਤੇ ਵਿਅਕਤੀਗਤ ਫਸਲ ਸਿਫਾਰਸ਼ਾਂ',
+    landInfo: 'ਸਾਨੂੰ ਆਪਣੀ ਜ਼ਮੀਨ ਬਾਰੇ ਦੱਸੋ',
+    selectSoil: 'ਮਿੱਟੀ ਦੀ ਕਿਸਮ ਚੁਣੋ',
+    enterLocation: 'ਸਥਾਨ ਚੁਣੋ',
+    getRecs: 'ਸਿਫਾਰਸ਼ਾਂ ਪ੍ਰਾਪਤ ਕਰੋ',
+    season: 'ਸੀਜ਼ਨ',
+    water: 'ਪਾਣੀ',
+    duration: 'ਮਿਆਦ',
+    yield: 'ਝਾੜ',
+    demand: 'ਮੰਗ',
+    tips: 'ਸੁਝਾਅ',
+    suitability: 'ਅਨੁਕੂਲਤਾ',
+    noResults: 'ਕੋਈ ਸਿਫਾਰਸ਼ਾਂ ਨਹੀਂ ਮਿਲੀਆਂ। ਕੋਈ ਹੋਰ ਸੁਮੇਲ ਅਜ਼ਮਾਓ।',
+    seasons: { kharif: 'ਖਰੀਫ', rabi: 'ਹਾੜੀ', zaid: 'ਜ਼ੈਦ' },
+    waterNeeds: { low: 'ਘੱਟ', medium: 'ਦਰਮਿਆਨਾ', high: 'ਬਹੁਤ' },
+    demandLevels: { low: 'ਘੱਟ', medium: 'ਦਰਮਿਆਨਾ', high: 'ਬਹੁਤ' },
+    activityTitle: 'ਸਲਾਹਕਾਰ',
+    activityDescription: '{count} ਫਸਲ ਦੀਆਂ ਸਿਫਾਰਸ਼ਾਂ ਮਿਲੀਆਂ',
+    soil: {
+      alluvial: 'ਜਲੋੜ',
+      black_cotton: 'ਕਾਲੀ ਮਿੱਟੀ',
+      red: 'ਲਾਲ ਮਿੱਟੀ',
+      laterite: 'ਲੈਟਰਾਈਟ',
+      desert: 'ਰੇਗਿਸਤਾਨੀ',
+      mountain: 'ਪਹਾੜੀ',
+      saline: 'ਖਾਰੀ'
+    }
+  },
+  mr: {
+    title: 'पीक सल्लागार इंजिन',
+    subtitle: 'मातीचा प्रकार आणि भौगोलिक स्थानावर आधारित वैयक्तिक पीक शिफारसी',
+    landInfo: 'आम्हाला तुमच्या जमिनीबद्दल सांगा',
+    selectSoil: 'मातीचा प्रकार निवडा',
+    enterLocation: 'स्थान निवडा',
+    getRecs: 'शिफारसी मिळवा',
+    season: 'हंगाम',
+    water: 'पाणी',
+    duration: 'कालावधी',
+    yield: 'उत्पन्न',
+    demand: 'मागणी',
+    tips: 'टिपा',
+    suitability: 'उपयुक्तता',
+    noResults: 'कोणत्याही शिफारसी आढळल्या नाहीत. भिन्न संयोजन प्रयत्न करा.',
+    seasons: { kharif: 'खरीप', rabi: 'रब्बी', zaid: 'उन्हाळी' },
+    waterNeeds: { low: 'कमी', medium: 'मध्यम', high: 'जास्त' },
+    demandLevels: { low: 'कमी', medium: 'मध्यम', high: 'जास्त' },
+    activityTitle: 'सल्लागार',
+    activityDescription: '{count} पीक शिफारसी मिळाल्या',
+    soil: {
+      alluvial: 'गाळाची',
+      black_cotton: 'काळी माती',
+      red: 'लाल माती',
+      laterite: 'लॅटेराईट',
+      desert: 'वाळवंटी',
+      mountain: 'पर्वतीय',
+      saline: 'क्षारयुक्त'
+    }
+  },
+  ta: {
+    title: 'பயிர் ஆலோசனை இயந்திரம்',
+    subtitle: 'மண் வகை மற்றும் புவியியல் இருப்பிடத்தின் அடிப்படையில் தனிப்பயனாக்கப்பட்ட பயிர் பரிந்துரைகள்',
+    landInfo: 'உங்கள் நிலத்தைப் பற்றி எங்களிடம் கூறுங்கள்',
+    selectSoil: 'மண் வகையைத் தேர்ந்தெடுக்கவும்',
+    enterLocation: 'இருப்பிடத்தைத் தேர்ந்தெடுக்கவும்',
+    getRecs: 'பரிந்துரைகளைப் பெறுங்கள்',
+    season: 'பருவம்',
+    water: 'தண்ணீர்',
+    duration: 'காலம்',
+    yield: 'மகசூல்',
+    demand: 'தேவை',
+    tips: 'குறிப்புகள்',
+    suitability: 'பொருத்தம்',
+    noResults: 'பரிந்துரைகள் எதுவும் கிடைக்கவில்லை. வேறு கலவையை முயற்சிக்கவும்.',
+    seasons: { kharif: 'காரிஃப்', rabi: 'ரபி', zaid: 'சையத்' },
+    waterNeeds: { low: 'குறைவு', medium: 'நடுத்தரம்', high: 'அதிகம்' },
+    demandLevels: { low: 'குறைவு', medium: 'நடுத்தரம்', high: 'அதிகம்' },
+    activityTitle: 'ஆலோசனை',
+    activityDescription: '{count} பயிர் பரிந்துரைகள் கிடைத்தன',
+    soil: {
+      alluvial: 'வண்டல்',
+      black_cotton: 'கரிசல் மண்',
+      red: 'செம்மண்',
+      laterite: 'லேட்டரைட்',
+      desert: 'பாலைவன மண்',
+      mountain: 'மலை மண்',
+      saline: 'உவர் மண்'
+    }
+  },
+  te: {
+    title: 'పంట సలహా యంత్రం',
+    subtitle: 'నేల రకం మరియు భౌగోళిక స్థానం ఆధారంగా వ్యక్తిగతీకరించిన పంట సిఫార్సులు',
+    landInfo: 'మీ భూమి గురించి మాకు చెప్పండి',
+    selectSoil: 'నేల రకాన్ని ఎంచుకోండి',
+    enterLocation: 'స్థానాన్ని ఎంచుకోండి',
+    getRecs: 'సిఫార్సులు పొందండి',
+    season: 'సీజన్',
+    water: 'నీరు',
+    duration: 'కాలపరిమితి',
+    yield: 'దిగుబడి',
+    demand: 'డిమాండ్',
+    tips: 'చిట్కాలు',
+    suitability: 'అనుకూలత',
+    noResults: 'సిఫార్సులు ఏవీ కనుగొనబడలేదు. వేరే కలయికను ప్రయత్నించండి.',
+    seasons: { kharif: 'ఖరీఫ్', rabi: 'రబీ', zaid: 'జైద్' },
+    waterNeeds: { low: 'తక్కువ', medium: 'మధ్యస్థం', high: 'ఎక్కువ' },
+    demandLevels: { low: 'తక్కువ', medium: 'మధ్యస్థం', high: 'ఎక్కువ' },
+    activityTitle: 'సలహాదారు',
+    activityDescription: '{count} పంట సిఫార్సులు అందాయి',
+    soil: {
+      alluvial: 'ఒండ్రు నేల',
+      black_cotton: 'నల్ల రేగడి నేల',
+      red: 'ఎర్ర నేల',
+      laterite: 'లాటరైట్ నేల',
+      desert: 'ఎడారి నేల',
+      mountain: 'పర్వత నేల',
+      saline: 'చవుడు నేల'
+    }
+  },
+  kn: {
+    title: 'ಬೆಳೆ ಸಲಹಾ ಎಂಜಿನ್',
+    subtitle: 'ಮಣ್ಣಿನ ವಿಧ ಮತ್ತು ಭೌಗೋಳಿಕ ಸ್ಥಳದ ಆಧಾರದ ಮೇಲೆ ವೈಯಕ್ತಿಕಗೊಳಿಸಿದ ಬೆಳೆ ಶಿಫಾರಸುಗಳು',
+    landInfo: 'ನಿಮ್ಮ ಭೂಮಿಯ ಬಗ್ಗೆ ನಮಗೆ ತಿಳಿಸಿ',
+    selectSoil: 'ಮಣ್ಣಿನ ವಿಧವನ್ನು ಆರಿಸಿ',
+    enterLocation: 'ಸ್ಥಳವನ್ನು ಆರಿಸಿ',
+    getRecs: 'ಶಿಫಾರಸುಗಳನ್ನು ಪಡೆಯಿರಿ',
+    season: 'ಹಂಗಾಮು',
+    water: 'ನೀರು',
+    duration: 'ಅವಧಿ',
+    yield: 'ಇಳುವರಿ',
+    demand: 'ಬೇಡಿಕೆ',
+    tips: 'ಸಲಹೆಗಳು',
+    suitability: 'ಸೂಕ್ತತೆ',
+    noResults: 'ಯಾವುದೇ ಶಿಫಾರಸುಗಳು ಕಂಡುಬಂದಿಲ್ಲ. ಬೇರೆ ಸಂಯೋಜನೆಯನ್ನು ಪ್ರಯತ್ನಿಸಿ.',
+    seasons: { kharif: 'ಖರೀಫ್', rabi: 'ರಬಿ', zaid: 'ಜೈದ್' },
+    waterNeeds: { low: 'ಕಡಿಮೆ', medium: 'ಮಧ್ಯಮ', high: 'ಹೆಚ್ಚು' },
+    demandLevels: { low: 'ಕಡಿಮೆ', medium: 'ಮಧ್ಯಮ', high: 'ಹೆಚ್ಚು' },
+    activityTitle: 'ಸಲಹೆಗಾರ',
+    activityDescription: '{count} ಬೆಳೆ ಶಿಫಾರಸುಗಳು ದೊರೆತಿವೆ',
+    soil: {
+      alluvial: 'ಪದರ ಮಣ್ಣು',
+      black_cotton: 'ಕಪ್ಪು ಮಣ್ಣು',
+      red: 'ಕೆಂಪು ಮಣ್ಣು',
+      laterite: 'ಲ್ಯಾಟರೈಟ್ ಮಣ್ಣು',
+      desert: 'ಮರುಭೂಮಿ ಮಣ್ಣು',
+      mountain: 'ಪರ್ವತ ಮಣ್ಣು',
+      saline: 'ಕ್ಷಾರ ಮಣ್ಣು'
+    }
   }
 }
 
 export default function CropAdvisory() {
   const { state } = useApp()
-  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
-  const t = translations[lang]
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
 
   const [soilType, setSoilType] = useState<SoilType>('alluvial')
-  const [location, setLocation] = useState('Haryana')
+  const [location, setLocation] = useState('Karnal, Haryana')
   const [recommendations, setRecommendations] = useState<CropRecommendation[]>([])
   const [loading, setLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
@@ -96,8 +268,8 @@ export default function CropAdvisory() {
       setRecommendations(recs)
       addActivity({
         type: 'advisory',
-        title: `Advisory: ${soilType} soil in ${location}`,
-        description: `Got ${recs.length} crop recommendations`,
+        title: `${t.activityTitle}: ${t.soil[soilType]} soil in ${location}`,
+        description: t.activityDescription.replace('{count}', recs.length.toString()),
       })
     } finally {
       setLoading(false)
@@ -147,7 +319,7 @@ export default function CropAdvisory() {
             >
               <div className={`w-8 h-8 mx-auto rounded-lg bg-gradient-to-br ${soil.color} mb-2`} />
               <p className="text-xs font-medium text-earth-700 dark:text-earth-300">
-                {state.language === 'hi' ? soil.labelHi : soil.label}
+                {t.soil[soil.value]}
               </p>
             </motion.button>
           ))}

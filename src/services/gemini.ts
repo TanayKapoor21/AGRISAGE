@@ -65,8 +65,52 @@ async function generateJSON<T>(prompt: string, cacheKey?: string): Promise<T | n
 // ─── Crop Scanner ───────────────────────────────────────────────
 
 export async function analyzeCropImage(imageBase64: string, mimeType: string): Promise<ScanResult> {
-  // Bypassing Gemini API and using local model trained on custom dataset
-  // Classes available from dataset: jute, maize, rice, sugarcane, wheat
+  const client = getClient()
+  if (client && apiAvailable) {
+    try {
+      const model = client.getGenerativeModel({ model: MODEL_NAME })
+      const prompt = `
+        Analyze this agricultural crop image. 
+        1. Identify the crop (Focus on: Jute, Maize, Rice, Sugarcane, Wheat).
+        2. Determine health status: healthy, mild_issue, or severe_issue.
+        3. Provide growth stage and detailed health diagnosis.
+        4. Recommend soil suitability (pH, nutrients, type).
+        5. Provide 3 specific recommendations for the farmer.
+        
+        Return ONLY valid JSON in this format:
+        {
+          "cropName": "name",
+          "scientificName": "name",
+          "growthStage": "stage",
+          "healthStatus": "healthy/mild_issue/severe_issue",
+          "healthDetails": "...",
+          "confidence": 0.0-1.0,
+          "soilSuitability": { "ph": "range", "nutrients": ["n", "p"], "type": "soil type" },
+          "recommendations": ["rec1", "rec2", "rec3"]
+        }
+      `
+
+      const result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            data: imageBase64,
+            mimeType: mimeType
+          }
+        }
+      ])
+
+      const text = result.response.text()
+      const jsonMatch = text.match(/```json\n?([\s\S]*?)\n?```/) || text.match(/\{[\s\S]*\}/)
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[1] || jsonMatch[0]) as ScanResult
+      }
+    } catch (error) {
+      console.warn('[Gemini] Vision analysis failed, falling back to mock:', error)
+    }
+  }
+
+  // Fallback to deterministic mock logic (simulating local model trained on jute, maize, rice, sugarcane, wheat)
   return getMockScanResult(imageBase64);
 }
 

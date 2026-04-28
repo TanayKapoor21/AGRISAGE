@@ -17,8 +17,8 @@ export default function Header() {
     dispatch({ type: 'SET_THEME', payload: state.theme === 'dark' ? 'light' : 'dark' })
   }
 
-  const toggleLanguage = () => {
-    dispatch({ type: 'SET_LANGUAGE', payload: state.language === 'en' ? 'hi' : 'en' })
+  const changeLanguage = (lang: string) => {
+    dispatch({ type: 'SET_LANGUAGE', payload: lang as any })
   }
 
   const toggleHighContrast = () => {
@@ -33,7 +33,16 @@ export default function Header() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
           <input
             type="text"
-            placeholder={state.language === 'en' ? 'Search crops, guides, markets...' : 'फसल, गाइड, बाज़ार खोजें...'}
+            placeholder={(() => {
+              const l = state.language
+              if (l === 'hi') return 'फसल, गाइड, बाज़ार खोजें...'
+              if (l === 'pa') return 'ਫਸਲਾਂ, ਗਾਈਡਾਂ, ਬਾਜ਼ਾਰਾਂ ਦੀ ਖੋਜ ਕਰੋ...'
+              if (l === 'mr') return 'पिके, मार्गदर्शक, बाजार शोधा...'
+              if (l === 'ta') return 'பயிர்கள், வழிகாட்டிகள், சந்தைகளைத் தேடுங்கள்...'
+              if (l === 'te') return 'పంటలు, మార్గదర్శకాలు, మార్కెట్‌ల కోసం వెతకండి...'
+              if (l === 'kn') return 'ಬೆಳೆಗಳು, ಮಾರ್ಗದರ್ಶಿಗಳು, ಮಾರುಕಟ್ಟೆಗಳನ್ನು ಹುಡುಕಿ...'
+              return 'Search crops, guides, markets...'
+            })()}
             className="w-full pl-10 pr-4 py-2 rounded-xl text-sm
                        bg-earth-100/50 dark:bg-earth-800/30 
                        border border-earth-200/50 dark:border-earth-700/30
@@ -63,20 +72,27 @@ export default function Header() {
           </div>
 
           {/* Language Toggle */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleLanguage}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium
-                       bg-earth-100/50 dark:bg-earth-800/30 
-                       hover:bg-sage-100 dark:hover:bg-sage-900/30
-                       text-earth-600 dark:text-earth-300
-                       border border-earth-200/50 dark:border-earth-700/30
-                       transition-all duration-200"
-            title="Toggle Language"
-          >
-            <Globe className="w-4 h-4" />
-            <span>{state.language === 'en' ? 'EN' : 'हिं'}</span>
-          </motion.button>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-earth-100/50 dark:bg-earth-800/30 border border-earth-200/50 dark:border-earth-700/30">
+            <Globe className="w-4 h-4 text-earth-600 dark:text-earth-400" />
+            <div className="relative">
+              <select 
+                value={state.language}
+                onChange={(e) => changeLanguage(e.target.value)}
+                className="bg-transparent text-sm font-medium text-earth-800 dark:text-earth-100 focus:outline-none cursor-pointer appearance-none pr-5 uppercase"
+              >
+                <option value="en" className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">EN</option>
+                <option value="hi" className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">HI</option>
+                <option value="pa" className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">PA</option>
+                <option value="mr" className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">MR</option>
+                <option value="ta" className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">TA</option>
+                <option value="te" className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">TE</option>
+                <option value="kn" className="text-stone-800 dark:text-stone-100 bg-white dark:bg-stone-900">KN</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center text-earth-400">
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+            </div>
+          </div>
 
           {/* High Contrast */}
           <motion.button
@@ -122,7 +138,16 @@ export default function Header() {
               {state.userName ? state.userName.charAt(0).toUpperCase() : 'G'}
             </div>
             <span className="text-sm font-medium text-earth-700 dark:text-earth-300 hidden sm:block">
-              {state.userName || 'Guest'}
+              {state.userName || (() => {
+                const l = state.language
+                if (l === 'hi') return 'अतिथि'
+                if (l === 'pa') return 'ਮਹਿਮਾਨ'
+                if (l === 'mr') return 'अतिथी'
+                if (l === 'ta') return 'விருந்தினர்'
+                if (l === 'te') return 'అతిథి'
+                if (l === 'kn') return 'ಅತಿಥಿ'
+                return 'Guest'
+              })()}
             </span>
           </div>
         </div>

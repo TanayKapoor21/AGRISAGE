@@ -33,7 +33,10 @@ const translations = {
       healthy: 'स्वस्थ',
       mild_issue: 'मामूली समस्या',
       severe_issue: 'गंभीर समस्या'
-    }
+    },
+    activityTitle: 'फसल स्कैन',
+    activityHealthy: 'स्वस्थ',
+    activityIssue: 'समस्या मिली'
   },
   en: {
     title: 'Smart Crop Scanner',
@@ -58,14 +61,137 @@ const translations = {
       healthy: 'Healthy',
       mild_issue: 'Mild Issue',
       severe_issue: 'Severe Issue'
-    }
+    },
+    activityTitle: 'Crop Scanned',
+    activityHealthy: 'Healthy',
+    activityIssue: 'Issue detected'
+  },
+  pa: {
+    title: 'ਸਮਾਰਟ ਫਸਲ ਸਕੈਨਰ',
+    subtitle: 'AI-ਪਾਵਰਡ ਕੰਪਿਊਟਰ ਵਿਜ਼ਨ ਨਾਲ ਫਸਲਾਂ ਦੀ ਪਛਾਣ ਕਰੋ ਅਤੇ ਸਿਹਤ ਸਮੱਸਿਆਵਾਂ ਦਾ ਨਿਦਾਨ ਕਰੋ',
+    captureTitle: 'ਫਸਲ ਦੀ ਤਸਵੀਰ ਖਿੱਚੋ',
+    captureSubtitle: 'AI ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ ਕੈਮਰੇ ਨਾਲ ਫੋਟੋ ਲਓ ਜਾਂ ਗੈਲਰੀ ਤੋਂ ਅਪਲੋਡ ਕਰੋ',
+    camera: 'ਕੈਮਰਾ',
+    upload: 'ਅਪਲੋਡ',
+    analyze: 'AI ਨਾਲ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ',
+    analyzing: 'AI ਤੁਹਾਡੀ ਫਸਲ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰ ਰਿਹਾ ਹੈ...',
+    growthStage: 'ਵਾਧੇ ਦਾ ਪੜਾਅ',
+    healthStatus: 'ਸਿਹਤ ਦੀ ਸਥਿਤੀ',
+    soilSuitability: 'ਮਿੱਟੀ ਦੀ ਅਨੁਕੂਲਤਾ',
+    recommendations: 'ਸਿਫਾਰਸ਼ਾਂ',
+    noAnalysis: 'ਅਜੇ ਕੋਈ ਵਿਸ਼ਲੇਸ਼ਣ ਨਹੀਂ',
+    noAnalysisSubtitle: 'AI-ਪਾਵਰਡ ਪਛਾਣ ਅਤੇ ਸਿਹਤ ਨਿਦਾਨ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਫਸਲ ਦੀ ਤਸਵੀਰ ਲਓ ਜਾਂ ਅਪਲੋਡ ਕਰੋ',
+    phRange: 'pH ਰੇਂਜ',
+    soilType: 'ਮਿੱਟੀ ਦੀ ਕਿਸਮ',
+    nutrients: 'ਪੋਸ਼ਕ ਤੱਤ',
+    match: 'ਮੈਚ',
+    health: { healthy: 'ਸਿਹਤਮੰਦ', mild_issue: 'ਹਲਕੀ ਸਮੱਸਿਆ', severe_issue: 'ਗੰਭੀਰ ਸਮੱਸਿਆ' },
+    activityTitle: 'ਫਸਲ ਸਕੈਨ ਕੀਤੀ',
+    activityHealthy: 'ਸਿਹਤਮੰਦ',
+    activityIssue: 'ਸਮੱਸਿਆ ਮਿਲੀ'
+  },
+  mr: {
+    title: 'स्मार्ट पीक स्कॅनर',
+    subtitle: 'AI-आधारित संगणक दृष्टीसह पिके ओळखा आणि आरोग्य समस्यांचे निदान करा',
+    captureTitle: 'पिकाचा फोटो घ्या',
+    captureSubtitle: 'AI विश्लेषणासाठी कॅमेऱ्याने फोटो घ्या किंवा गॅलरीतून अपलोड करा',
+    camera: 'कॅमेरा',
+    upload: 'अपलोड',
+    analyze: 'AI सह विश्लेषण करा',
+    analyzing: 'AI तुमच्या पिकाचे विश्लेषण करत आहे...',
+    growthStage: 'वाढीचा टप्पा',
+    healthStatus: 'आरोग्य स्थिती',
+    soilSuitability: 'मातीची उपयुक्तता',
+    recommendations: 'शिफारसी',
+    noAnalysis: 'अद्याಪ विश्लेषण नाही',
+    noAnalysisSubtitle: 'AI-आधारित ओळख आणि आरोग्य निदान मिळवण्यासाठी पिकाचा फोटो घ्या किंवा अपलोड करा',
+    phRange: 'pH श्रेणी',
+    soilType: 'मातीचा प्रकार',
+    nutrients: 'पोषक तत्वे',
+    match: 'साम्य',
+    health: { healthy: 'निरोगी', mild_issue: 'सौम्य समस्या', severe_issue: 'गंभीर समस्या' },
+    activityTitle: 'पीक स्कॅन केले',
+    activityHealthy: 'निरोगी',
+    activityIssue: 'समस्या आढळली'
+  },
+  ta: {
+    title: 'ஸ்மார்ட் பயிர் ஸ்கேனர்',
+    subtitle: 'AI-இயங்கும் கணினி பார்வை மூலம் பயிர்களை அடையாளம் கண்டு ஆரோக்கிய சிக்கல்களைக் கண்டறியவும்',
+    captureTitle: 'பயிர் படத்தை எடுக்கவும்',
+    captureSubtitle: 'AI பகுப்பாய்விற்கு கேமரா மூலம் புகைப்படம் எடுக்கவும் அல்லது கேலரியில் இருந்து பதிவேற்றவும்',
+    camera: 'கேமரா',
+    upload: 'பதிவேற்று',
+    analyze: 'AI மூலம் பகுப்பாய்வு செய்',
+    analyzing: 'AI உங்கள் பயிரை பகுப்பாய்வு செய்கிறது...',
+    growthStage: 'வளர்ச்சி நிலை',
+    healthStatus: 'ஆரோக்கிய நிலை',
+    soilSuitability: 'மண் பொருத்தம்',
+    recommendations: 'பரிந்துரைகள்',
+    noAnalysis: 'இன்னும் பகுப்பாய்வு இல்லை',
+    noAnalysisSubtitle: 'AI-இயங்கும் அடையாளம் மற்றும் ஆரோக்கிய நோயறிதலைப் பெற பயிர் படத்தை எடுக்கவும் அல்லது பதிவேற்றவும்',
+    phRange: 'pH வரம்பு',
+    soilType: 'மண் வகை',
+    nutrients: 'ஊட்டச்சத்துக்கள்',
+    match: 'பொருத்தம்',
+    health: { healthy: 'ஆரோக்கியமானது', mild_issue: 'லேசான சிக்கல்', severe_issue: 'கடுமையான சிக்கல்' },
+    activityTitle: 'பயிர் ஸ்கேன் செய்யப்பட்டது',
+    activityHealthy: 'ஆரோக்கியமானது',
+    activityIssue: 'சிக்கல் கண்டறியப்பட்டது'
+  },
+  te: {
+    title: 'స్మార్ట్ పంట స్కానర్',
+    subtitle: 'AI-ఆధారిత కంప్యూటర్ విజన్‌తో పంటలను గుర్తించండి మరియు ఆరోగ్య సమస్యలను నిర్ధారించండి',
+    captureTitle: 'పంట చిత్రాన్ని తీయండి',
+    captureSubtitle: 'AI విశ్లేషణ కోసం కెమెరాతో ఫోటో తీయండి లేదా గ్యాలరీ నుండి అప్‌లోడ్ చేయండి',
+    camera: 'కెమెరా',
+    upload: 'అప్‌లోడ్',
+    analyze: 'AIతో విశ్లెషించండి',
+    analyzing: 'AI మీ పంటను విశ్లేషిస్తోంది...',
+    growthStage: 'పెరుగుదల దశ',
+    healthStatus: 'ఆరోగ్య స్థితి',
+    soilSuitability: 'నేల అనుకూలత',
+    recommendations: 'సిఫార్సులు',
+    noAnalysis: 'ఇంకా విశ్లేషణ లేదు',
+    noAnalysisSubtitle: 'AI-ఆధారిత గుర్తింపు మరియు ఆరోగ్య నిర్ధారణను పొందడానికి పంట చిత్రాన్ని తీయండి లేదా అప్‌లోడ్ చేయండి',
+    phRange: 'pH పరిధి',
+    soilType: 'నేల రకం',
+    nutrients: 'పోషకాలు',
+    match: 'పోలిక',
+    health: { healthy: 'ఆరోగ్యకరమైనది', mild_issue: 'చిన్న సమస్య', severe_issue: 'తీవ్రమైన సమస్య' },
+    activityTitle: 'పంట స్కాన్ చేయబడింది',
+    activityHealthy: 'ఆరోగ్యకరమైనది',
+    activityIssue: 'సమస్య గుర్తించబడింది'
+  },
+  kn: {
+    title: 'ಸ್ಮಾರ್ಟ್ ಬೆಳೆ ಸ್ಕ್ಯಾನರ್',
+    subtitle: 'AI-ಚಾಲಿತ ಕಂಪ್ಯೂಟರ್ ದೃಷ್ಟಿಯೊಂದಿಗೆ ಬೆಳೆಗಳನ್ನು ಗುರುತಿಸಿ ಮತ್ತು ಆರೋಗ್ಯ ಸಮಸ್ಯೆಗಳನ್ನು ಪತ್ತೆಹಚ್ಚಿ',
+    captureTitle: 'ಬೆಳೆ ಚಿತ್ರವನ್ನು ಸೆರೆಹಿಡಿಯಿರಿ',
+    captureSubtitle: 'AI ವಿಶ್ಲೇಷಣೆಗಾಗಿ ಕ್ಯಾಮೆರಾದಿಂದ ಫೋಟೋ ತೆಗೆಯಿರಿ ಅಥವಾ ಗ್ಯಾಲರಿಯಿಂದ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ',
+    camera: 'ಕ್ಯಾಮೆರಾ',
+    upload: 'ಅಪ್‌ಲೋಡ್',
+    analyze: 'AI ನೊಂದಿಗೆ ವಿಶ್ಲೇಷಿಸಿ',
+    analyzing: 'AI ನಿಮ್ಮ ಬೆಳೆಯನ್ನು ವಿಶ್ಲೇಷಿಸುತ್ತಿದೆ...',
+    growthStage: 'ಬೆಳವಣಿಗೆಯ ಹಂತ',
+    healthStatus: 'ಆರೋಗ್ಯ ಸ್ಥಿತಿ',
+    soilSuitability: 'ಮಣ್ಣಿನ ಸೂಕ್ತತೆ',
+    recommendations: 'ಶಿಫಾರಸುಗಳು',
+    noAnalysis: 'ಇನ್ನೂ ಯಾವುದೇ ವಿಶ್ಲೇಷಣೆ ಇಲ್ಲ',
+    noAnalysisSubtitle: 'AI-ಚಾಲಿತ ಗುರುತಿಸುವಿಕೆ ಮತ್ತು ಆರೋಗ್ಯ ತಪಾಸಣೆ ಪಡೆಯಲು ಬೆಳೆ ಚಿತ್ರವನ್ನು ಸೆರೆಹಿಡಿಯಿರಿ ಅಥವಾ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ',
+    phRange: 'pH ಶ್ರೇಣಿ',
+    soilType: 'ಮಣ್ಣಿನ ವಿಧ',
+    nutrients: 'ಪೋಷಕಾಂಶಗಳು',
+    match: 'ಹೊಂದಾಣಿಕೆ',
+    health: { healthy: 'ಆರೋೕಗ್ಯಕರ', mild_issue: 'ಸೌಮ್ಯ ಸಮಸ್ಯೆ', severe_issue: 'ತೀವ್ರ ಸಮಸ್ಯೆ' },
+    activityTitle: 'ಬೆಳೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗಿದೆ',
+    activityHealthy: 'ಆರೋೕಗ್ಯಕರ',
+    activityIssue: 'ಸಮಸ್ಯೆ ಪತ್ತೆಯಾಗಿದೆ'
   }
 }
 
 export default function CropScanner() {
   const { state } = useApp()
-  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
-  const t = translations[lang]
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
 
   const [image, setImage] = useState<string | null>(null)
   const [imageBase64, setImageBase64] = useState<string>('')
@@ -139,7 +265,11 @@ export default function CropScanner() {
       const scanResult = await analyzeCropImage(imageBase64, mimeType)
       setResult(scanResult)
       incrementStat('totalScans')
-      addActivity({ type: 'scan', title: `Crop Scanned: ${scanResult.cropName}`, description: `${scanResult.healthStatus === 'healthy' ? 'Healthy' : 'Issue detected'} — ${scanResult.confidence * 100}% confidence` })
+      addActivity({ 
+        type: 'scan', 
+        title: `${t.activityTitle}: ${scanResult.cropName}`, 
+        description: `${scanResult.healthStatus === 'healthy' ? t.activityHealthy : t.activityIssue} — ${Math.round(scanResult.confidence * 100)}% ${t.match}` 
+      })
     } finally {
       setLoading(false)
     }

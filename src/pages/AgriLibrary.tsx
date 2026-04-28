@@ -45,6 +45,66 @@ const translations = {
       Vegetables: 'Vegetables',
       'Cash Crops': 'Cash Crops'
     }
+  },
+  pa: {
+    title: 'ਖੇਤੀਬਾੜੀ ਲਾਇਬ੍ਰੇਰੀ',
+    subtitle: 'ਮੁੱਖ ਭਾਰਤੀ ਫਸਲਾਂ ਲਈ ਕਦਮ-ਦਰ-ਕਦਮ ਬੀਜਣ ਗਾਈਡ',
+    searchPlaceholder: 'ਫਸਲਾਂ ਜਾਂ ਵਿਸ਼ੇ ਖੋਜੋ...',
+    steps: 'ਬੀਜਣ ਦੇ ਕਦਮ',
+    tips: 'ਪ੍ਰੋ ਸੁਝਾਅ',
+    pests: 'ਆਮ ਕੀੜੇ',
+    diseases: 'ਬਿਮਾਰੀਆਂ',
+    noGuides: 'ਕੋਈ ਗਾਈਡ ਨਹੀਂ ਮਿਲੀ।',
+    stepsCount: 'ਕਦਮ',
+    categories: { All: 'ਸਾਰੇ', Cereals: 'ਅਨਾਜ', 'Fiber Crops': 'ਰੇਸ਼ੇ ਵਾਲੀਆਂ ਫਸਲਾਂ', Vegetables: 'ਸਬਜ਼ੀਆਂ', 'Cash Crops': 'ਨਕਦੀ ਫਸਲਾਂ' }
+  },
+  mr: {
+    title: 'कृषी ग्रंथालय',
+    subtitle: 'मुख्य भारतीय पिकांसाठी टप्प्याटप्प्याने लागवड मार्गदर्शक',
+    searchPlaceholder: 'पिके किंवा विषय शोधा...',
+    steps: 'लागवडीचे टप्पे',
+    tips: 'प्रो टिप्स',
+    pests: 'सामान्य कीटक',
+    diseases: 'रोग',
+    noGuides: 'कोणतेही मार्गदर्शक आढळले नाही.',
+    stepsCount: 'टप्पे',
+    categories: { All: 'सर्व', Cereals: 'तृणधान्ये', 'Fiber Crops': 'फायबर पिके', Vegetables: 'भाज्या', 'Cash Crops': 'नगदी पिके' }
+  },
+  ta: {
+    title: 'வேளாண் நூலகம்',
+    subtitle: 'முக்கிய இந்திய பயிர்களுக்கான படிப்படியான நடவு வழிகாட்டி',
+    searchPlaceholder: 'பயிர்கள் அல்லது தலைப்புகளைத் தேடுங்கள்...',
+    steps: 'நடவு படிகள்',
+    tips: 'ப்ரோ குறிப்புகள்',
+    pests: 'பொதுவான பூச்சிகள்',
+    diseases: 'நோய்கள்',
+    noGuides: 'வழிகாட்டிகள் கிடைக்கவில்லை.',
+    stepsCount: 'படிகள்',
+    categories: { All: 'அனைத்தும்', Cereals: 'தானியங்கள்', 'Fiber Crops': 'நார் பயிர்கள்', Vegetables: 'காய்கறிகள்', 'Cash Crops': 'பணப்பயிர்கள்' }
+  },
+  te: {
+    title: 'వ్యవసాయ లైబ్రరీ',
+    subtitle: 'ప్రధాన భారతీయ పంటల కోసం దశల వారీ నాటడం మార్గదర్శకాలు',
+    searchPlaceholder: 'పంటలు లేదా అంశాలను శోధించండి...',
+    steps: 'నాటడం దశలు',
+    tips: 'ప్రో చిట్కాలు',
+    pests: 'సాధారణ తెగుళ్లు',
+    diseases: 'వ్యాధులు',
+    noGuides: 'మార్గదర్శకాలు కనుగొనబడలేదు.',
+    stepsCount: 'దశలు',
+    categories: { All: 'అన్ని', Cereals: 'తృణధాన్యాలు', 'Fiber Crops': 'ఫైబర్ పంటలు', Vegetables: 'కూరగాయలు', 'Cash Crops': 'నగదు పంటలు' }
+  },
+  kn: {
+    title: 'ಕೃಷಿ ಗ್ರಂಥಾಲಯ',
+    subtitle: 'ಪ್ರಮುಖ ಭಾರತೀಯ ಬೆಳೆಗಳಿಗೆ ಹಂತ ಹಂತದ ನೆಡುವಿಕೆ ಮಾರ್ಗದರ್ಶಿಗಳು',
+    searchPlaceholder: 'ಬೆಳೆಗಳು ಅಥವಾ ವಿಷಯಗಳನ್ನು ಹುಡುಕಿ...',
+    steps: 'ನೆಡುವಿಕೆ ಹಂತಗಳು',
+    tips: 'ಪ್ರೊ ಸಲಹೆಗಳು',
+    pests: 'ಸಾಮಾನ್ಯ ಕೀಟಗಳು',
+    diseases: 'ರೋಗಗಳು',
+    noGuides: 'ಯಾವುದೇ ಮಾರ್ಗದರ್ಶಿಗಳು ಕಂಡುಬಂದಿಲ್ಲ.',
+    stepsCount: 'ಹಂತಗಳು',
+    categories: { All: 'ಎಲ್ಲಾ', Cereals: 'ಧಾನ್ಯಗಳು', 'Fiber Crops': 'ಫೈಬರ್ ಬೆಳೆಗಳು', Vegetables: 'ತರಕಾರಿಗಳು', 'Cash Crops': 'ನಗದು ಬೆಳೆಗಳು' }
   }
 }
 
@@ -185,14 +245,14 @@ const cropGuides: Record<'en' | 'hi', CropGuide[]> = {
 
 export default function AgriLibrary() {
   const { state } = useApp()
-  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
-  const t = translations[lang]
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
 
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [expandedGuide, setExpandedGuide] = useState<string | null>(null)
 
-  const guides = cropGuides[lang] || cropGuides['en']
+  const guides = cropGuides[lang as keyof typeof cropGuides] || cropGuides['en']
   const categories = ['All', ...new Set(cropGuides.en.map((g) => g.category))]
 
   const filteredGuides = useMemo(() => {

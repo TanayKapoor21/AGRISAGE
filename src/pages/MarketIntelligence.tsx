@@ -59,13 +59,108 @@ const translations = {
     wind: 'Wind',
     forecast7Day: '7-Day Forecast',
     noResults: 'No results matched your search',
+  },
+  pa: {
+    title: 'ਬਾਜ਼ਾਰ ਦੀ ਜਾਣਕਾਰੀ',
+    subtitle: 'ਰੀਅਲ-ਟਾਈਮ ਮੰਡੀ ਭਾਅ ਅਤੇ ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ',
+    avgPrice: 'ਔਸਤ ਮਾਡਲ ਮੁੱਲ',
+    trendingUp: 'ਉੱਪਰ ਵੱਲ ਰੁਝਾਨ',
+    search: 'ਫਸਲ ਜਾਂ ਮੰਡੀ ਖੋਜੋ...',
+    refresh: 'ਅਪਡੇਟ ਕਰੋ',
+    crop: 'ਫਸਲ',
+    market: 'ਮੰਡੀ',
+    min: 'ਘੱਟੋ-ਘੱਟ',
+    max: 'ਵੱਧ ਤੋਂ ਵੱਧ',
+    modal: 'ਮਾਡਲ',
+    trend: 'ਰੁਝਾਨ',
+    weatherForecast: 'ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ',
+    humidity: 'ਨਮੀ',
+    wind: 'ਹਵਾ',
+    forecast7Day: '7-ਦਿਨਾਂ ਦੀ ਭਵਿੱਖਬਾਣੀ',
+    noResults: 'ਤੁਹਾਡੀ ਖੋਜ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ ਮਿਲਿਆ'
+  },
+  mr: {
+    title: 'बाजार बुद्धिमत्ता',
+    subtitle: 'रिअल-टाइम मंडी दर आणि हवामान अंदाज',
+    avgPrice: 'सरासरी मोडल किंमत',
+    trendingUp: 'वरचा कल',
+    search: 'पीक किंवा बाजार शोधा...',
+    refresh: 'अपडेट करा',
+    crop: 'पीक',
+    market: 'बाजार',
+    min: 'किमान',
+    max: 'कमाल',
+    modal: 'मोडल',
+    trend: 'कल',
+    weatherForecast: 'हवामान अंदाज',
+    humidity: 'आद्रता',
+    wind: 'वारा',
+    forecast7Day: '७-दिवसांचा अंदाज',
+    noResults: 'तुमच्या शोधाशी जुळणारे निकाल आढळले नाहीत'
+  },
+  ta: {
+    title: 'சந்தை நுண்ணறிவு',
+    subtitle: 'நிகழ்நேர மண்டி விலைகள் மற்றும் வானிலை முன்னறிவிப்பு',
+    avgPrice: 'சராசரி மாதிரி விலை',
+    trendingUp: 'மேல்நோக்கிய போக்கு',
+    search: 'பயிர் அல்லது சந்தையைத் தேடுங்கள்...',
+    refresh: 'புதுப்பிக்கவும்',
+    crop: 'பயிர்',
+    market: 'சந்தை',
+    min: 'குறைந்தபட்சம்',
+    max: 'அதிகபட்சம்',
+    modal: 'மாதிரி',
+    trend: 'போக்கு',
+    weatherForecast: 'வானிலை முன்னறிவிப்பு',
+    humidity: 'ஈரப்பதம்',
+    wind: 'காற்று',
+    forecast7Day: '7-நாள் முன்னறிவிப்பு',
+    noResults: 'உங்கள் தேடலுடன் பொருந்தக்கூடிய முடிவுகள் எதுவுமில்லை'
+  },
+  te: {
+    title: 'మార్కెట్ సమాచారం',
+    subtitle: 'నిజ-సమయ మండి ధరలు మరియు వాతావరణ సూచన',
+    avgPrice: 'సగటు మోడల్ ధర',
+    trendingUp: 'పెరుగుతున్న ధోరణి',
+    search: 'పంట లేదా మార్కెట్ కోసం వెతకండి...',
+    refresh: 'రిఫ్రెష్ చేయండి',
+    crop: 'పంట',
+    market: 'మార్కెట్',
+    min: 'కనిష్ట',
+    max: 'గరిష్ట',
+    modal: 'మోడల్',
+    trend: 'ధోరణి',
+    weatherForecast: 'వాతావరణ సూచన',
+    humidity: 'తేమ',
+    wind: 'గాలి',
+    forecast7Day: '7-రోజుల సూచన',
+    noResults: 'మీ శోధనకు సరిపోలే ఫలితాలు లేవు'
+  },
+  kn: {
+    title: 'ಮಾರುಕಟ್ಟೆ ಮಾಹಿತಿ',
+    subtitle: 'ನೈಜ-ಸಮಯದ ಮಾರುಕಟ್ಟೆ ದರಗಳು ಮತ್ತು ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ',
+    avgPrice: 'ಸರಾಸರಿ ಮಾದರಿ ಬೆಲೆ',
+    trendingUp: 'ಹೆಚ್ಚುತ್ತಿರುವ ಪ್ರವೃತ್ತಿ',
+    search: 'ಬೆಳೆ ಅಥವಾ ಮಾರುಕಟ್ಟೆ ಹುಡುಕಿ...',
+    refresh: 'ರಿಫ್ರೆಶ್ ಮಾಡಿ',
+    crop: 'ಬೆಳೆ',
+    market: 'ಮಾರುಕಟ್ಟೆ',
+    min: 'ಕನಿಷ್ಠ',
+    max: 'ಗರಿಷ್ಠ',
+    modal: 'ಮಾದರಿ',
+    trend: 'ಪ್ರವೃತ್ತಿ',
+    weatherForecast: 'ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ',
+    humidity: 'ತೇವಾಂಶ',
+    wind: 'ಗಾಳಿ',
+    forecast7Day: '7-ದಿನದ ಮುನ್ಸೂಚನೆ',
+    noResults: 'ನಿಮ್ಮ ಹುಡುಕಾಟಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವ ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ'
   }
 }
 
 export default function MarketIntelligence() {
   const { state } = useApp()
-  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
-  const t = translations[lang]
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
 
   const [prices, setPrices] = useState<MandiPrice[]>([])
   const [weather, setWeather] = useState<WeatherData | null>(null)

@@ -128,6 +128,7 @@ const translations = {
     viewReport: 'रिपोर्ट देखें',
     heroSubtitle: 'आपका स्मार्ट कृषि डैशबोर्ड आज आपकी मदद के लिए तैयार है।',
     last30Days: 'पिछले 30 दिन',
+    greetings: { morning: 'सुप्रभात', afternoon: 'नमस्ते', evening: 'शुभ संध्या' },
     actions: {
       'SCAN CROP': 'फसल स्कैन',
       'AI ADVISOR': 'AI सलाहकार',
@@ -163,6 +164,7 @@ const translations = {
     viewReport: 'View Report',
     heroSubtitle: 'Your smart agricultural dashboard is ready to assist you today.',
     last30Days: 'Last 30 Days',
+    greetings: { morning: 'Good Morning', afternoon: 'Good Afternoon', evening: 'Good Evening' },
     actions: {
       'SCAN CROP': 'SCAN CROP',
       'AI ADVISOR': 'AI ADVISOR',
@@ -173,13 +175,148 @@ const translations = {
       'LEARNING': 'LEARNING PORTAL',
       'GENAFFNET': 'GENAFFNET'
     }
+  },
+  pa: {
+    scans: 'ਕੁੱਲ ਸਕੈਨ',
+    chats: 'AI ਚੈਟ',
+    alerts: 'ਬਾਜ਼ਾਰ ਅਲਰਟ',
+    carbon: 'ਕਾਰਬਨ ਕ੍ਰੈਡਿਟ',
+    quickActions: 'ਤੁਰੰਤ ਕਾਰਵਾਈਆਂ',
+    cropHealth: 'ਫਸਲ ਦੀ ਸਿਹਤ',
+    healthy: 'ਸਿਹਤਮੰਦ',
+    needsCare: 'ਦੇਖਭਾਲ ਦੀ ਲੋੜ',
+    weather: 'ਮੌਸਮ',
+    soilMoisture: 'ਮਿੱਟੀ ਦੀ ਨਮੀ',
+    optimal: 'ਅਨੁਕੂਲ ਪੱਧਰ',
+    avgMoisture: 'ਔਸਤ ਨਮੀ ਦੀ ਵੰਡ',
+    trend: 'ਫਸਲ ਸਿਹਤ ਰੁਝਾਨ',
+    forecast: 'ਮੌਸਮ ਦੀ ਭਵਿੱਖਬਾਣੀ',
+    today: 'ਅੱਜ',
+    insights: 'AI ਅੰਤਰਦ੍ਰਿਸ਼ਟੀ',
+    viewAdvice: 'ਸਲਾਹ ਦੇਖੋ',
+    marketTrends: 'ਬਾਜ਼ਾਰ ਦੇ ਰੁਝਾਨ',
+    sustainability: 'ਸਥਿਰਤਾ ਸਕੋਰ',
+    viability: 'ਕੁੱਲ ਵਿਹਾਰਕਤਾ',
+    viewReport: 'ਰਿਪੋਰਟ ਦੇਖੋ',
+    heroSubtitle: 'ਤੁਹਾਡਾ ਸਮਾਰਟ ਖੇਤੀਬਾੜੀ ਡੈਸ਼ਬੋਰਡ ਅੱਜ ਤੁਹਾਡੀ ਮਦਦ ਲਈ ਤਿਆਰ ਹੈ।',
+    last30Days: 'ਪਿਛਲੇ 30 ਦਿਨ',
+    greetings: { morning: 'ਸ਼ੁਭ ਸਵੇਰ', afternoon: 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ', evening: 'ਸ਼ੁਭ ਸ਼ਾਮ' },
+    actions: { 'SCAN CROP': 'ਫਸਲ ਸਕੈਨ', 'AI ADVISOR': 'AI ਸਲਾਹਕਾਰ', 'MARKET INTEL': 'ਬਾਜ਼ਾਰ ਭਾਅ', 'CROP ADVISORY': 'ਫਸਲ ਸਲਾਹ', 'SUSTAINABILITY': 'ਸਥਿਰਤਾ', 'AGRILIBRARY': 'ਖੇਤੀਬਾੜੀ ਲਾਇਬ੍ਰੇਰੀ', 'LEARNING': 'ਸਿਖਲਾਈ ਪੋਰਟਲ', 'GENAFFNET': 'ML ਹੱਬ' }
+  },
+  mr: {
+    scans: 'एकूण स्कॅन',
+    chats: 'AI चॅट',
+    alerts: 'बाजार अलर्ट',
+    carbon: 'कार्बन क्रेडिट',
+    quickActions: 'त्वरीत कृती',
+    cropHealth: 'पिकांचे आरोग्य',
+    healthy: 'निरोगी',
+    needsCare: 'काळजीची गरज',
+    weather: 'हवामान',
+    soilMoisture: 'मातीतील ओलावा',
+    optimal: 'इष्टतम पातळी',
+    avgMoisture: 'सरासरी ओलावा वितरण',
+    trend: 'पीक आरोग्य कल',
+    forecast: 'हवामान अंदाज',
+    today: 'आज',
+    insights: 'AI अंतर्दृष्टी',
+    viewAdvice: 'सल्ला पहा',
+    marketTrends: 'बाजार कल',
+    sustainability: 'शाश्वतता स्कोर',
+    viability: 'एकूण व्यवहार्यता',
+    viewReport: 'अहवाल पहा',
+    heroSubtitle: 'तुमचे स्मार्ट कृषी डॅशबोर्ड आज तुम्हाला मदत करण्यासाठी तयार आहे.',
+    last30Days: 'गेले ३० दिवस',
+    greetings: { morning: 'शुभ सकाळ', afternoon: 'नमस्कार', evening: 'शुभ संध्याकाळ' },
+    actions: { 'SCAN CROP': 'पीक स्कॅन', 'AI ADVISOR': 'AI सल्लागार', 'MARKET INTEL': 'बाजार भाव', 'CROP ADVISORY': 'पीक सल्ला', 'SUSTAINABILITY': 'शाश्वतता', 'AGRILIBRARY': 'कृषी लायब्ररी', 'LEARNING': 'लर्निंग पोर्टल', 'GENAFFNET': 'ML हब' }
+  },
+  ta: {
+    scans: 'மொத்த ஸ்கேன்',
+    chats: 'AI அரட்டை',
+    alerts: 'சந்தை எச்சரிக்கைகள்',
+    carbon: 'கார்பன் கடன்',
+    quickActions: 'விரைவான நடவடிக்கைகள்',
+    cropHealth: 'பயிர் ஆரோக்கியம்',
+    healthy: 'ஆரோக்கியமானது',
+    needsCare: 'கவனிப்பு தேவை',
+    weather: 'வானிலை',
+    soilMoisture: 'மண் ஈரப்பதம்',
+    optimal: 'உகந்த நிலைகள்',
+    avgMoisture: 'சராசரி ஈரப்பதம்',
+    trend: 'பயிர் ஆரோக்கிய போக்கு',
+    forecast: 'வானிலை முன்னறிவிப்பு',
+    today: 'இன்று',
+    insights: 'AI நுண்ணறிவு',
+    viewAdvice: 'ஆலோசனையைப் பார்க்கவும்',
+    marketTrends: 'சந்தை போக்குகள்',
+    sustainability: 'நிலைத்தன்மை மதிப்பெண்',
+    viability: 'ஒட்டுமொத்த நம்பகத்தன்மை',
+    viewReport: 'அறிக்கையைப் பார்க்கவும்',
+    heroSubtitle: 'உங்கள் ஸ்மார்ட் விவசாய டாஷ்போர்டு இன்று உங்களுக்கு உதவ தயாராக உள்ளது.',
+    last30Days: 'கடந்த 30 நாட்கள்',
+    greetings: { morning: 'காலை வணக்கம்', afternoon: 'மதிய வணக்கம்', evening: 'மாலை வணக்கம்' },
+    actions: { 'SCAN CROP': 'பயிர் ஸ்கேன்', 'AI ADVISOR': 'AI ஆலோசகர்', 'MARKET INTEL': 'சந்தை தகவல்', 'CROP ADVISORY': 'பயிர் ஆலோசனை', 'SUSTAINABILITY': 'நிலைத்தன்மை', 'AGRILIBRARY': 'விவசாய நூலகம்', 'LEARNING': 'கற்றல் போர்டல்', 'GENAFFNET': 'ML மையம்' }
+  },
+  te: {
+    scans: 'మొత్తం స్కాన్‌లు',
+    chats: 'AI చాట్',
+    alerts: 'మార్కెట్ హెచ్చరికలు',
+    carbon: 'కార్బన్ క్రెడిట్స్',
+    quickActions: 'త్వరిత చర్యలు',
+    cropHealth: 'పంట ఆరోగ్యం',
+    healthy: 'ఆరోగ్యకరమైనది',
+    needsCare: 'జాగ్రత్త అవసరం',
+    weather: 'వాతావరణం',
+    soilMoisture: 'నేల తేమ',
+    optimal: 'సరైన స్థాయిలు',
+    avgMoisture: 'సగటు తేమ పంపిణీ',
+    trend: 'పంట ఆరోగ్య ధోరణి',
+    forecast: 'వాతావరణ సూచన',
+    today: 'నేడు',
+    insights: 'AI అంతర్దృష్టులు',
+    viewAdvice: 'సలహా చూడండి',
+    marketTrends: 'మార్కెట్ ధోరణులు',
+    sustainability: 'స్థిరత్వ స్కోరు',
+    viability: 'మొత్తం సాధ్యత',
+    viewReport: 'నివేదిక చూడండి',
+    heroSubtitle: 'మీ స్మార్ట్ వ్యవసాయ డాష్‌బోర్డ్ నేడు మీకు సహాయం చేయడానికి సిద్ధంగా ఉంది.',
+    last30Days: 'గత 30 రోజులు',
+    greetings: { morning: 'శుభోదయం', afternoon: 'నమస్కారం', evening: 'శుభ సాయంత్రం' },
+    actions: { 'SCAN CROP': 'పంట స్కాన్', 'AI ADVISOR': 'AI సలహాదారు', 'MARKET INTEL': 'మార్కెట్ ధరలు', 'CROP ADVISORY': 'పంట సలహా', 'SUSTAINABILITY': 'స్థిరత్వం', 'AGRILIBRARY': 'వ్యవసాయ లైబ్రరీ', 'LEARNING': 'లెర్నింగ్ పోర్టల్', 'GENAFFNET': 'ML హబ్' }
+  },
+  kn: {
+    scans: 'ಒಟ್ಟು ಸ್ಕ್ಯಾನ್‌ಗಳು',
+    chats: 'AI ಚಾಟ್',
+    alerts: 'ಮಾರುಕಟ್ಟೆ ಎಚ್ಚರಿಕೆಗಳು',
+    carbon: 'ಕಾರ್ಬನ್ ಕ್ರೆಡಿಟ್‌ಗಳು',
+    quickActions: 'ತ್ವರಿತ ಕ್ರಮಗಳು',
+    cropHealth: 'ಬೆಳೆ ಆರೋಗ್ಯ',
+    healthy: 'ಆರೋಗ್ಯಕರ',
+    needsCare: 'ಕಾಳಜಿ ಅಗತ್ಯ',
+    weather: 'ಹವಾಮಾನ',
+    soilMoisture: 'ಮಣ್ಣಿನ ತೇವಾಂಶ',
+    optimal: 'ಸೂಕ್ತ ಮಟ್ಟಗಳು',
+    avgMoisture: 'ಸರಾಸರಿ ತೇವಾಂಶ ವಿತರಣೆ',
+    trend: 'ಬೆಳೆ ಆರೋಗ್ಯ ಪ್ರವೃತ್ತಿ',
+    forecast: 'ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ',
+    today: 'ಇಂದು',
+    insights: 'AI ಒಳನೋಟಗಳು',
+    viewAdvice: 'ಸಲಹೆ ನೋಡಿ',
+    marketTrends: 'ಮಾರುಕಟ್ಟೆ ಪ್ರವೃತ್ತಿಗಳು',
+    sustainability: 'ಸುಸ್ಥಿರತೆ ಸ್ಕೋರ್',
+    viability: 'ಒಟ್ಟಾರೆ ಕಾರ್ಯಸಾಧ್ಯತೆ',
+    viewReport: 'ವರದಿ ನೋಡಿ',
+    heroSubtitle: 'ನಿಮ್ಮ ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಇಂದು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ಸಿದ್ಧವಾಗಿದೆ.',
+    last30Days: 'ಕಳೆದ 30 ದಿನಗಳು',
+    greetings: { morning: 'ಶುಭೋದಯ', afternoon: 'ನಮಸ್ಕಾರ', evening: 'ಶುಭ ಸಂಜೆ' },
+    actions: { 'SCAN CROP': 'ಬೆಳೆ ಸ್ಕ್ಯಾನ್', 'AI ADVISOR': 'AI ಸಲಹೆಗಾರ', 'MARKET INTEL': 'ಮಾರುಕಟ್ಟೆ ಮಾಹಿತಿ', 'CROP ADVISORY': 'ಬೆಳೆ ಸಲಹೆ', 'SUSTAINABILITY': 'ಸುಸ್ಥಿರತೆ', 'AGRILIBRARY': 'ಕೃಷಿ ಲೈಬ್ರರಿ', 'LEARNING': 'ಲರ್ನಿಂಗ್ ಪೋರ್ಟಲ್', 'GENAFFNET': 'ML ಹಬ್' }
   }
 }
 
 export default function Dashboard() {
   const { state } = useApp()
-  const lang = (state.language === 'hi' ? 'hi' : 'en') as 'hi' | 'en'
-  const t = translations[lang]
+  const lang = state.language as keyof typeof translations
+  const t = translations[lang] || translations['en']
 
   const profile = getUserProfile()
   
@@ -195,14 +332,10 @@ export default function Dashboard() {
 
   const greeting = (() => {
     const hour = new Date().getHours()
-    if (state.language === 'hi') {
-      if (hour < 12) return 'सुप्रभात'
-      if (hour < 17) return 'नमस्ते'
-      return 'शुभ संध्या'
-    }
-    if (hour < 12) return 'Good Morning'
-    if (hour < 17) return 'Good Afternoon'
-    return 'Good Evening'
+    const g = t.greetings
+    if (hour < 12) return g.morning
+    if (hour < 17) return g.afternoon
+    return g.evening
   })()
 
   const cardClass = "bg-white dark:bg-[#1C1C1E] rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-md dark:shadow-none border-[1.5px] border-stone-200 dark:border dark:border-white/5 relative overflow-hidden transition-colors flex flex-col"
